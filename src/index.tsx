@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {RecoilRoot} from 'recoil';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
-import NotFound from './components/NotFound/NotFound';
+import NotFound from './pages/NotFound';
 import Users from './pages/Users';
 import MyPage from './pages/MyPage';
 
