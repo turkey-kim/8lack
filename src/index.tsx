@@ -4,15 +4,30 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {RecoilRoot} from 'recoil';
-import {BrowserRouter} from 'react-router-dom';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import NotFound from './components/NotFound/NotFound';
+import Users from './pages/Users';
+import MyPage from './pages/MyPage';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <NotFound />,
+    children: [
+      {index: true, path: '/', element: <p>Home</p>},
+      {path: '/chat/all', element: <p>모든 그룹채팅방 보임</p>},
+      {path: '/users', element: <Users />},
+      {path: '/user', element: <MyPage />},
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <RouterProvider router={router}></RouterProvider>
     </RecoilRoot>
   </React.StrictMode>,
 );
