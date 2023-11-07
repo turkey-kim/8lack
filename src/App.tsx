@@ -3,6 +3,8 @@ import {theme} from './styles/Theme';
 import {ThemeProvider} from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
 import {Routes, Route} from 'react-router';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
             </>
           }
         ></Route>
+        <Route path="/signIn" element={<SignIn />} />
+        <Route path="/signUp" element={<SignUp />} />
       </Routes>
     </ThemeProvider>
   );
