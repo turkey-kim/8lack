@@ -33,3 +33,20 @@ export const postSignUp = async (id: string, pw: string, name: string) => {
     alert('잘못된 형식입니다!');
   }
 };
+
+// 인증 관련 코드
+
+const authHeaders = {
+  'content-type': 'application/json',
+  serverId: process.env.REACT_APP_SERVER_ID,
+  Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+}; // 토큰이 필요한 api에는 해당 헤더를 사용하시면 됩니다!
+
+export const authCheck = async () => {
+  try {
+    const res = await axios.get(`${SERVER_URL}/auth/me`, {headers: authHeaders});
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
