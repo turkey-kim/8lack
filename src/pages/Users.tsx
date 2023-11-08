@@ -170,8 +170,8 @@ export const StyledLine = styled.div`
 
 // user container
 const StyledUserContainer = styled.div`
-  width: 15rem;
-  height: 18rem;
+  width: 12rem;
+  height: 15rem;
   border: 1px solid ${props => props.theme.colors.gray300};
   display: inline-block;
   cursor: pointer;
@@ -213,7 +213,7 @@ export const StyledStar = styled.div`
 export const StyledChatButton = styled.button`
   width: 100%;
   height: 60%;
-  margin: 0.5rem 1rem 1rem 0;
+  margin: 0 1rem 1rem 0;
   border-radius: 8px;
   border: 1px solid ${props => props.theme.colors.blue400};
   color: ${props => props.theme.colors.blue400};

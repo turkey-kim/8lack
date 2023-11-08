@@ -31,10 +31,10 @@ const customStyles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '40%',
-    height: '50%',
+    width: '45%',
+    height: '55%',
     borderRadius: '8px',
-    overflow: 'hidden',
+    overflow: 'auto',
   },
 };
 
@@ -46,27 +46,29 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   };
 
   return (
-    <StyledPageContainer>
+    <>
       <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
-        <StyledTitle>
-          <StyledMainTitle>내 정보 수정</StyledMainTitle>
-          <AiOutlineClose onClick={onRequestClose} style={{cursor: 'pointer'}} />
-        </StyledTitle>
-        <StyledLine />
-        <StyledPicContainer>{/* 사진 위치 */}</StyledPicContainer>
-        <StyledContainer>
-          <StyledDiv>이름</StyledDiv>
-          <StyledNextDiv>김ㅇㅇ</StyledNextDiv>
-          <StyledDiv>아이디</StyledDiv>
-          <StyledNextDiv>momomo</StyledNextDiv>
-        </StyledContainer>
-        <StyledLine />
-        <StyledButtonContainer>
-          <StyledEditButton onClick={toggleEditing}>내 정보 수정</StyledEditButton>
-          <StyledCancelButton onClick={onRequestClose}>닫기</StyledCancelButton>
-        </StyledButtonContainer>
+        <StyledPageContainer>
+          <StyledTitle>
+            <StyledMainTitle>내 정보 수정</StyledMainTitle>
+            <AiOutlineClose onClick={onRequestClose} style={{cursor: 'pointer'}} />
+          </StyledTitle>
+          <StyledLine />
+          <StyledPicContainer>{/* 사진 위치 */}</StyledPicContainer>
+          <StyledContainer>
+            <StyledDiv>이름</StyledDiv>
+            <StyledNextDiv>김ㅇㅇ</StyledNextDiv>
+            <StyledDiv>아이디</StyledDiv>
+            <StyledNextDiv>momomo</StyledNextDiv>
+          </StyledContainer>
+          <StyledLine />
+          <StyledButtonContainer>
+            <StyledEditButton onClick={toggleEditing}>내 정보 수정</StyledEditButton>
+            <StyledCancelButton onClick={onRequestClose}>닫기</StyledCancelButton>
+          </StyledButtonContainer>
+        </StyledPageContainer>
       </Modal>
-    </StyledPageContainer>
+    </>
   );
 };
 
@@ -74,7 +76,7 @@ export default MyPage;
 
 const StyledPageContainer = styled.div`
   width: 100%;
-  padding: 4rem 4rem;
+  padding: 1rem 1rem;
 `;
 
 const StyledPicContainer = styled.div`
@@ -115,7 +117,7 @@ const StyledContainer = styled.div`
   cursor: pointer;
   border-radius: 8px;
   vertical-align: top;
-  margin: 1rem 3rem 1rem 0;
+  margin: 1rem 0 1rem 0;
   padding: 1rem;
 `;
 
@@ -130,7 +132,7 @@ const StyledButtonContainer = styled.div`
   display: block;
   cursor: pointer;
   border-radius: 8px;
-  margin: 0.5rem 3rem 3rem 0rem;
+  margin: 1rem 3rem 0rem 0rem;
   vertical-align: top;
   text-align: right;
 `;
