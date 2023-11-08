@@ -4,20 +4,6 @@ import io from 'socket.io-client';
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {MdCircle} from 'react-icons/md';
 
-//이용자 모두 받아오는 페이지
-
-interface User {
-  id: string;
-  name: string;
-  picture: string;
-}
-
-type AllUsers = User[];
-
-// curl https://fastcampus-chat.net/users
-//   \ -X 'GET'
-//   \ -H 'Authorization: Bearer <accessToken>'
-
 export default function Users() {
   return (
     <StyledPageContainer>
@@ -26,118 +12,95 @@ export default function Users() {
 
       <StyledLine />
       <StyledSubTitle>즐겨찾기</StyledSubTitle>
+      <StyledUsersWrapper>
+        <StyledUserContainer>
+          <StyledUserProfile />
+          <StyledUserDescription>
+            <StyledUserName>
+              김ㅇㅇ&nbsp;
+              <StyledActiveCircle>
+                <MdCircle />
+              </StyledActiveCircle>
+              <StyledStar>
+                <FaStar />
+              </StyledStar>
+            </StyledUserName>
+            <StyledChatButton>1:1 채팅하기</StyledChatButton>
+          </StyledUserDescription>
+        </StyledUserContainer>
 
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            장ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
-
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            박ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
+        <StyledUserContainer>
+          <StyledUserProfile />
+          <StyledUserDescription>
+            <StyledUserName>
+              김ㅇㅇ&nbsp;
+              <StyledActiveCircle>
+                <MdCircle />
+              </StyledActiveCircle>
+              <StyledStar>
+                <FaStar />
+              </StyledStar>
+            </StyledUserName>
+            <StyledChatButton>1:1 채팅하기</StyledChatButton>
+          </StyledUserDescription>
+        </StyledUserContainer>
+      </StyledUsersWrapper>
 
       <StyledLine />
       <StyledSubTitle>유저목록</StyledSubTitle>
+      <StyledUsersWrapper>
+        <StyledUserContainer>
+          <StyledUserProfile />
+          <StyledUserDescription>
+            <StyledUserName>
+              김ㅇㅇ&nbsp;
+              <StyledActiveCircle>
+                <MdCircle />
+              </StyledActiveCircle>
+              <StyledStar>
+                <FaStar />
+              </StyledStar>
+            </StyledUserName>
+            <StyledChatButton>1:1 채팅하기</StyledChatButton>
+          </StyledUserDescription>
+        </StyledUserContainer>
 
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            박ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
-
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            김ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaRegStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
-
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            윤ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaRegStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
-
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            장ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
+        <StyledUserContainer>
+          <StyledUserProfile />
+          <StyledUserDescription>
+            <StyledUserName>
+              김ㅇㅇ&nbsp;
+              <StyledActiveCircle>
+                <MdCircle />
+              </StyledActiveCircle>
+              <StyledStar>
+                <FaRegStar />
+              </StyledStar>
+            </StyledUserName>
+            <StyledChatButton>1:1 채팅하기</StyledChatButton>
+          </StyledUserDescription>
+        </StyledUserContainer>
+      </StyledUsersWrapper>
     </StyledPageContainer>
   );
 }
 
+export const StyledUsersWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+`;
+
 export const StyledPageContainer = styled.div`
-  width: 100%;
-  padding: 4rem 4rem;
+  display: flex;
+  flex-direction: column;
+  padding: 4rem 2rem;
 `;
 
 export const StyledMainTitle = styled.div`
   display: block;
   margin-bottom: 1rem;
-  width: 100%;
   padding: 8px 0 0 0;
   font-size: ${props => props.theme.fonts.subtitle4.fontSize};
   font-weight: ${props => props.theme.fonts.subtitle4.fontWeight};
@@ -145,7 +108,7 @@ export const StyledMainTitle = styled.div`
 
 export const StyledSearchBar = styled.input`
   margin: 1rem 0 1.5rem 0;
-  width: 60%;
+  width: 80%;
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 4px;
@@ -158,7 +121,6 @@ export const StyledSearchBar = styled.input`
 
 export const StyledSubTitle = styled.div`
   margin: 0.5rem 0 0.5rem 0rem;
-  width: 100%;
   padding: 1rem 0 0 0;
   font-size: ${props => props.theme.fonts.subtitle5.fontSize};
   font-weight: ${props => props.theme.fonts.subtitle5.fontWeight};
@@ -166,6 +128,7 @@ export const StyledSubTitle = styled.div`
 
 export const StyledLine = styled.div`
   border-bottom: 1px solid ${props => props.theme.colors.gray400};
+  width: 100%;
 `;
 
 // user container

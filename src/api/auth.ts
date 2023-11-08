@@ -50,3 +50,13 @@ export const authCheck = async () => {
     console.log(err);
   }
 };
+
+//마이페이지에서 이름, 사진 수정
+export const patchAuth = async (name?: string, picture?: string) => {
+  try {
+    await axios.patch(`${SERVER_URL}/user`, {name, picture}, {headers: authHeaders});
+    alert(`${name}님의 정보를 수정하였습니다.`);
+  } catch (err: any) {
+    console.log(err);
+  }
+};
