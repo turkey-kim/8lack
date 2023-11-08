@@ -1,26 +1,12 @@
 import styled from 'styled-components';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import Modal from 'react-modal';
 import {StyledMainTitle, StyledLine} from '../../pages/Users';
 import {AiOutlineClose} from 'react-icons/ai';
 import {authCheck, patchAuth} from '../../api/auth';
+import {USER_DEFAULT_IMG} from '../../constant';
 
 // 사진과 이름 수정 페이지
-
-interface UpdateUser {
-  name?: string; // 새로운 표시 이름
-  picture?: string; // 사용자 프로필 이미지(url or base64)
-}
-
-interface UpdateStateMessage {
-  message: string;
-}
-
-//  curl https://fastcampus-chat.net/user
-//   \ -X 'PATCH'
-//   \ -H 'Authorization: Bearer <accessToken>'
-
-//로직 : accessToken
 
 export interface AppModalProps {
   isOpen: boolean;
@@ -44,6 +30,8 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const [id, setId] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [picture, setPicture] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
 
   //정보 가져오기
   const getAuth = async () => {
@@ -51,7 +39,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
     setId(res.user.id);
     setName(res.user.name);
     setPicture(res.user.picture);
-    console.log(id, name, picture);
+    // console.log(id, name, picture);
   };
 
   const toggleEditing = () => {
@@ -62,12 +50,37 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const toggleUpdating = async () => {
     setEditing(prev => !prev);
     try {
-      const response = await patchAuth(name, picture);
-      console.log(response);
+      await patchAuth({name, picture});
     } catch (error) {
       console.error('업데이트 실패:', error);
     }
-    console.log(id, name, picture);
+    //console.log(id, name, picture);
+  };
+
+  const removePic = () => {
+    setPicture(USER_DEFAULT_IMG);
+    setImagePreviewUrl(USER_DEFAULT_IMG);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      const file = e.target.files[0];
+
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDivClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   return (
@@ -80,7 +93,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
               <AiOutlineClose onClick={onRequestClose} style={{cursor: 'pointer'}} />
             </StyledTitle>
             <StyledLine />
-            <StyledPicContainer>{/* 사진  */}</StyledPicContainer>
+            {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
             <StyledContainer>
               <StyledDiv>이름</StyledDiv>
               <StyledInput type="text" value={name ?? ''} onChange={e => setName(e.target.value)} />
@@ -88,8 +101,15 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
               <StyledNextDiv>{id}</StyledNextDiv>
               <StyledDiv>이미지</StyledDiv>
               <StyledNextDiv>
-                <StyledImgDiv>이미지 변경</StyledImgDiv>
-                <StyledImgDiv>이미지 삭제</StyledImgDiv>
+                <StyledImgDiv onClick={handleDivClick}>이미지 변경</StyledImgDiv>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageChange}
+                  style={{display: 'none'}}
+                  accept="image/*"
+                />
+                <StyledImgDiv onClick={removePic}>이미지 삭제</StyledImgDiv>
               </StyledNextDiv>
             </StyledContainer>
             <StyledLine />
@@ -107,9 +127,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
               <AiOutlineClose onClick={onRequestClose} style={{cursor: 'pointer'}} />
             </StyledTitle>
             <StyledLine />
-            <StyledPicContainer></StyledPicContainer>
-            {/* src=`${picture}` */}
-            {/* 초기값으로 사진 주기 */}
+            {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
             <StyledContainer>
               <StyledDiv>이름</StyledDiv>
               <StyledNextDiv>{name}</StyledNextDiv>
@@ -135,7 +153,7 @@ const StyledPageContainer = styled.div`
   padding: 1rem 1rem;
 `;
 
-const StyledPicContainer = styled.div`
+const StyledPicImg = styled.img`
   width: 18rem;
   height: 18rem;
   background-color: ${props => props.theme.colors.gray300};
