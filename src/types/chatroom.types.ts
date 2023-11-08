@@ -18,3 +18,5 @@ export interface Message {
   userId: string;
   createdAt: Date;
 }
+
+export type UserID = string;

@@ -1,14 +1,16 @@
 import React, {useState, useMemo} from 'react';
 import styled from 'styled-components';
+import Drawer from 'components/Drawer/Drawer';
 import MessageList from 'components/MessageList/MessageList';
-import UserList from 'components/UserList/UserList';
 import SendMessage from 'components/SendMessage/SendMessage';
 import {User, Message, ChatRoom} from 'types/chatroom.types';
+import {RxHamburgerMenu} from 'react-icons/rx';
 import {connectedUsersIds, postMessages, dummyChatRoom} from './Chat.data';
 
 const Chat = () => {
   const [chatRoom, setChatRoom] = useState<ChatRoom>(dummyChatRoom);
   const [messages, setMessages] = useState<Message[]>(postMessages);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // 채팅방 유저 객체
   const usersMap = useMemo(() => {
@@ -45,23 +47,43 @@ const Chat = () => {
     console.log(messageText);
   };
 
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
   return (
-    <StyledContainer>
-      <StyledHeader>
-        {renderAvatars()}
-        <StyledTitle>{chatRoom?.name}</StyledTitle>
-      </StyledHeader>
-      <UserList connectedUserIds={connectedUsersIds} usersMap={usersMap} />
-      <MessageList messages={messages} usersMap={usersMap} />
-      <SendMessage onSendMessage={handleSendMessage} />
-    </StyledContainer>
+    <>
+      <StyledContainer>
+        <StyledHeader>
+          <StyledInfo>
+            {renderAvatars()}
+            <StyledTitle>{chatRoom?.name}</StyledTitle>
+          </StyledInfo>
+          <StyleButton onClick={toggleDrawer}>
+            <RxHamburgerMenu />
+          </StyleButton>
+        </StyledHeader>
+        <MessageList messages={messages} usersMap={usersMap} />
+        <SendMessage onSendMessage={handleSendMessage} />
+      </StyledContainer>
+      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} connectedUserIds={connectedUsersIds} usersMap={usersMap} />
+    </>
   );
 };
 
 export default Chat;
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
   background-color: ${({theme}) => theme.colors.blue100};
+  width: 100%;
 `;
 
 const StyledHeader = styled.div`
@@ -69,7 +91,12 @@ const StyledHeader = styled.div`
   height: 66px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: ${({theme}) => theme.colors.white};
+`;
+
+const StyledInfo = styled.div`
+  display: flex;
 `;
 
 interface StyledChatImgProps {
@@ -108,4 +135,8 @@ const StyledMore = styled.div`
 const StyledTitle = styled.div`
   ${({theme}) => theme.fonts.subtitle4};
   margin-left: 1rem;
+`;
+
+const StyleButton = styled.button`
+  display: flex;
 `;

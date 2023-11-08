@@ -32,7 +32,7 @@ const StyledUser = styled.li<UserStateProps>`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  color: ${({$online}) => ($online ? 'green' : 'gray')};
+  color: ${({$online, theme}) => ($online ? theme.colors.success : theme.colors.gray500)};
 `;
 
 const StyledImage = styled.img`
@@ -46,7 +46,7 @@ const StatusIndicator = styled.span<UserStateProps>`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({$online}) => ($online ? 'green' : 'gray')};
+  background-color: ${({$online, theme}) => ($online ? theme.colors.success : theme.colors.gray500)};
   margin-left: 5px;
 `;
 
