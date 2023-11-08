@@ -1,26 +1,27 @@
 import './App.css';
+import styled from 'styled-components';
 import {theme} from './styles/Theme';
 import {ThemeProvider} from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
-import {Routes, Route} from 'react-router';
-import Users from './pages/Users';
+import {Outlet} from 'react-router-dom';
+import Navigation from './components/Navigation/Navigation';
+import SideBar from './components/SideBar/SideBar';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Users />
-            </>
-          }
-        ></Route>
-      </Routes>
+      <StyledContainer>
+        <Navigation />
+        <SideBar />
+        <Outlet />
+      </StyledContainer>
     </ThemeProvider>
   );
 }
+
+const StyledContainer = styled.div`
+  display: flex;
+`;
 
 export default App;
