@@ -10,10 +10,11 @@ import GlobalStyles from './styles/GlobalStyles';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import NotFound from './pages/NotFound';
 import Users from './pages/Users';
-import MyPage from './components/MyPage/MyPage';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
 const router = createBrowserRouter([
   {
     path: '/',
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
