@@ -4,12 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {RecoilRoot} from 'recoil';
+import {ThemeProvider} from 'styled-components';
+import {theme} from './styles/Theme';
+import GlobalStyles from './styles/GlobalStyles';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
-import NotFound from 'pages/NotFound';
-import Users from 'pages/Users';
-import MyPage from 'pages/MyPage';
+import NotFound from './pages/NotFound';
+import Users from './pages/Users';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import ChatAll from 'pages/ChatAll';
-import Chat from 'components/Chat/Chat';
+import ChatRoom from 'pages/ChatRoom';
 
 const router = createBrowserRouter([
   {
@@ -18,19 +22,23 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {index: true, path: '/', element: <ChatAll />},
-      {path: '/chat/:chatId', element: <Chat />},
+      {path: '/chat/all', element: <ChatRoom />},
       {path: '/users', element: <Users />},
-      {path: '/user', element: <MyPage />},
     ],
   },
+  {path: '/signin', element: <SignIn />},
+  {path: '/signup', element: <SignUp />},
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <RouterProvider router={router}></RouterProvider>
-    </RecoilRoot>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <RecoilRoot>
+        <RouterProvider router={router}></RouterProvider>
+      </RecoilRoot>
+    </ThemeProvider>
   </React.StrictMode>,
 );
 
