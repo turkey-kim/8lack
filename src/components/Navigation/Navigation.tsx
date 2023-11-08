@@ -2,8 +2,12 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import Logo from '../../assets/icons/Logo.png';
 import Chat from '../../assets/icons/Chat.svg';
+import MyPage from '../MyPage/MyPage';
+import {useState} from 'react';
 
 export default function Navigation() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <StyledNav>
       <Link to="/">
@@ -16,9 +20,14 @@ export default function Navigation() {
         <Link to="/users">
           <p>사용자</p>
         </Link>
-        <Link to="/user">
-          <p>내정보</p>
-        </Link>
+        <div
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          내정보
+        </div>
+        <MyPage isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
       </StyledIconContainer>
       <StyledLogout>로그아웃</StyledLogout>
     </StyledNav>
