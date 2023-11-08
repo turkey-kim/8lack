@@ -19,8 +19,8 @@ function App() {
             </>
           }
         ></Route>
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </ThemeProvider>
   );
