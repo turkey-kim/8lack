@@ -7,7 +7,7 @@ import {RecoilRoot} from 'recoil';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import NotFound from './pages/NotFound';
 import Users from './pages/Users';
-import MyPage from './pages/MyPage';
+import MyPage from './components/MyPage/MyPage';
 
 const router = createBrowserRouter([
   {

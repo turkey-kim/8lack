@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import Logo from '../../assets/icons/Logo.png';
 import Chat from '../../assets/icons/Chat.svg';
-import MyPage from '../../pages/MyPage';
+import MyPage from '../MyPage/MyPage';
 import {useState} from 'react';
 
 export default function Navigation() {

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {useState, useEffect} from 'react';
 import Modal from 'react-modal';
-import {StyledMainTitle, StyledLine} from './Users';
+import {StyledMainTitle, StyledLine} from '../../pages/Users';
 import {AiOutlineClose} from 'react-icons/ai';
 
 // 사진과 이름 수정 페이지
