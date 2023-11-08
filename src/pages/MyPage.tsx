@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {useState, useEffect} from 'react';
-import {PageContainer, MainTitle} from './Users';
+import {StyledPageContainer, StyledMainTitle} from './Users';
 
 // 사진과 이름 수정 페이지
 
@@ -21,8 +21,8 @@ interface UpdateStateMessage {
 
 export default function MyPage() {
   return (
-    <PageContainer>
-      <MainTitle>내 정보</MainTitle>
-    </PageContainer>
+    <StyledPageContainer>
+      <StyledMainTitle>내 정보</StyledMainTitle>
+    </StyledPageContainer>
   );
 }
