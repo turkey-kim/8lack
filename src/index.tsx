@@ -5,9 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {RecoilRoot} from 'recoil';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
-import NotFound from './pages/NotFound';
-import Users from './pages/Users';
-import MyPage from './pages/MyPage';
+import NotFound from 'pages/NotFound';
+import Users from 'pages/Users';
+import MyPage from 'pages/MyPage';
+import ChatAll from 'pages/ChatAll';
+import Chat from 'components/Chat/Chat';
 
 const router = createBrowserRouter([
   {
@@ -15,8 +17,8 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      {index: true, path: '/', element: <p>Home</p>},
-      {path: '/chat/all', element: <p>모든 그룹채팅방 보임</p>},
+      {index: true, path: '/', element: <ChatAll />},
+      {path: '/chat/:chatId', element: <Chat />},
       {path: '/users', element: <Users />},
       {path: '/user', element: <MyPage />},
     ],
