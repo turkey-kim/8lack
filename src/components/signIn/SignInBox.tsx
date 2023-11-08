@@ -2,32 +2,51 @@ import {useState} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {useNavigate} from 'react-router';
+import {postSignIn} from '../../api/auth';
 
 const SignInBox = () => {
   const navigate = useNavigate();
+  const [inputs, setInputs] = useState<any>({
+    id: '',
+    pw: '',
+  });
+  let {id, pw} = inputs;
 
   const goToSignUp = () => {
-    navigate('/signUp');
+    navigate('/signup');
+  };
+
+  const signIn = async () => {
+    const res = await postSignIn(id, pw);
+    const {accessToken, refreshToken} = res;
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    navigate('/');
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {value, name} = e.target;
+    setInputs({...inputs, [name]: value});
   };
 
   return (
-    <Container>
-      <NavField>
-        <SignInNav>로그인</SignInNav>
-        <SignUpNav onClick={goToSignUp}>회원가입</SignUpNav>
-      </NavField>
-      <FormField>
-        <Label>아이디</Label>
-        <Input></Input>
-        <Label>비밀번호</Label>
-        <Input></Input>
-        <Submit>로그인</Submit>
-      </FormField>
-    </Container>
+    <StyledContainer>
+      <StyledNavBar>
+        <StyledSignInNav>로그인</StyledSignInNav>
+        <StyledSignUpNav onClick={goToSignUp}>회원가입</StyledSignUpNav>
+      </StyledNavBar>
+      <StyledForm>
+        <StyledLabel>아이디</StyledLabel>
+        <StyledInput name="id" value={id} onChange={onChange}></StyledInput>
+        <StyledLabel>비밀번호</StyledLabel>
+        <StyledInput name="pw" type="password" value={pw} onChange={onChange}></StyledInput>
+        <StyledSubmit onClick={signIn}>로그인</StyledSubmit>
+      </StyledForm>
+    </StyledContainer>
   );
 };
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,23 +58,23 @@ const Container = styled.div`
   border-radius: 8px;
 `;
 
-const NavField = styled.div`
+const StyledNavBar = styled.div`
   display: flex;
   width: 100%;
 `;
 
-const SignInNav = styled.button`
+const StyledSignInNav = styled.button`
   width: 50%;
-  height: 60px;
+  height: 4rem;
   border: none;
   border-radius: 8px 8px 0 0;
   font-size: ${theme.fonts.body1.fontSize};
   font-weight: 800;
 `;
 
-const SignUpNav = styled.button`
+const StyledSignUpNav = styled.button`
   width: 50%;
-  height: 60px;
+  height: 4rem;
   border: none;
   border-radius: 8px 8px 0 0;
   background-color: ${theme.colors.blue200};
@@ -66,33 +85,34 @@ const SignUpNav = styled.button`
   }
 `;
 
-const FormField = styled.div`
+const StyledForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 80%;
-  margin-top: 50px;
+  margin-top: 2rem;
 `;
 
-const Label = styled.label`
+const StyledLabel = styled.label`
   align-self: flex-start;
   font-size: ${theme.fonts.body1.fontSize};
   font-weight: 700;
-  margin-bottom: 10px;
+  margin: 1.5rem 0rem 1rem 0rem;
 `;
 
-const Input = styled.input`
+const StyledInput = styled.input`
   width: 100%;
-  height: 40px;
+  height: 2.5rem;
+  padding: 1rem;
   border: 1px solid ${theme.colors.gray500};
   border-radius: 4px;
-  margin-bottom: 30px;
+  outline: none;
 `;
 
-const Submit = styled.button`
+const StyledSubmit = styled.button`
   width: 100%;
-  height: 60px;
-  margin: 20px;
+  height: 3.5rem;
+  margin: 4rem 0rem;
   border: none;
   border-radius: 8px;
   background-color: ${theme.colors.blue700};
