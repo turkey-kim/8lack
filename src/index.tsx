@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {index: true, path: '/', element: <ChatAll />},
-      {path: '/chat/all', element: <ChatRoom />},
+      {path: '/chat/:chatId', element: <ChatRoom />},
       {path: '/users', element: <Users />},
     ],
   },

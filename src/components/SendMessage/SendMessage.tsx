@@ -2,13 +2,23 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {BsFillSendFill} from 'react-icons/bs';
 import {ISendMessage} from './SendMessage.types';
+import {useChatSocket} from '../../hooks/useChatSocket';
 
-const SendMessage: React.FC<ISendMessage> = ({onSendMessage}) => {
+const SendMessage: React.FC<ISendMessage> = ({chatId}) => {
   const [message, setMessage] = useState('');
+  const socket = useChatSocket(chatId);
+
+  const handleSendMessage = (messageText: string) => {
+    if (socket) {
+      socket.emit('message-to-server', messageText);
+      console.log(messageText);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSendMessage(message);
+    console.log(message);
+    handleSendMessage(message);
     setMessage('');
   };
 

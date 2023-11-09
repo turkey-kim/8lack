@@ -1,30 +1,52 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {MessageListProps} from './Message.types';
+import {useChatSocket} from 'hooks/useChatSocket';
+import {Message} from 'types/chatroom.types';
+import {MessageListProps} from './MessageList.types';
 
-const MessageList: React.FC<MessageListProps> = ({messages, usersMap}) => {
+const MessageList: React.FC<MessageListProps> = ({chatId, usersMap}) => {
+  const [messages, setMessages] = useState<Message[]>([]); // 메시지 리스트 상태
+  const socket = useChatSocket(chatId);
+
+  useEffect(() => {
+    const handleMessageToClient = (message: Message) => {
+      setMessages(prevMessages => [...prevMessages, message]); // 기존 메시지 리스트에 새 메시지 추가
+    };
+
+    console.log(socket);
+
+    if (socket) {
+      socket.on('message-to-client', handleMessageToClient);
+
+      return () => {
+        socket.off('message-to-client', handleMessageToClient);
+      };
+    }
+  }, [socket]);
+
   return (
     <StyledList>
-      {messages.map(message => {
-        const user = usersMap[message.userId];
-        // TODO: 박나영 utils로 분리
-        const formattedDate = message.createdAt.toLocaleString('ko-KR', {
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true,
-        });
+      {usersMap &&
+        messages.map(message => {
+          const user = usersMap[message.userId];
+          // TODO: 박나영 utils로 분리
+          const formattedDate = message.createdAt.toLocaleString('ko-KR', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+          });
 
-        return (
-          <StyledItem key={message.id}>
-            <StyledAvatar src={user?.picture} alt={user?.name} />
-            <StyledInner>
-              <StyledBubble>{message.text}</StyledBubble>
-              <StyledDate>{formattedDate}</StyledDate>
-              <StyledSpacer />
-            </StyledInner>
-          </StyledItem>
-        );
-      })}
+          return (
+            <StyledItem key={message.id}>
+              <StyledAvatar src={user?.picture} alt={user?.name} />
+              <StyledInner>
+                <StyledBubble>{message.text}</StyledBubble>
+                <StyledDate>{formattedDate}</StyledDate>
+                <StyledSpacer />
+              </StyledInner>
+            </StyledItem>
+          );
+        })}
     </StyledList>
   );
 };

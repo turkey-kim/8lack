@@ -36,9 +36,9 @@ export const postSignUp = async (id: string, pw: string, name: string) => {
 
 // 인증 관련 코드
 
-const authHeaders = {
+export const authHeaders = {
   'content-type': 'application/json',
-  serverId: process.env.REACT_APP_SERVER_ID,
+  serverId: process.env.REACT_APP_SERVER_ID!,
   Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
 }; // 토큰이 필요한 api에는 해당 헤더를 사용하시면 됩니다!
 

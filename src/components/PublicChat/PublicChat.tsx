@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import ChatRoomForm from '../ChatRoomForm/ChatRoomForm';
 
 function PublicChat() {
   return (
     <ul>
-      <StyledChatBox>그룹채팅방</StyledChatBox>
-      <StyledChatBox>그룹채팅방</StyledChatBox>
-      <StyledChatBox>그룹채팅방</StyledChatBox>
+      <ChatRoomForm />
     </ul>
   );
 }

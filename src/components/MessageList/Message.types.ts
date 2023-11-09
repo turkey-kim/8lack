@@ -3,5 +3,5 @@ import {User} from 'types/chatroom.types';
 
 export interface MessageListProps {
   messages: Message[];
-  usersMap: Record<string, User>;
+  usersMap?: Record<string, User>;
 }

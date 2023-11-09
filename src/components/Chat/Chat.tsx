@@ -1,50 +1,46 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
+import io from 'socket.io-client';
+import {authHeaders} from 'api/auth';
 import styled from 'styled-components';
 import Drawer from 'components/Drawer/Drawer';
 import MessageList from 'components/MessageList/MessageList';
 import SendMessage from 'components/SendMessage/SendMessage';
-import {User, Message, ChatRoom} from 'types/chatroom.types';
+import {User, Message, ChatRoom, UserID} from 'types/chatroom.types';
 import {RxHamburgerMenu} from 'react-icons/rx';
-import {connectedUsersIds, postMessages, dummyChatRoom} from './Chat.data';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {chatRoomState} from 'states/chatRoomState';
 
-const Chat = () => {
-  const [chatRoom, setChatRoom] = useState<ChatRoom>(dummyChatRoom);
-  const [messages, setMessages] = useState<Message[]>(postMessages);
+const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const chatRoom = useRecoilValue(chatRoomState);
 
   // 채팅방 유저 객체
   const usersMap = useMemo(() => {
-    const map: Record<string, User> = {};
-    for (const user of chatRoom.users) {
-      map[user.id] = user;
-    }
-    return map;
+    return chatRoom?.users.reduce(
+      (map, user) => {
+        map[user.id] = user;
+        return map;
+      },
+      {} as Record<string, User>,
+    );
   }, [chatRoom]);
 
   const renderAvatars = () => {
-    const users = chatRoom.users;
-    if (chatRoom.isPrivate) {
-      // 비공개방: 개인 채팅방은 아바타 1개만 보여줌
-      const user = users[0];
-      return <StyledChatImg src={user.picture} alt={user.name} />;
-    } else {
-      const avatars = users
-        .slice(0, 2)
-        .map((user, index) => (
-          <StyledChatImg key={user.id} src={user.picture} alt={user.name} zIndex={1} marginLeft={index * -15} />
-        ));
-      return (
-        <>
-          {avatars}
-          {users.length > 2 && <StyledMore style={{marginLeft: -15 * avatars.length}}>+{users.length - 2}</StyledMore>}
-        </>
-      );
-    }
-  };
+    if (!chatRoom) return null;
 
-  const handleSendMessage = (messageText: string) => {
-    // socket.emit('message-to-server', { text: messageText, chatId: chatRoom?.id })
-    console.log(messageText);
+    const {users, isPrivate} = chatRoom;
+    return isPrivate ? (
+      // 비공개방: 개인 채팅방은 아바타 1개만 보여줌
+      <StyledChatImg src={users[0].picture} alt={users[0].name} />
+    ) : (
+      // 공개방: 여러 아바타 보여줌
+      <>
+        {users.slice(0, 2).map((user, index) => (
+          <StyledChatImg key={user.id} src={user.picture} alt={user.name} zIndex={1} marginLeft={index * -15} />
+        ))}
+        {users.length > 2 && <StyledMore style={{marginLeft: -15 * 2}}>+{users.length - 2}</StyledMore>}
+      </>
+    );
   };
 
   const toggleDrawer = () => {
@@ -67,10 +63,10 @@ const Chat = () => {
             <RxHamburgerMenu />
           </StyleButton>
         </StyledHeader>
-        <MessageList messages={messages} usersMap={usersMap} />
-        <SendMessage onSendMessage={handleSendMessage} />
+        <MessageList chatId={chatId} usersMap={usersMap} />
+        <SendMessage chatId={chatId} />
       </StyledContainer>
-      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} connectedUserIds={connectedUsersIds} usersMap={usersMap} />
+      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} chatId={chatId} usersMap={usersMap} />
     </>
   );
 };

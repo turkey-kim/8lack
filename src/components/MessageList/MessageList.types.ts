@@ -1,6 +1,6 @@
 import {User} from 'types/chatroom.types';
 
-export interface IUserList {
+export interface MessageListProps {
   chatId: string;
   usersMap?: Record<string, User>;
 }
