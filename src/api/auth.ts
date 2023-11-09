@@ -36,7 +36,7 @@ export const postSignUp = async (id: string, pw: string, name: string) => {
 
 // 인증 관련 코드
 
-const authHeaders = {
+export const authHeaders = {
   'content-type': 'application/json',
   serverId: process.env.REACT_APP_SERVER_ID,
   Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -47,22 +47,6 @@ export const authCheck = async () => {
     const res = await axios.get(`${SERVER_URL}/auth/me`, {headers: authHeaders});
     return res.data;
   } catch (err) {
-    console.log(err);
-  }
-};
-
-//마이페이지에서 이름, 사진 수정
-interface UpdateUser {
-  name?: string;
-  picture?: string; // 사용자 프로필 이미지(url or base64)
-}
-
-export const patchAuth = async (updateData: UpdateUser) => {
-  try {
-    const {name, picture} = updateData;
-    await axios.patch(`${SERVER_URL}/user`, updateData, {headers: authHeaders});
-    alert(`${name}님의 정보를 수정하였습니다.`);
-  } catch (err: any) {
     console.log(err);
   }
 };

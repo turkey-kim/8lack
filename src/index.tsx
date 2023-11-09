@@ -13,6 +13,8 @@ import Users from './pages/Users';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Modal from 'react-modal';
+import ChatAll from './pages/ChatAll';
+import ChatRoom from './pages/ChatRoom';
 
 Modal.setAppElement('#root');
 const router = createBrowserRouter([
@@ -21,8 +23,8 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      {index: true, path: '/', element: <p>Home</p>},
-      {path: '/chat/all', element: <p>모든 그룹채팅방 보임</p>},
+      {index: true, path: '/', element: <ChatAll />},
+      {path: '/chat/all', element: <ChatRoom />},
       {path: '/users', element: <Users />},
     ],
   },

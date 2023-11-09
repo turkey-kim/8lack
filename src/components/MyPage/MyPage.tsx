@@ -3,11 +3,11 @@ import {useState, useEffect, useRef} from 'react';
 import Modal from 'react-modal';
 import {StyledMainTitle, StyledLine} from '../../pages/Users';
 import {AiOutlineClose} from 'react-icons/ai';
-import {authCheck, patchAuth} from '../../api/auth';
+import {authCheck} from '../../api/auth';
+import {patchInfo} from '../../api/mypage';
 import {USER_DEFAULT_IMG} from '../../constant';
 
 // 사진과 이름 수정 페이지
-
 export interface AppModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -42,6 +42,10 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
     // console.log(id, name, picture);
   };
 
+  useEffect(() => {
+    getAuth();
+  }, []);
+
   const toggleEditing = () => {
     getAuth();
     setEditing(prev => !prev);
@@ -50,7 +54,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const toggleUpdating = async () => {
     setEditing(prev => !prev);
     try {
-      await patchAuth({name, picture});
+      await patchInfo({name, picture});
     } catch (error) {
       console.error('업데이트 실패:', error);
     }
