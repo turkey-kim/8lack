@@ -4,9 +4,14 @@ import {theme} from '../../styles/Theme';
 import {useNavigate} from 'react-router';
 import {postSignIn} from '../../api/auth';
 
+interface Inputs {
+  id: string;
+  pw: string;
+}
+
 const SignInBox = () => {
   const navigate = useNavigate();
-  const [inputs, setInputs] = useState<any>({
+  const [inputs, setInputs] = useState<Inputs>({
     id: '',
     pw: '',
   });
