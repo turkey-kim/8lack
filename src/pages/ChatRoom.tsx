@@ -13,6 +13,6 @@ function ChatRoom() {
 export default ChatRoom;
 
 const StyledContainer = styled.div`
-  position: fixed;
   overflow: hidden;
+  width: 100%;
 `;
