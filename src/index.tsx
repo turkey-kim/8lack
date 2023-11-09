@@ -14,6 +14,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import ChatAll from 'pages/ChatAll';
 import ChatRoom from 'pages/ChatRoom';
+import GroupChatList from './pages/GroupChatList';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,9 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      {index: true, path: '/', element: <ChatAll />},
+      {index: true, path: '/', element: <GroupChatList />},
       {path: '/chat/all', element: <ChatRoom />},
+      {path: '/chat/all', element: <p>모든 그룹채팅방 보임</p>},
       {path: '/users', element: <Users />},
     ],
   },
