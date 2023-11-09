@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {SERVER_URL, USER_DEFAULT_IMG} from '../constant';
 
-const headers = {
+export const headers = {
   'content-type': 'application/json',
   serverId: process.env.REACT_APP_SERVER_ID,
 };
@@ -45,7 +45,7 @@ export const checkIdDuplication = async (id: string) => {
 
 // 인증 관련 코드
 
-const authHeaders = {
+export const authHeaders = {
   'content-type': 'application/json',
   serverId: process.env.REACT_APP_SERVER_ID,
   Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
