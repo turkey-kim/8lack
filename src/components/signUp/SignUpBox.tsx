@@ -66,6 +66,7 @@ const SignUpBox = () => {
           placeholder="20자 이하의 이름을 입력해주세요"
           value={name}
           onChange={onChange}
+          autoComplete="off"
         ></StyledInput>
         <StyledLabel>아이디</StyledLabel>
         <StyledInput
@@ -73,6 +74,7 @@ const SignUpBox = () => {
           placeholder="영문으로 이루어진 아이디를 입력해주세요"
           value={id}
           onChange={onChange}
+          autoComplete="off"
         ></StyledInput>
         <StyledLabel>비밀번호</StyledLabel>
         <StyledPwInput
@@ -81,15 +83,17 @@ const SignUpBox = () => {
           value={pw}
           type="password"
           onChange={onChange}
+          autoComplete="off"
           isError={pwErrorMessage}
         ></StyledPwInput>
-        <StyledLabel style={{marginTop: '0.8rem'}}>비밀번호 확인</StyledLabel>
+        <StyledLabel>비밀번호 확인</StyledLabel>
         <StyledPwInput
           name="pw2"
           placeholder="5자리 이상의 비밀번호를 입력해주세요"
           value={pw2}
           type="password"
           onChange={onChange}
+          autoComplete="off"
           isError={pwErrorMessage}
         ></StyledPwInput>
         <StyledPwAlarm>{pwErrorMessage}</StyledPwAlarm>
@@ -106,7 +110,6 @@ const StyledContainer = styled.div`
   width: 70%;
   max-width: 500px;
   min-height: 500px;
-  background-color: ${theme.colors.blue100};
   box-shadow: ${theme.shadows.shadow3.shadow};
   border-radius: 8px;
 `;
@@ -121,12 +124,13 @@ const StyledSignInNav = styled.button`
   height: 4rem;
   border: none;
   border-radius: 8px 8px 0 0;
-  background-color: ${theme.colors.blue200};
+  background-color: ${theme.colors.gray100};
+  color: ${theme.colors.gray600};
   font-size: ${theme.fonts.body1.fontSize};
   font-weight: 800;
 
   &:hover {
-    background-color: ${theme.colors.blue300};
+    background-color: ${theme.colors.blue200};
   }
 `;
 
@@ -150,13 +154,12 @@ const StyledForm = styled.div`
 const StyledLabel = styled.label`
   align-self: flex-start;
   font-size: ${theme.fonts.body1.fontSize};
-  font-weight: 700;
-  margin: 1.5rem 0rem 1rem 0rem;
+  margin: 2rem 0rem 0.5rem 0rem;
 `;
 
 const StyledInput = styled.input`
   width: 100%;
-  height: 2.5rem;
+  height: 3rem;
   padding: 1rem;
   border: 1px solid ${theme.colors.gray500};
   border-radius: 4px;
@@ -165,7 +168,7 @@ const StyledInput = styled.input`
 
 const StyledPwInput = styled.input<Props>`
   width: 100%;
-  height: 2.5rem;
+  height: 3rem;
   padding: 1rem;
   border: 1px solid ${props => (props.isError ? theme.colors.error : theme.colors.gray500)};
   border-radius: 4px;
@@ -180,7 +183,7 @@ const StyledSubmit = styled.button`
   border-radius: 8px;
   background-color: ${theme.colors.blue700};
   color: ${theme.colors.white};
-  font-size: ${theme.fonts.subtitle5.fontSize};
+  font-size: ${theme.fonts.subtitle4.fontSize};
   font-weight: 800;
 
   &:hover {
