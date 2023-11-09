@@ -4,10 +4,9 @@ import Modal from 'react-modal';
 import {StyledMainTitle, StyledLine} from '../../pages/Users';
 import {AiOutlineClose} from 'react-icons/ai';
 import {authCheck} from '../../api/auth';
-import {patchInfo} from '../../api/mypage';
+import {patchInfo, uploadImage} from '../../api/mypage';
 import {USER_DEFAULT_IMG} from '../../constant';
 
-// 사진과 이름 수정 페이지
 export interface AppModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -29,17 +28,15 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const [editing, setEditing] = useState<boolean>(false);
   const [id, setId] = useState<string>('');
   const [name, setName] = useState<string>('');
-  const [picture, setPicture] = useState<string>('');
+  const [picture, setPicture] = useState<string>(USER_DEFAULT_IMG);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
 
-  //정보 가져오기
   const getAuth = async () => {
     const res = await authCheck();
     setId(res.user.id);
     setName(res.user.name);
     setPicture(res.user.picture);
-    // console.log(id, name, picture);
   };
 
   useEffect(() => {
@@ -52,32 +49,38 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   };
 
   const toggleUpdating = async () => {
-    setEditing(prev => !prev);
-    try {
-      await patchInfo({name, picture});
-    } catch (error) {
-      console.error('업데이트 실패:', error);
+    if (imagePreviewUrl || name) {
+      try {
+        await patchInfo({name, picture: imagePreviewUrl});
+        setPicture(imagePreviewUrl);
+        setEditing(false);
+      } catch (error) {
+        console.error('프로필 업데이트 실패', error);
+      }
     }
-    //console.log(id, name, picture);
   };
 
   const removePic = () => {
-    setPicture(USER_DEFAULT_IMG);
-    setImagePreviewUrl(USER_DEFAULT_IMG);
+    const confirm = window.confirm('이미지를 삭제 하시겠습니까?');
+    if (confirm) {
+      setPicture(USER_DEFAULT_IMG);
+      setImagePreviewUrl(USER_DEFAULT_IMG);
+    }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
       const file = e.target.files[0];
 
-      reader.onloadend = () => {
-        setImagePreviewUrl(reader.result as string);
-      };
-
-      reader.readAsDataURL(file);
+      try {
+        const imageData = await uploadImage(file);
+        const imageUrl = imageData.secure_url;
+        setImagePreviewUrl(imageUrl);
+      } catch (error) {
+        console.error('이미지 로드 실패', error);
+      }
     }
   };
 
@@ -100,7 +103,14 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
             {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
             <StyledContainer>
               <StyledDiv>이름</StyledDiv>
-              <StyledInput type="text" value={name ?? ''} onChange={e => setName(e.target.value)} />
+              <StyledInput
+                type="text"
+                value={name}
+                onChange={e => {
+                  e.preventDefault();
+                  setName(e.target.value);
+                }}
+              />
               <StyledDiv>아이디</StyledDiv>
               <StyledNextDiv>{id}</StyledNextDiv>
               <StyledDiv>이미지</StyledDiv>
@@ -131,7 +141,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
               <AiOutlineClose onClick={onRequestClose} style={{cursor: 'pointer'}} />
             </StyledTitle>
             <StyledLine />
-            {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
+            <StyledPicImg src={picture} />
             <StyledContainer>
               <StyledDiv>이름</StyledDiv>
               <StyledNextDiv>{name}</StyledNextDiv>
@@ -236,11 +246,11 @@ const StyledEditButton = styled.button`
   padding: 0.8rem;
   border: none;
   background-color: ${props => props.theme.colors.blue700};
-  color: ${props => props.theme.colors.blue100};
+  color: ${props => props.theme.colors.blue200};
   margin-right: 2rem;
 
   &:hover {
-    background-color: ${props => props.theme.colors.blue100};
+    background-color: ${props => props.theme.colors.blue200};
     color: ${props => props.theme.colors.blue700};
   }
 `;
