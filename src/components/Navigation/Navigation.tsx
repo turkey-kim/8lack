@@ -16,11 +16,8 @@ export default function Navigation() {
         <StyledLogo src={Logo} alt="Logo" />
       </Link>
       <StyledIconContainer>
-        <Link to="/chat/all">
-          <StyledCategoryContainer>
-            <PiChatCircleText className="chat" />
-            <StyledCategoryText>채팅</StyledCategoryText>
-          </StyledCategoryContainer>
+        <Link to="/">
+          <StyledChat src={Chat} alt="Chat" />
         </Link>
         <Link to="/users">
           <StyledCategoryContainer>
