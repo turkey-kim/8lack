@@ -94,6 +94,11 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
     }
   };
 
+  const handleClose = () => {
+    setEditing(false);
+    onRequestClose();
+  };
+
   return (
     <>
       {editing ? (
@@ -133,7 +138,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
             <StyledLine />
             <StyledButtonContainer>
               <StyledEditButton onClick={toggleUpdating}>수정 완료</StyledEditButton>
-              <StyledCancelButton onClick={onRequestClose}>수정 취소</StyledCancelButton>
+              <StyledCancelButton onClick={handleClose}>수정 취소</StyledCancelButton>
             </StyledButtonContainer>
           </StyledPageContainer>
         </Modal>
@@ -155,7 +160,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
             <StyledLine />
             <StyledButtonContainer>
               <StyledEditButton onClick={toggleEditing}>내 정보 수정</StyledEditButton>
-              <StyledCancelButton onClick={onRequestClose}>닫기</StyledCancelButton>
+              <StyledCancelButton onClick={handleClose}>닫기</StyledCancelButton>
             </StyledButtonContainer>
           </StyledPageContainer>
         </Modal>
