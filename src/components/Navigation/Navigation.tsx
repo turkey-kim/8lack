@@ -14,7 +14,7 @@ export default function Navigation() {
         <StyledLogo src={Logo} alt="Logo" />
       </Link>
       <StyledIconContainer>
-        <Link to="/chat/all">
+        <Link to="/">
           <StyledChat src={Chat} alt="Chat" />
         </Link>
         <Link to="/users">
