@@ -4,9 +4,18 @@ import Logo from '../../assets/icons/Logo.png';
 import Chat from '../../assets/icons/Chat.svg';
 import MyPage from '../MyPage/MyPage';
 import {useState} from 'react';
+import {loginState} from 'states/atom';
+import {useRecoilState} from 'recoil';
 
 export default function Navigation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+
+  const logOut = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    setIsLoggedIn(false);
+  };
 
   return (
     <StyledNav>
@@ -29,7 +38,7 @@ export default function Navigation() {
         </div>
         <MyPage isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
       </StyledIconContainer>
-      <StyledLogout>로그아웃</StyledLogout>
+      <StyledLogout onClick={logOut}>로그아웃</StyledLogout>
     </StyledNav>
   );
 }
