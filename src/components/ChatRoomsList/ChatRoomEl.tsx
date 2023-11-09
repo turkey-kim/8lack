@@ -3,7 +3,9 @@ import {FaAngleDown} from 'react-icons/fa';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 
-import {format} from 'timeago.js';
+import {format, register} from 'timeago.js'; //임포트하기 register 한국어 선택
+import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
+register('ko', koLocale);
 
 interface Message {
   id: string;
@@ -33,26 +35,11 @@ const ChatRoomEl = (props: Props) => {
 
   useEffect(() => {
     const calcTime = () => {
-      let time = format(props.data.updatedAt);
-      if (time === 'just now') {
-        setTime('방금 전');
+      let time = format(props.data.updatedAt, 'ko');
+      if (time === '방금') {
+        setTime(time + ' 전 마지막 채팅');
       } else {
-        let spl = time.split(' ');
-        let num = spl[0];
-        let measure = spl[1];
-        if (measure.includes('minute')) {
-          setTime(num + ' 분 전 마지막 채팅');
-        } else if (measure.includes('hour')) {
-          setTime(num + ' 시간 전 마지막 채팅');
-        } else if (measure.includes('day')) {
-          setTime(num + ' 일 전 마지막 채팅');
-        } else if (measure.includes('week')) {
-          setTime(num + ' 주 전 마지막 채팅');
-        } else if (measure.includes('month')) {
-          setTime(num + ' 달 전 마지막 채팅');
-        } else if (measure.includes('year')) {
-          setTime('오래 전');
-        }
+        setTime(time + ' 마지막 채팅');
       }
     };
 
