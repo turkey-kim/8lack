@@ -1,14 +1,12 @@
 import PrivateChat from './PrivateChat';
+import {dummyPrivateRooms} from './dummyPrivateRooms';
 
 export default function PrivateChats() {
   return (
     <div>
-      <PrivateChat />
-      <PrivateChat />
-      <PrivateChat />
-      <PrivateChat />
-      <PrivateChat />
-      <PrivateChat />
+      {dummyPrivateRooms.map(room => {
+        return <PrivateChat />;
+      })}
     </div>
   );
 }
