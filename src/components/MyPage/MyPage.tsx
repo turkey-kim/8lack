@@ -20,7 +20,7 @@ export const customStyles = {
     width: '50%',
     height: '55%',
     borderRadius: '8px',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
 };
 
@@ -110,6 +110,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
             </StyledTitle>
             <StyledLine />
             {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
+
             <StyledContainer>
               <StyledDiv>이름</StyledDiv>
               <StyledInput
@@ -133,6 +134,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
                   accept="image/*"
                 />
                 <StyledImgDiv onClick={removePic}>이미지 삭제</StyledImgDiv>
+                <StyledPicDescription>※ 이미지는 400*400으로 보여집니다.</StyledPicDescription>
               </StyledNextDiv>
             </StyledContainer>
             <StyledLine />
@@ -220,6 +222,12 @@ export const StyledImgDiv = styled.p`
     color: ${props => props.theme.colors.blue700};
     text-decoration: underline;
   }
+`;
+
+const StyledPicDescription = styled.p`
+  margin: 1.2rem 0 0;
+  font-size: ${props => props.theme.fonts.body2.fontSize};
+  color: ${props => props.theme.colors.gray600};
 `;
 
 const StyledContainer = styled.div`
