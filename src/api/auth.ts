@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {SERVER_URL, USER_DEFAULT_IMG} from '../constant';
 
-const headers = {
+export const headers = {
   'content-type': 'application/json',
   serverId: process.env.REACT_APP_SERVER_ID,
 };
@@ -34,9 +34,18 @@ export const postSignUp = async (id: string, pw: string, name: string) => {
   }
 };
 
+export const checkIdDuplication = async (id: string) => {
+  try {
+    const res = await axios.post(`${SERVER_URL}/check/id`, {id: id}, {headers: headers});
+    return res.data;
+  } catch {
+    return false;
+  }
+};
+
 // 인증 관련 코드
 
-const authHeaders = {
+export const authHeaders = {
   'content-type': 'application/json',
   serverId: process.env.REACT_APP_SERVER_ID,
   Authorization: 'Bearer ' + localStorage.getItem('accessToken'),

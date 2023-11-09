@@ -3,33 +3,41 @@ import SignUpBox from '../components/signUp/SignUpBox';
 
 const SignUp = () => {
   return (
-    <Container>
-      <TextSection>8lack</TextSection>
-      <SignInSection>
+    <StyledContainer>
+      <StyledTextSection>8lack</StyledTextSection>
+      <StyledSignInSection>
         <SignUpBox />
-      </SignInSection>
-    </Container>
+      </StyledSignInSection>
+    </StyledContainer>
   );
 };
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   display: flex;
 `;
 
-const TextSection = styled.div`
+const StyledTextSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 50%;
   height: 100vh;
+
+  @media screen and (max-width: 990px) {
+    display: none;
+  }
 `;
 
-const SignInSection = styled.div`
+const StyledSignInSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 50%;
   height: 100vh;
+
+  @media screen and (max-width: 990px) {
+    width: 100%;
+  }
 `;
 
 export default SignUp;
