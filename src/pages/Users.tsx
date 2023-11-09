@@ -12,75 +12,75 @@ export default function Users() {
 
       <StyledLine />
       <StyledSubTitle>즐겨찾기</StyledSubTitle>
-      <StyledUsersWrapper>
-        <StyledUserContainer>
-          <StyledUserProfile />
-          <StyledUserDescription>
-            <StyledUserName>
-              김ㅇㅇ&nbsp;
-              <StyledActiveCircle>
-                <MdCircle />
-              </StyledActiveCircle>
-              <StyledStar>
-                <FaStar />
-              </StyledStar>
-            </StyledUserName>
-            <StyledChatButton>1:1 채팅하기</StyledChatButton>
-          </StyledUserDescription>
-        </StyledUserContainer>
+      {/* <StyledUsersWrapper> */}
+      <StyledUserContainer>
+        <StyledUserProfile />
+        <StyledUserDescription>
+          <StyledUserName>
+            김ㅇㅇ&nbsp;
+            <StyledActiveCircle>
+              <MdCircle />
+            </StyledActiveCircle>
+            <StyledStar>
+              <FaStar />
+            </StyledStar>
+          </StyledUserName>
+          <StyledChatButton>1:1 채팅하기</StyledChatButton>
+        </StyledUserDescription>
+      </StyledUserContainer>
 
-        <StyledUserContainer>
-          <StyledUserProfile />
-          <StyledUserDescription>
-            <StyledUserName>
-              김ㅇㅇ&nbsp;
-              <StyledActiveCircle>
-                <MdCircle />
-              </StyledActiveCircle>
-              <StyledStar>
-                <FaStar />
-              </StyledStar>
-            </StyledUserName>
-            <StyledChatButton>1:1 채팅하기</StyledChatButton>
-          </StyledUserDescription>
-        </StyledUserContainer>
-      </StyledUsersWrapper>
+      <StyledUserContainer>
+        <StyledUserProfile />
+        <StyledUserDescription>
+          <StyledUserName>
+            김ㅇㅇ&nbsp;
+            <StyledActiveCircle>
+              <MdCircle />
+            </StyledActiveCircle>
+            <StyledStar>
+              <FaStar />
+            </StyledStar>
+          </StyledUserName>
+          <StyledChatButton>1:1 채팅하기</StyledChatButton>
+        </StyledUserDescription>
+      </StyledUserContainer>
+      {/* </StyledUsersWrapper> */}
 
       <StyledLine />
       <StyledSubTitle>유저목록</StyledSubTitle>
-      <StyledUsersWrapper>
-        <StyledUserContainer>
-          <StyledUserProfile />
-          <StyledUserDescription>
-            <StyledUserName>
-              김ㅇㅇ&nbsp;
-              <StyledActiveCircle>
-                <MdCircle />
-              </StyledActiveCircle>
-              <StyledStar>
-                <FaStar />
-              </StyledStar>
-            </StyledUserName>
-            <StyledChatButton>1:1 채팅하기</StyledChatButton>
-          </StyledUserDescription>
-        </StyledUserContainer>
+      {/* <StyledUsersWrapper> */}
+      <StyledUserContainer>
+        <StyledUserProfile />
+        <StyledUserDescription>
+          <StyledUserName>
+            김ㅇㅇ&nbsp;
+            <StyledActiveCircle>
+              <MdCircle />
+            </StyledActiveCircle>
+            <StyledStar>
+              <FaStar />
+            </StyledStar>
+          </StyledUserName>
+          <StyledChatButton>1:1 채팅하기</StyledChatButton>
+        </StyledUserDescription>
+      </StyledUserContainer>
 
-        <StyledUserContainer>
-          <StyledUserProfile />
-          <StyledUserDescription>
-            <StyledUserName>
-              김ㅇㅇ&nbsp;
-              <StyledActiveCircle>
-                <MdCircle />
-              </StyledActiveCircle>
-              <StyledStar>
-                <FaRegStar />
-              </StyledStar>
-            </StyledUserName>
-            <StyledChatButton>1:1 채팅하기</StyledChatButton>
-          </StyledUserDescription>
-        </StyledUserContainer>
-      </StyledUsersWrapper>
+      <StyledUserContainer>
+        <StyledUserProfile />
+        <StyledUserDescription>
+          <StyledUserName>
+            김ㅇㅇ&nbsp;
+            <StyledActiveCircle>
+              <MdCircle />
+            </StyledActiveCircle>
+            <StyledStar>
+              <FaRegStar />
+            </StyledStar>
+          </StyledUserName>
+          <StyledChatButton>1:1 채팅하기</StyledChatButton>
+        </StyledUserDescription>
+      </StyledUserContainer>
+      {/* </StyledUsersWrapper> */}
     </StyledPageContainer>
   );
 }
@@ -93,8 +93,8 @@ export const StyledUsersWrapper = styled.div`
 `;
 
 export const StyledPageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   padding: 4rem 2rem;
 `;
 

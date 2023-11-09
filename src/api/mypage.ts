@@ -2,7 +2,7 @@ import axios from 'axios';
 import {SERVER_URL} from '../constant';
 import {authHeaders} from './auth';
 
-interface UpdateUser {
+export interface UpdateUser {
   name?: string;
   picture?: string;
 }

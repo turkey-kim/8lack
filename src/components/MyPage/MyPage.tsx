@@ -49,14 +49,18 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   };
 
   const toggleUpdating = async () => {
-    if (imagePreviewUrl || name) {
-      try {
-        await patchInfo({name, picture: imagePreviewUrl});
-        setPicture(imagePreviewUrl);
-        setEditing(false);
-      } catch (error) {
-        console.error('프로필 업데이트 실패', error);
+    try {
+      const updateData = {name, picture};
+      if (imagePreviewUrl) {
+        updateData.picture = imagePreviewUrl;
       }
+      await patchInfo(updateData);
+      if (imagePreviewUrl) {
+        setPicture(imagePreviewUrl);
+      }
+      setEditing(false);
+    } catch (error) {
+      console.error('업데이트 실패', error);
     }
   };
 
