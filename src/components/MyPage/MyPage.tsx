@@ -106,7 +106,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
           <StyledPageContainer>
             <StyledTitle>
               <StyledMainTitle>내 정보 수정</StyledMainTitle>
-              <AiOutlineClose onClick={onRequestClose} style={{cursor: 'pointer'}} />
+              <AiOutlineClose onClick={handleClose} style={{cursor: 'pointer'}} />
             </StyledTitle>
             <StyledLine />
             {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
@@ -147,7 +147,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
           <StyledPageContainer>
             <StyledTitle>
               <StyledMainTitle>내 정보</StyledMainTitle>
-              <AiOutlineClose onClick={onRequestClose} style={{cursor: 'pointer'}} />
+              <AiOutlineClose onClick={handleClose} style={{cursor: 'pointer'}} />
             </StyledTitle>
             <StyledLine />
             <StyledPicImg src={picture} />
