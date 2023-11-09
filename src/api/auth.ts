@@ -34,6 +34,15 @@ export const postSignUp = async (id: string, pw: string, name: string) => {
   }
 };
 
+export const checkIdDuplication = async (id: string) => {
+  try {
+    const res = await axios.post(`${SERVER_URL}/check/id`, {id: id}, {headers: headers});
+    return res.data;
+  } catch {
+    return false;
+  }
+};
+
 // 인증 관련 코드
 
 const authHeaders = {
