@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import Logo from '../../assets/icons/Logo.png';
-import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
-import {USER_DEFAULT_IMG} from '../../constant';
 import MyPage from '../MyPage/MyPage';
 import {useState} from 'react';
+import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
+import {USER_DEFAULT_IMG} from '../../constant';
 import {theme} from '../../styles/Theme';
 
 export default function Navigation() {
@@ -17,7 +17,10 @@ export default function Navigation() {
       </Link>
       <StyledIconContainer>
         <Link to="/">
-          <StyledChat src={Chat} alt="Chat" />
+          <StyledCategoryContainer>
+            <PiChatCircleText className="chat" />
+            <StyledCategoryText>채팅</StyledCategoryText>
+          </StyledCategoryContainer>
         </Link>
         <Link to="/users">
           <StyledCategoryContainer>
