@@ -13,6 +13,6 @@ export const loginState = atom({
 });
 
 export const userInformation = atom({
-  key: 'userInfo',
+  key: 'userInformation',
   default: {},
 });
