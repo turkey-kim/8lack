@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {theme} from '../../styles/Theme';
+import {theme} from '../../../styles/Theme';
 import {useNavigate} from 'react-router';
-import {postSignUp, checkIdDuplication} from '../../api/auth';
+import {postSignUp, checkIdDuplication} from '../../../api/auth';
 
 interface Props {
   isError?: string;
