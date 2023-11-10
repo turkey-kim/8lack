@@ -60,6 +60,7 @@ const GenerateChat = (props: ModalProps) => {
               <UserCells
                 height="216px"
                 marginTop="8px"
+                typed=""
                 allocatedData={userData[0]}
                 subData={userData[1]}
                 onToggleUser={setUserData}
@@ -69,8 +70,9 @@ const GenerateChat = (props: ModalProps) => {
           <StyledUnit>
             <StyledLabel>선택된 사용자</StyledLabel>
             <UserCells
+              typed="checked"
               allocatedData={userData[1]}
-              subData={userData[1]}
+              subData={userData[0]}
               onToggleUser={setUserData}
               height="350px"
             ></UserCells>
@@ -78,7 +80,7 @@ const GenerateChat = (props: ModalProps) => {
         </StyledMain>
         <StyledBottom>
           <StyledButton>그룹 채팅 만들기</StyledButton>
-          <StyledCancelButton>취소하기</StyledCancelButton>
+          <StyledCancelButton onClick={modalCloseHandler}>취소하기</StyledCancelButton>
         </StyledBottom>
       </StyledModalContainer>
     </Bundler>
