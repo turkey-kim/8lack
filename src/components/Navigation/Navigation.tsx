@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import Logo from '../../assets/icons/Logo.png';
-import Chat from '../../assets/icons/Chat.svg';
 import MyPage from '../MyPage/MyPage';
 import {useState} from 'react';
 import {loginState} from 'states/atom';
@@ -9,10 +8,14 @@ import {useRecoilState} from 'recoil';
 import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
 import {USER_DEFAULT_IMG} from '../../constant';
 import {theme} from '../../styles/Theme';
+import {useLocation} from 'react-router-dom';
 
 export default function Navigation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+
+  const location = useLocation();
+  const pathName = location.pathname;
 
   const logOut = () => {
     localStorage.removeItem('accessToken');
@@ -28,14 +31,16 @@ export default function Navigation() {
       <StyledIconContainer>
         <Link to="/">
           <StyledCategoryContainer>
-            <PiChatCircleText className="chat" />
-            <StyledCategoryText>채팅</StyledCategoryText>
+            <PiChatCircleText className={`chat ${pathName === '/' ? 'selected_category' : ''}`} />
+            <StyledCategoryText className={pathName === '/' ? 'selected_category' : ''}>채팅</StyledCategoryText>
           </StyledCategoryContainer>
         </Link>
         <Link to="/users">
           <StyledCategoryContainer>
-            <PiUsers className="users" />
-            <StyledCategoryText>유저 목록</StyledCategoryText>
+            <PiUsers className={`users ${pathName === '/users' ? 'selected_category' : ''}`} />
+            <StyledCategoryText className={pathName === '/users' ? 'selected_category' : ''}>
+              유저 목록
+            </StyledCategoryText>
           </StyledCategoryContainer>
         </Link>
         <StyledCategoryContainer
@@ -48,7 +53,7 @@ export default function Navigation() {
         </StyledCategoryContainer>
         <MyPage isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
       </StyledIconContainer>
-      <StyledCategoryContainer>
+      <StyledCategoryContainer onClick={logOut}>
         <PiSignOutFill className="logout" />
         <StyledCategoryText>로그아웃</StyledCategoryText>
       </StyledCategoryContainer>
@@ -86,13 +91,23 @@ const StyledCategoryContainer = styled.div`
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
+  color: ${theme.colors.blue500};
+  transition: all 0.3s ease-in-out;
 
   .chat,
   .users,
   .logout {
     width: 2.5rem;
     height: 2.5rem;
-    color: ${theme.colors.blue500};
+  }
+
+  .selected_category {
+    color: ${theme.colors.blue700};
+    font-weight: bold;
+  }
+
+  &:hover {
+    background-color: ${theme.colors.blue100};
   }
 `;
 
