@@ -60,6 +60,7 @@ const GenerateChat = (props: ModalProps) => {
     }
     const temp = userData[1].slice().map(val => val.name); // 이름만 있는 배열로 바꾸기
     makeChatRoom(chatName, temp, false); // 생성
+    alert(`${chatName} 방이 생성되었습니다.`);
     modalCloseHandler(); // 모달 닫기
   };
 
