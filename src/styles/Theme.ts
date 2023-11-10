@@ -13,9 +13,9 @@ export const theme = {
     blue200: '#E5F0FF',
     blue100: '#F4F9FF',
 
-    pink800: 'EB4F27',
-    pink700: 'ED774D',
-    pink600: 'F1A187',
+    pink800: '#EB4F27',
+    pink700: '#ED774D',
+    pink600: '#F1A187',
 
     gray900: '#000000',
     gray800: '#414447',
@@ -29,7 +29,7 @@ export const theme = {
 
     white: '#FFFFFF',
     error: '#EE5151',
-    success: '#2BDA90',
+    success: '#0CBC72',
   },
   fonts: {
     subtitle1: {
@@ -52,8 +52,13 @@ export const theme = {
       fontWeight: '700',
       lineHeight: '1.5',
     },
+    subtitle4_5: {
+      fontSize: '1.25rem',
+      fontWeight: '700',
+      lineHeight: '1.5',
+    },
     subtitle5: {
-      fontSize: '16px',
+      fontSize: '1rem',
       fontWeight: '700',
       lineHeight: '1.5',
     },

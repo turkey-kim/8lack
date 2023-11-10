@@ -1,11 +1,24 @@
 import styled from 'styled-components';
-import Logo from '../../assets/icons/Logo.png';
+import {theme} from '../../styles/Theme';
+import {USER_DEFAULT_IMG} from '../../constant';
+import {dummyPrivateRooms} from './dummyPrivateRooms';
+
+interface Message {
+  id: string;
+  text: string;
+  userId: string;
+  createdAt: Date;
+}
 
 export default function PrivateChat() {
+  const lastMessage = dummyPrivateRooms.map(dummyPrivateRoom => dummyPrivateRoom.latestMessage.createdAt);
+  console.log(lastMessage);
+  // const {createdAt}: Message = lastMessage;
+  // console.log(createdAt);
   return (
     <StyledContainer>
       <StyledSubContainer>
-        <StyledImg src={Logo} alt="사용자 프로필 이미지" />
+        <StyledImg src={USER_DEFAULT_IMG} alt="사용자 프로필 이미지" />
         <StyledTextContainer>
           <StyledTitle>나와의 채팅</StyledTitle>
           <StyledText>마지막으로 적은 텍스트...</StyledText>
@@ -19,8 +32,14 @@ export default function PrivateChat() {
 const StyledContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  width: 29rem;
+  width: 100%;
   padding: 1rem 0;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  &:hover {
+    background-color: ${theme.colors.blue100};
+  }
 `;
 
 const StyledSubContainer = styled.div`
