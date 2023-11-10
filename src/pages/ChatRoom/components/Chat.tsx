@@ -10,7 +10,7 @@ import {handleChatParticipate, handleChatLeave} from 'api/chat';
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // FIXME: 채팅 참여하기 임시 코드
+  // FIXME: 채팅 참여하기 임시 코드(채팅방 직접 생성하실 때는 주석처리 해주세요!)
   useEffect(() => {
     handleChatParticipate(chatId);
   }, [chatId]);

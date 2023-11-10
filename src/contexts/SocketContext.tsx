@@ -25,7 +25,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, options,
   const [users, setUsers] = useState<UserID>({users: []});
 
   useEffect(() => {
-    const newSocket = io(url, {...options, extraHeaders: authHeaders});
+    const newSocket = io(url, {...options, extraHeaders: authHeaders()});
 
     newSocket.on('connect', () => {
       console.log('Socket connected:', newSocket.id);

@@ -7,6 +7,7 @@ import {formatMessageDate} from 'utils/formatDate';
 const MessageList: React.FC = () => {
   const {socket, prevMessages, messages} = useSocketContext();
   const [loadPrevMessages, setLoadPrevMessages] = useState(false);
+  const uid = localStorage.getItem('8lack_uid');
 
   useEffect(() => {
     if (socket && loadPrevMessages) {
@@ -15,17 +16,18 @@ const MessageList: React.FC = () => {
   }, [socket, loadPrevMessages]);
 
   const renderMessage = (message: Message) => {
+    const isCurrentUser = message.userId === uid;
     if (message.userId === 'system') {
       return <StyledSystemMessage key={message.id}>{message.text}</StyledSystemMessage>;
     }
 
     return (
-      <StyledItem key={message.id}>
-        {message.userId}
-        <StyledInner>
+      <StyledItem key={message.id} $currentUser={isCurrentUser}>
+        <StyledInner $currentUser={isCurrentUser}>
+          {!isCurrentUser && <StyledUser>{message.userId}</StyledUser>}
           <StyledBubble>{message.text}</StyledBubble>
           <StyledDate>{formatMessageDate(message.createdAt)}</StyledDate>
-          <StyledSpacer />
+          <StyledSpacer $currentUser={isCurrentUser} />
         </StyledInner>
       </StyledItem>
     );
@@ -52,17 +54,19 @@ const StyledList = styled.div`
   overflow-y: auto;
   overscroll-behavior: contain;
 `;
-const StyledItem = styled.div`
+const StyledItem = styled.div<{$currentUser: boolean}>`
   display: flex;
   padding: 10px 0px;
   width: 100%;
+  justify-content: ${({$currentUser}) => ($currentUser ? 'flex-end' : 'flex-start')};
 `;
-const StyledInner = styled.div`
-  flex: 1;
+
+const StyledInner = styled.div<{$currentUser: boolean}>`
   display: flex;
   align-items: flex-end;
-  margin-left: 0.8rem;
+  ${({$currentUser}) => ($currentUser ? 'flex-direction: row-reverse;' : '')}
 `;
+
 const StyledButton = styled.button`
   background-color: ${({theme}) => theme.colors.blue700};
   color: white;
@@ -97,8 +101,21 @@ const StyledBubble = styled.span`
   overflow-wrap: break-word;
 `;
 const StyledDate = styled.span`
-  margin-left: 0.4rem;
+  margin: 0.4rem;
+  display: flex;
+  align-items: flex-end;
+  font-size: 0.78rem;
+  color: ${({theme}) => theme.colors.gray700};
 `;
-const StyledSpacer = styled.div`
+const StyledUser = styled.span`
+  font-size: 0.88rem;
+  margin: 0 10px;
+  color: ${({theme}) => theme.colors.gray700};
+  display: flex;
+  height: 100%;
   flex: 1;
+  align-items: stretch;
+`;
+const StyledSpacer = styled.div<{$currentUser: boolean}>`
+  flex: ${({$currentUser}) => ($currentUser ? '1' : '0')};
 `;

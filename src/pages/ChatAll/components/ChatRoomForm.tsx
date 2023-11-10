@@ -6,7 +6,7 @@ import {ChatRoomCreateRequest, ChatRoomResponse} from './ChatRoomForm.types';
 const ChatRoomForm: React.FC = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
-  const [userIds, setUserIds] = useState(''); // 문자열 상태로 관리
+  const [userIds, setUserIds] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
 
   // FIXME: 채팅방 생성 임시 코드
