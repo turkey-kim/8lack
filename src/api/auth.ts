@@ -6,6 +6,15 @@ export const headers = {
   serverId: process.env.REACT_APP_SERVER_ID,
 };
 
+export const authHeaders = () => {
+  const accessToken = localStorage.getItem('accessToken');
+  return {
+    'content-type': 'application/json',
+    serverId: process.env.REACT_APP_SERVER_ID,
+    Authorization: `Bearer ${accessToken}`,
+  };
+}; // 토큰이 필요한 api에는 해당 헤더를 사용하시면 됩니다!
+
 export const postSignIn = async (id: string, pw: string) => {
   try {
     const response = await axios.post(
@@ -44,18 +53,13 @@ export const checkIdDuplication = async (id: string) => {
 };
 
 // 인증 관련 코드
-
-export const authHeaders = {
-  'content-type': 'application/json',
-  serverId: process.env.REACT_APP_SERVER_ID,
-  Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-}; // 토큰이 필요한 api에는 해당 헤더를 사용하시면 됩니다!
-
 export const authCheck = async () => {
   try {
-    const res = await axios.get(`${SERVER_URL}/auth/me`, {headers: authHeaders});
+    const res = await axios.get(`${SERVER_URL}/auth/me`, {
+      headers: authHeaders(),
+    });
     return res.data;
   } catch (err) {
-    console.log(err);
+    return false;
   }
 };

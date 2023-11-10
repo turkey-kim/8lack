@@ -3,12 +3,18 @@ import {Link} from 'react-router-dom';
 import Logo from '../../assets/icons/Logo.png';
 import MyPage from '../MyPage/MyPage';
 import {useState} from 'react';
-import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
-import {USER_DEFAULT_IMG} from '../../constant';
-import {theme} from '../../styles/Theme';
+import {loginState} from 'states/atom';
+import {useRecoilState} from 'recoil';
 
 export default function Navigation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+
+  const logOut = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    setIsLoggedIn(false);
+  };
 
   return (
     <StyledNav>
@@ -38,10 +44,7 @@ export default function Navigation() {
         </StyledCategoryContainer>
         <MyPage isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
       </StyledIconContainer>
-      <StyledCategoryContainer>
-        <PiSignOutFill className="logout" />
-        <StyledCategoryText>로그아웃</StyledCategoryText>
-      </StyledCategoryContainer>
+      <StyledLogout onClick={logOut}>로그아웃</StyledLogout>
     </StyledNav>
   );
 }

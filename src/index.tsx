@@ -12,10 +12,12 @@ import NotFound from './pages/NotFound';
 import Users from './pages/Users';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-// import ChatAll from 'pages/ChatAll';
 import ChatRoom from 'pages/ChatRoom';
 import GroupChatList from './pages/GroupChatList';
+import Modal from 'react-modal';
+import ChatAll from './pages/ChatAll';
 
+Modal.setAppElement('#root');
 const router = createBrowserRouter([
   {
     path: '/',
@@ -33,6 +35,7 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
