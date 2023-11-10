@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import Logo from '../../assets/icons/Logo.png';
+import Chat from '../../assets/icons/Chat.svg';
 import MyPage from '../MyPage/MyPage';
 import {useState} from 'react';
 import {loginState} from 'states/atom';
 import {useRecoilState} from 'recoil';
+import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
+import {USER_DEFAULT_IMG} from '../../constant';
+import {theme} from '../../styles/Theme';
 
 export default function Navigation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,7 +48,10 @@ export default function Navigation() {
         </StyledCategoryContainer>
         <MyPage isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
       </StyledIconContainer>
-      <StyledLogout onClick={logOut}>로그아웃</StyledLogout>
+      <StyledCategoryContainer>
+        <PiSignOutFill className="logout" />
+        <StyledCategoryText>로그아웃</StyledCategoryText>
+      </StyledCategoryContainer>
     </StyledNav>
   );
 }
