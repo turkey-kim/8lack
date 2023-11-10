@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import UserList from 'components/UserList/UserList';
+import UserList from '../UserList/UserList';
 import styled from 'styled-components';
 import {IDrawer} from './Drawer.types';
 

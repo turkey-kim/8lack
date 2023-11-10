@@ -1,9 +1,9 @@
 import React, {useState, useMemo} from 'react';
 import styled from 'styled-components';
-import Drawer from 'components/Drawer/Drawer';
-import MessageList from 'components/MessageList/MessageList';
-import SendMessage from 'components/SendMessage/SendMessage';
-import {User, Message, ChatRoom} from 'types/chatroom.types';
+import Drawer from '../Drawer/Drawer';
+import MessageList from '../MessageList/MessageList';
+import SendMessage from '../SendMessage/SendMessage';
+import {User, Message, ChatRoom} from '../../types/chatroom.types';
 import {RxHamburgerMenu} from 'react-icons/rx';
 import {connectedUsersIds, postMessages, dummyChatRoom} from './Chat.data';
 
