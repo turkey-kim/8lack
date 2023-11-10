@@ -1,7 +1,27 @@
+import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
-import {USER_DEFAULT_IMG} from '../../constant';
-import {dummyPrivateRooms} from './dummyPrivateRooms';
+import {authCheck} from '../../api/auth';
+import {format, register} from 'timeago.js';
+import koLocale from 'timeago.js/lib/lang/ko';
+import {myChatRoom} from 'api/myChatRoom';
+
+register('ko', koLocale);
+
+export interface Chat {
+  id: string;
+  name: string;
+  users: User[]; // 속한 유저 id
+  isPrivate: boolean;
+  latestMessage: Message | null;
+  updatedAt: Date;
+}
+
+interface User {
+  id: string;
+  name: string;
+  picture: string;
+}
 
 interface Message {
   id: string;
@@ -10,26 +30,32 @@ interface Message {
   createdAt: Date;
 }
 
-export default function PrivateChat() {
-  const lastMessage = dummyPrivateRooms.map(dummyPrivateRoom => dummyPrivateRoom.latestMessage.createdAt);
-  console.log(lastMessage);
-  // const {createdAt}: Message = lastMessage;
-  // console.log(createdAt);
+interface Props {
+  key: string;
+  data: Chat;
+}
+
+export default function PrivateChat(props: Props) {
+  const {id, name, updatedAt, latestMessage, users} = props.data;
+
   return (
     <StyledContainer>
       <StyledSubContainer>
-        <StyledImg src={USER_DEFAULT_IMG} alt="사용자 프로필 이미지" />
+        <StyledImg src={users[1].picture} alt="사용자 프로필 이미지" />
         <StyledTextContainer>
-          <StyledTitle>나와의 채팅</StyledTitle>
-          <StyledText>마지막으로 적은 텍스트...</StyledText>
+          <StyledTitle>{users[1].name}</StyledTitle>
+          <StyledText>{latestMessage?.text}</StyledText>
         </StyledTextContainer>
       </StyledSubContainer>
-      <StyledDate>지금</StyledDate>
+      <StyledDiv>
+        <StyledDate>{format(updatedAt, 'ko')}</StyledDate>
+        {latestMessage === null ? '' : <StyledLatestMessage />}
+      </StyledDiv>
     </StyledContainer>
   );
 }
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.li`
   display: flex;
   justify-content: space-around;
   width: 100%;
@@ -67,8 +93,23 @@ const StyledText = styled.p`
   font-size: ${props => props.theme.fonts.body2.fontSize};
 `;
 
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
 const StyledDate = styled.p`
   margin-top: 0.5rem;
   font-size: ${props => props.theme.fonts.body2.fontSize};
   color: ${props => props.theme.colors.gray600};
+`;
+
+const StyledLatestMessage = styled.div`
+  margin-bottom: 0.625rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background-color: ${theme.colors.pink800};
 `;
