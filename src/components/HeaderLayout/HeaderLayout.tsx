@@ -2,18 +2,27 @@ import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import TabButtons from './TabButton/TabButtons';
 import SearchBar from './SearchBar';
+import {useState} from 'react';
+import GenerateChat from 'components/GenerateChat/GenerateChat';
 
 const MARGIN = '80px';
 
 const HeaderLayout = () => {
+  const [isOpened, setGenOpened] = useState<boolean>(false);
+
+  const modalOpenHander = () => {
+    setGenOpened(true);
+  };
+
   return (
     <StyledContainer>
+      {isOpened && <GenerateChat onClick={setGenOpened}></GenerateChat>}
       <StyledHeaderDiv>
         <StyledH1>입장가능한 그룹 채팅방</StyledH1>
-        <StyledButton>그룹 채팅방 만들기</StyledButton>
+        <StyledButton onClick={modalOpenHander}>그룹 채팅방 만들기</StyledButton>
       </StyledHeaderDiv>
       <StyledDiv>
-        <SearchBar></SearchBar>
+        <SearchBar content="채팅방을 검색해보세요" height="50"></SearchBar>
         <TabButtons></TabButtons>
       </StyledDiv>
     </StyledContainer>
