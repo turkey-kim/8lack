@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import UserList from 'components/UserList/UserList';
+import UserList from 'pages/ChatRoom/components/UserList';
 import styled from 'styled-components';
 import {IDrawer} from './Drawer.types';
 
-const Drawer: React.FC<IDrawer> = ({isOpen, onClose, chatId, usersMap}) => {
+const Drawer: React.FC<IDrawer> = ({isOpen, onClose, usersMap}) => {
   if (!isOpen) return null;
   const portalRoot = document.getElementById('drawer-root') as HTMLElement;
   return ReactDOM.createPortal(
     <>
       <StyledBackdrop onClick={onClose} />
       <StyledDrawerContent>
-        <UserList chatId={chatId} usersMap={usersMap} />
+        <UserList usersMap={usersMap} />
       </StyledDrawerContent>
     </>,
     portalRoot,

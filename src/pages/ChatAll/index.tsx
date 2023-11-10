@@ -1,5 +1,5 @@
 import React from 'react';
-import PublicChat from 'components/PublicChat/PublicChat';
+import PublicChat from 'pages/ChatAll/components/PublicChat';
 
 function ChatAll() {
   return <PublicChat />;
