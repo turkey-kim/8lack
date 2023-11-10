@@ -14,29 +14,30 @@ const SocketContext = createContext<SocketState | null>(null);
 interface SocketProviderProps {
   id: string;
   url: string;
-  options?: any;
   children: React.ReactNode;
 }
 
-export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, options, children}) => {
+export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children}) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [prevMessages, setPrevMessages] = useState<PrevMessage>({messages: []});
   const [users, setUsers] = useState<UserID>({users: []});
 
   useEffect(() => {
-    const newSocket = io(url, {...options, extraHeaders: authHeaders()});
+    const newSocket = io(url, {
+      extraHeaders: authHeaders(),
+    });
 
     newSocket.on('connect', () => {
       console.log('Socket connected:', newSocket.id);
     });
 
     newSocket.on('connect_error', error => {
-      console.error('Socket connect_error:', error);
+      console.error('Socket connect_error:', error.message);
     });
 
     newSocket.on('disconnect', reason => {
-      console.log('Socket disconnected:', reason);
+      console.log('Socket disconnect:', reason);
     });
 
     newSocket.off('message-to-client');
@@ -81,10 +82,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, options,
 
     return () => {
       if (newSocket.connected) {
-        newSocket.disconnect();
+        console.log('소켓 연결종료');
+        newSocket.close();
       }
     };
-  }, [id, url, options]);
+  }, [id, url]);
 
   const contextValue = {
     socket,

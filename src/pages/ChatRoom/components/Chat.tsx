@@ -1,19 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import Drawer from 'components/Drawer/Drawer';
 import MessageList from 'pages/ChatRoom/components/MessageList';
 import SendMessage from 'pages/ChatRoom/components/SendMessage';
 import {RxHamburgerMenu} from 'react-icons/rx';
-import {handleChatParticipate, handleChatLeave} from 'api/chat';
+import {handleChatLeave} from 'api/chat';
 
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // FIXME: 채팅 참여하기 임시 코드(채팅방 직접 생성하실 때는 주석처리 해주세요!)
-  useEffect(() => {
-    handleChatParticipate(chatId);
-  }, [chatId]);
+  // useEffect(() => {
+  //   handleChatParticipate(chatId);
+  // }, [chatId]);
 
   const navigate = useNavigate();
   const handleLeaveChat = async () => {
