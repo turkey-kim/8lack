@@ -6,8 +6,7 @@ const Users = () => {
   return (
     <StyledPageContainer>
       <StyledMainTitle>사용자 리스트</StyledMainTitle>
-      <StyledSearchBar placeholder="사용자를 검색해보세요." />
-      <FavorUserLists />
+
       <UserLists />
     </StyledPageContainer>
   );
@@ -17,6 +16,8 @@ export const StyledPageContainer = styled.div`
   // display: flex;
   // flex-direction: column;
   padding: 4rem 2rem;
+  overflow-y: auto;
+  height: 100vh;
 `;
 
 export const StyledMainTitle = styled.div`

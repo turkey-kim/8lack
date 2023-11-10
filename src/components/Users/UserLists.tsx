@@ -1,49 +1,73 @@
 import {useState, useEffect} from 'react';
-import io from 'socket.io-client';
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
-import {StyledLine} from 'pages/Users';
+import {StyledLine, StyledSearchBar} from 'pages/Users';
+import {getUsers} from 'api/users';
+
+export interface User {
+  id: string;
+  name: string;
+  picture: string;
+}
 
 const UserLists = () => {
-  //모든 유저 조회
+  const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [searchUser, setSearchUser] = useState('');
+  //const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    getUsers().then(allUsers => {
+      setUsers(allUsers); //모든 유저 정보를 저장
+      setFilteredUsers(allUsers);
+      console.log(allUsers);
+    });
+  }, []);
+
+  //검색 구현
+  useEffect(() => {
+    filterUsers();
+  }, [searchUser]);
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    filterUsers();
+  };
+
+  const filterUsers = () => {
+    if (searchUser === '') {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter(user => user.name.toLowerCase().includes(searchUser.toLowerCase()));
+      setFilteredUsers(filtered);
+    }
+  };
+
   return (
-    <>
+    <form onSubmit={handleSearch}>
+      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
       <StyledLine />
       <StyledSubTitle>유저목록</StyledSubTitle>
-      {/* <StyledUsersWrapper> */}
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            김ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
-      <StyledUserContainer>
-        <StyledUserProfile />
-        <StyledUserDescription>
-          <StyledUserName>
-            김ㅇㅇ&nbsp;
-            <StyledActiveCircle>
-              <MdCircle />
-            </StyledActiveCircle>
-            <StyledStar>
-              <FaRegStar />
-            </StyledStar>
-          </StyledUserName>
-          <StyledChatButton>1:1 채팅하기</StyledChatButton>
-        </StyledUserDescription>
-      </StyledUserContainer>
-      {/* </StyledUsersWrapper> */}
-    </>
+      {filteredUsers
+        .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
+        .filter(user => user.name.toLowerCase())
+        .map(user => {
+          return (
+            <StyledUserContainer key={user.id}>
+              <StyledUserProfile src={user.picture} />
+              <StyledUserDescription>
+                <StyledUserName>
+                  {user.name}&nbsp;
+                  <StyledActiveCircle />
+                  <StyledStar />
+                </StyledUserName>
+                <StyledChatButton>1:1 채팅하기</StyledChatButton>
+              </StyledUserDescription>
+            </StyledUserContainer>
+          );
+        })}
+    </form>
   );
 };
 
@@ -65,18 +89,20 @@ export const StyledSubTitle = styled.div`
 
 // user container
 export const StyledUserContainer = styled.div`
-  width: 12rem;
-  height: 15rem;
+  width: 14rem;
+  height: 18rem;
   border: 1px solid ${props => props.theme.colors.gray300};
   display: inline-block;
   cursor: pointer;
   border-radius: 8px;
   margin: 0.5rem 3rem 3rem 0rem;
   vertical-align: top;
+  padding: 0.5rem 0.5rem 0 0.5rem;
 `;
 
-export const StyledUserProfile = styled.div`
+export const StyledUserProfile = styled.img`
   height: 70%;
+  width: 100%;
   background-color: ${props => props.theme.colors.gray300};
   border-radius: 8px 8px 0 0;
 `;
@@ -96,12 +122,13 @@ export const StyledUserName = styled.div`
   align-items: center;
 `;
 
-export const StyledActiveCircle = styled.div`
+export const StyledActiveCircle = styled(MdCircle)`
   color: ${props => props.theme.colors.success};
 `;
 
-export const StyledStar = styled.div`
+export const StyledStar = styled(FaStar)`
   margin-left: auto;
+  vertical-align: top;
   color: ${props => props.theme.colors.blue700};
 `;
 
