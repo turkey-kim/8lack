@@ -4,41 +4,64 @@ import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import UserCells from './UserCells';
 import {User} from '../../types/chatroom.types';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {getUsers} from 'api/users';
+import {makeChatRoom} from 'api/myChatRoom';
+import {useRecoilValue} from 'recoil';
+import {userInformation} from 'states/atom';
 
 interface ModalProps {
   onClick: React.Dispatch<boolean>;
 }
 
-const DUMMY_USERS: User[] = [
-  {
-    id: 'string1',
-    name: '김팔락',
-    picture: 'https://lh3.googleusercontent.com/a/ACg8ocKwXHK0B_qALPkVP9CEI2cynKa-vMTOxX-sFDuEWejmtFvD=s576-c-no',
-  },
-  {
-    id: 'string2',
-    name: '양희은',
-    picture: 'https://lh3.googleusercontent.com/a/ACg8ocKwXHK0B_qALPkVP9CEI2cynKa-vMTOxX-sFDuEWejmtFvD=s576-c-no',
-  },
-  {
-    id: 'string3',
-    name: '한문철',
-    picture: 'https://lh3.googleusercontent.com/a/ACg8ocKwXHK0B_qALPkVP9CEI2cynKa-vMTOxX-sFDuEWejmtFvD=s576-c-no',
-  },
-  {
-    id: 'string4',
-    name: '김연아',
-    picture: 'https://lh3.googleusercontent.com/a/ACg8ocKwXHK0B_qALPkVP9CEI2cynKa-vMTOxX-sFDuEWejmtFvD=s576-c-no',
-  },
-];
+type InputStates = [{name: 'chatName'; state: string}, {name: 'pickedUser'; state: string}];
 
 const GenerateChat = (props: ModalProps) => {
+  const [userData, setUserData] = useState<[User[], User[]]>([[], []]);
+  const [chatName, setChatName] = useState<string>('');
+
+  const [inputStates, setInputStates] = useState<InputStates>([
+    {name: 'chatName', state: 'default'},
+    {name: 'pickedUser', state: 'default'},
+  ]);
+
+  const myInfo = useRecoilValue(userInformation);
+
+  useEffect(() => {
+    // 사용자 불러오기
+
+    getUsers().then(res => {
+      const filtered = (res as User[]).slice().filter(val => val.id !== myInfo.id);
+      setUserData([filtered, []]);
+    });
+  }, []);
+
   const modalCloseHandler = () => {
     props.onClick(false);
   };
 
-  const [userData, setUserData] = useState<[User[], User[]]>([DUMMY_USERS, []]);
+  const generateChatHandler = () => {
+    if (chatName.trim().length === 0) {
+      // 채팅방 이름 0자 예외 조건 처리
+      let temp: InputStates = [...inputStates];
+      temp[0].state = 'error';
+      setInputStates(temp);
+      alert('그룹 채팅방 이름을 입력해주세요.');
+      return;
+    }
+
+    if (userData[1].length < 3) {
+      // 3명 이하 예외 조건 처리
+      let temp: InputStates = [...inputStates];
+      temp[1].state = 'error';
+      setInputStates(temp);
+      alert('3명 이상을 선택해야 그룹 채팅방을 만들 수 있습니다.');
+      return;
+    }
+    const temp = userData[1].slice().map(val => val.name); // 이름만 있는 배열로 바꾸기
+    makeChatRoom(chatName, temp, false); // 생성
+    modalCloseHandler(); // 모달 닫기
+  };
 
   return (
     <Bundler>
@@ -63,23 +86,29 @@ const GenerateChat = (props: ModalProps) => {
           </StyledUnit>
           <StyledUnit>
             <StyledDiv>
-              <StyledLabel>그룹 채팅방 제목</StyledLabel>
-              <SearchBar content="그룹 채팅방 이름을 적어주세요" height="40"></SearchBar>
+              <StyledLabel>그룹 채팅방 제목 (필수)</StyledLabel>
+              <SearchBar
+                inputState={inputStates[0].state}
+                onChangeName={setChatName}
+                content="그룹 채팅방 이름을 적어주세요"
+                height="40"
+              ></SearchBar>
             </StyledDiv>
             <div>
-              <StyledLabel>선택된 사용자</StyledLabel>
+              <StyledLabel>선택된 사용자 (3명 이상)</StyledLabel>
               <UserCells
                 typed="checked"
                 allocatedData={userData[1]}
                 subData={userData[0]}
                 onToggleUser={setUserData}
                 height="275px"
+                inputState={inputStates[1].state}
               ></UserCells>
             </div>
           </StyledUnit>
         </StyledMain>
         <StyledBottom>
-          <StyledButton>그룹 채팅 만들기</StyledButton>
+          <StyledButton onClick={generateChatHandler}>그룹 채팅 만들기</StyledButton>
           <StyledCancelButton onClick={modalCloseHandler}>취소하기</StyledCancelButton>
         </StyledBottom>
       </StyledModalContainer>
