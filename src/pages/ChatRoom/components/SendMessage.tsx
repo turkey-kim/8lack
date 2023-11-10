@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {BsFillSendFill} from 'react-icons/bs';
-import {ISendMessage} from './SendMessage.types';
 import {useSocketContext} from 'contexts/SocketContext';
 
-const SendMessage: React.FC<ISendMessage> = () => {
+const SendMessage: React.FC = () => {
   const [message, setMessage] = useState('');
   const {socket} = useSocketContext();
 

@@ -11,7 +11,7 @@ const Drawer: React.FC<IDrawer> = ({isOpen, onClose, usersMap}) => {
     <>
       <StyledBackdrop onClick={onClose} />
       <StyledDrawerContent>
-        <UserList usersMap={usersMap} />
+        <UserList />
       </StyledDrawerContent>
     </>,
     portalRoot,

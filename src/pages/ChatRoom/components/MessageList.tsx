@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {useSocketContext} from 'contexts/SocketContext';
-import {MessageListProps} from './MessageList.types';
 import {Message} from 'types/chatroom.types';
+import {formatMessageDate} from 'utils/formatDate';
 
-const MessageList: React.FC<MessageListProps> = ({usersMap}) => {
+const MessageList: React.FC = () => {
   const {socket, prevMessages, messages} = useSocketContext();
   const [loadPrevMessages, setLoadPrevMessages] = useState(false);
 
@@ -13,14 +13,6 @@ const MessageList: React.FC<MessageListProps> = ({usersMap}) => {
       socket.emit('fetch-messages', {});
     }
   }, [socket, loadPrevMessages]);
-
-  const formatMessageDate = (dateString: Date) => {
-    return new Date(dateString).toLocaleString('ko-KR', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    });
-  };
 
   const renderMessage = (message: Message) => {
     if (message.userId === 'system') {
@@ -99,9 +91,9 @@ const StyledBubble = styled.span`
   word-break: break-all;
   background-color: ${({theme}) => theme.colors.blue700};
   color: ${({theme}) => theme.colors.white};
-  padding: 0.66em 0.68rem;
-  border-radius: 10px;
-  max-width: 300px;
+  padding: 0.8em 1.1rem;
+  border-radius: 1rem;
+  max-width: 500px;
   overflow-wrap: break-word;
 `;
 const StyledDate = styled.span`

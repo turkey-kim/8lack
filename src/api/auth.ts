@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {SERVER_URL, USER_DEFAULT_IMG} from '../constant';
+import {SERVER_URL, USER_DEFAULT_IMG} from 'constant/constant';
 
 const headers = {
   'content-type': 'application/json',

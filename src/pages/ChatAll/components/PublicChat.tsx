@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import ChatRoomForm from '../../../components/ChatRoomForm/ChatRoomForm';
+import ChatRoomForm from './ChatRoomForm';
 
 function PublicChat() {
   return (

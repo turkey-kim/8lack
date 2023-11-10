@@ -1,18 +1,16 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import Drawer from 'components/Drawer/Drawer';
 import MessageList from 'pages/ChatRoom/components/MessageList';
 import SendMessage from 'pages/ChatRoom/components/SendMessage';
-import {User} from 'types/chatroom.types';
 import {RxHamburgerMenu} from 'react-icons/rx';
-import {useRecoilValue} from 'recoil';
-import {chatRoomState} from 'states/chatRoomState';
 import {handleChatParticipate, handleChatLeave} from 'api/chat';
 
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  // FIXME: 채팅 참여하기 임시 코드
   useEffect(() => {
     handleChatParticipate(chatId);
   }, [chatId]);
@@ -23,38 +21,6 @@ const Chat = ({chatId}: {chatId: string}) => {
     if (response) {
       navigate(-1);
     }
-  };
-
-  // FIXME: 소켓 api가 수정되면 지울 것1
-  const chatRoom = useRecoilValue(chatRoomState);
-
-  // FIXME: 소켓 api가 수정되면 지울 것2
-  const usersMap = useMemo(() => {
-    return chatRoom?.users.reduce(
-      (map, user) => {
-        map[user.id] = user;
-        return map;
-      },
-      {} as Record<string, User>,
-    );
-  }, [chatRoom]);
-
-  const renderAvatars = () => {
-    if (!chatRoom) return null;
-
-    const {users, isPrivate} = chatRoom;
-    return isPrivate ? (
-      // 비공개방: 개인 채팅방은 아바타 1개만 보여줌
-      <StyledChatImg src={users[0].picture} alt={users[0].username} />
-    ) : (
-      // 공개방: 여러 아바타 보여줌
-      <>
-        {users.slice(0, 2).map((user, index) => (
-          <StyledChatImg key={user.id} src={user.picture} alt={user.username} zIndex={1} marginLeft={index * -15} />
-        ))}
-        {users.length > 2 && <StyledMore style={{marginLeft: -15 * 2}}>+{users.length - 2}</StyledMore>}
-      </>
-    );
   };
 
   const toggleDrawer = () => {
@@ -70,18 +36,16 @@ const Chat = ({chatId}: {chatId: string}) => {
       <StyledContainer>
         <StyledHeader>
           <StyledInfo>
-            {renderAvatars()}
-            <StyledTitle>{chatRoom?.name}</StyledTitle>
             <StyledLeaveButton onClick={handleLeaveChat}>채팅 나가기</StyledLeaveButton>
           </StyledInfo>
           <StyleButton onClick={toggleDrawer}>
             <RxHamburgerMenu />
           </StyleButton>
         </StyledHeader>
-        <MessageList usersMap={usersMap} />
+        <MessageList />
         <SendMessage />
       </StyledContainer>
-      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} usersMap={usersMap} />
+      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} />
     </>
   );
 };

@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import {IUserList} from './UserList.types';
-import {useSocketContext} from '../../../contexts/SocketContext';
+import {useSocketContext} from 'contexts/SocketContext';
 
-const UserList: React.FC<IUserList> = ({usersMap}) => {
+const UserList: React.FC = () => {
   const {users, socket} = useSocketContext();
   const connectedUserIds = users.users;
 
