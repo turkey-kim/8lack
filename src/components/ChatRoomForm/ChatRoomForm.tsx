@@ -6,17 +6,18 @@ import {chatRoomState} from 'states/chatRoomState';
 import {ChatRoomCreateRequest, ChatRoomResponse} from './ChatRoomForm.types';
 
 const ChatRoomForm: React.FC = () => {
-  const navigate = useNavigate(); // 라우팅을 위한 훅
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [userIds, setUserIds] = useState(''); // 문자열 상태로 관리
   const [isPrivate, setIsPrivate] = useState(false);
 
+  // FIXME: 소켓 api 수정되면 지울 것
   const setChatRoom = useSetRecoilState(chatRoomState);
 
   const handleCreateChatRoom = async () => {
     const requestBody: ChatRoomCreateRequest = {
       name,
-      users: userIds.split(',').map(user => user.trim()), // 문자열을 배열로 변환
+      users: userIds.split(',').map(user => user.trim()),
       isPrivate,
     };
 
@@ -45,12 +46,7 @@ const ChatRoomForm: React.FC = () => {
     <div>
       <h1>채팅방 생성하기</h1>
       <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="채팅방 이름" />
-      <input
-        type="text"
-        value={userIds}
-        onChange={e => setUserIds(e.target.value)} // 상태 업데이트 함수를 변경
-        placeholder="참가자 ID들 (콤마로 구분)"
-      />
+      <input type="text" value={userIds} onChange={e => setUserIds(e.target.value)} placeholder="유저 id" />
       <label>
         <input type="checkbox" checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)} />
         비공개 채팅방
