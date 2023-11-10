@@ -16,3 +16,8 @@ export const userInformation = atom({
   key: 'userInformation',
   default: {},
 });
+
+export const onlineUserList = atom({
+  key: 'onlineUserList',
+  default: [],
+});
