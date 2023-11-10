@@ -32,14 +32,12 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <RecoilRoot>
-        <RouterProvider router={router}></RouterProvider>
-      </RecoilRoot>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <GlobalStyles />
+    <RecoilRoot>
+      <RouterProvider router={router}></RouterProvider>
+    </RecoilRoot>
+  </ThemeProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
