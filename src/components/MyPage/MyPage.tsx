@@ -5,7 +5,7 @@ import {StyledMainTitle, StyledLine} from '../../pages/Users';
 import {AiOutlineClose} from 'react-icons/ai';
 import {authCheck} from '../../api/auth';
 import {patchInfo, uploadImage} from '../../api/mypage';
-import {USER_DEFAULT_IMG} from '../../constant';
+import {USER_DEFAULT_IMG} from 'constant/constant';
 
 export interface AppModalProps {
   isOpen: boolean;

@@ -4,7 +4,7 @@ import useAuthCheck from 'hooks/useAuthCheck';
 import {useRecoilState} from 'recoil';
 import {onlineUserList} from 'states/atom';
 import {io} from 'socket.io-client';
-import {SERVER_URL} from 'constant';
+import {SERVER_URL} from 'constant/constant';
 
 const socketHeaders = () => {
   const accessToken = localStorage.getItem('accessToken');

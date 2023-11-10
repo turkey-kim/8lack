@@ -17,7 +17,6 @@ function ChatRoom() {
     </StyledContainer>
   );
 }
-
 export default ChatRoom;
 
 const StyledContainer = styled.div`
