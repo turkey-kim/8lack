@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
-import {USER_DEFAULT_IMG} from '../../constant';
+import {USER_DEFAULT_IMG} from 'constant/constant';
 import {dummyPrivateRooms} from './dummyPrivateRooms';
 
 interface Message {

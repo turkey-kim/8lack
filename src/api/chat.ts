@@ -4,7 +4,7 @@ export const handleChatParticipate = async (chatId: string) => {
   try {
     const response = await fetch(`https://fastcampus-chat.net/chat/participate`, {
       method: 'PATCH',
-      headers: authHeaders,
+      headers: authHeaders(),
       body: JSON.stringify({chatId}),
     });
 
@@ -22,7 +22,7 @@ export const handleChatLeave = async (chatId: string) => {
   try {
     const response = await fetch(`https://fastcampus-chat.net/chat/leave`, {
       method: 'PATCH',
-      headers: authHeaders,
+      headers: authHeaders(),
       body: JSON.stringify({chatId}),
     });
 

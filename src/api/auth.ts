@@ -10,7 +10,7 @@ export const authHeaders = () => {
   const accessToken = localStorage.getItem('accessToken');
   return {
     'content-type': 'application/json',
-    serverId: process.env.REACT_APP_SERVER_ID,
+    serverId: process.env.REACT_APP_SERVER_ID!,
     Authorization: `Bearer ${accessToken}`,
   };
 }; // 토큰이 필요한 api에는 해당 헤더를 사용하시면 됩니다!

@@ -4,6 +4,7 @@ import UserList from 'pages/ChatRoom/components/UserList';
 import styled from 'styled-components';
 import {IDrawer} from './Drawer.types';
 
+// TODO: 공통 컴포넌트 만들 예정
 const Drawer: React.FC<IDrawer> = ({isOpen, onClose, usersMap}) => {
   if (!isOpen) return null;
   const portalRoot = document.getElementById('drawer-root') as HTMLElement;

@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {authHeaders} from 'api/auth';
-import {useSetRecoilState} from 'recoil';
-import {chatRoomState} from 'states/chatRoomState';
 import {ChatRoomCreateRequest, ChatRoomResponse} from './ChatRoomForm.types';
 
 const ChatRoomForm: React.FC = () => {
@@ -11,9 +9,7 @@ const ChatRoomForm: React.FC = () => {
   const [userIds, setUserIds] = useState(''); // 문자열 상태로 관리
   const [isPrivate, setIsPrivate] = useState(false);
 
-  // FIXME: 소켓 api 수정되면 지울 것
-  const setChatRoom = useSetRecoilState(chatRoomState);
-
+  // FIXME: 채팅방 생성 임시 코드
   const handleCreateChatRoom = async () => {
     const requestBody: ChatRoomCreateRequest = {
       name,
@@ -24,7 +20,7 @@ const ChatRoomForm: React.FC = () => {
     try {
       const response = await fetch('https://fastcampus-chat.net/chat', {
         method: 'POST',
-        headers: authHeaders,
+        headers: authHeaders(),
         body: JSON.stringify(requestBody),
       });
 
@@ -33,7 +29,6 @@ const ChatRoomForm: React.FC = () => {
       }
 
       const responseData: ChatRoomResponse = await response.json();
-      setChatRoom(currentState => responseData);
       console.log('Chat room created:', responseData);
 
       navigate(`/chat/${responseData.id}`);
