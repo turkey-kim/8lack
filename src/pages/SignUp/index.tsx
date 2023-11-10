@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignUpBox from '../components/signUp/SignUpBox';
+import SignUpBox from './components/SignUpBox';
 
 const SignUp = () => {
   return (

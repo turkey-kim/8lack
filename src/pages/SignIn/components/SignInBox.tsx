@@ -1,8 +1,10 @@
 import {useState} from 'react';
 import styled from 'styled-components';
-import {theme} from '../../styles/Theme';
+import {theme} from '../../../styles/Theme';
 import {useNavigate} from 'react-router';
-import {postSignIn} from '../../api/auth';
+import {postSignIn} from '../../../api/auth';
+import {useRecoilState} from 'recoil';
+import {loginState} from 'states/atom';
 
 interface Inputs {
   id: string;
@@ -10,6 +12,7 @@ interface Inputs {
 }
 
 const SignInBox = () => {
+  const [isLogged, setIsLogged] = useRecoilState(loginState);
   const navigate = useNavigate();
   const [inputs, setInputs] = useState<Inputs>({
     id: '',
@@ -26,6 +29,7 @@ const SignInBox = () => {
     const {accessToken, refreshToken} = res;
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
+    setIsLogged(true);
     navigate('/');
   };
 
