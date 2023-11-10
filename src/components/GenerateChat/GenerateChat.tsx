@@ -50,32 +50,32 @@ const GenerateChat = (props: ModalProps) => {
         </StyledHeader>
         <StyledMain>
           <StyledUnit>
+            <StyledLabel>사용자 선택하기</StyledLabel>
+            <SearchBar content="사용자를 검색해보세요" height="40"></SearchBar>
+            <UserCells
+              height="312px"
+              marginTop="8px"
+              typed=""
+              allocatedData={userData[0]}
+              subData={userData[1]}
+              onToggleUser={setUserData}
+            ></UserCells>
+          </StyledUnit>
+          <StyledUnit>
             <StyledDiv>
               <StyledLabel>그룹 채팅방 제목</StyledLabel>
               <SearchBar content="그룹 채팅방 이름을 적어주세요" height="40"></SearchBar>
             </StyledDiv>
             <div>
-              <StyledLabel>사용자 선택하기</StyledLabel>
-              <SearchBar content="사용자를 검색해보세요" height="40"></SearchBar>
+              <StyledLabel>선택된 사용자</StyledLabel>
               <UserCells
-                height="216px"
-                marginTop="8px"
-                typed=""
-                allocatedData={userData[0]}
-                subData={userData[1]}
+                typed="checked"
+                allocatedData={userData[1]}
+                subData={userData[0]}
                 onToggleUser={setUserData}
+                height="275px"
               ></UserCells>
             </div>
-          </StyledUnit>
-          <StyledUnit>
-            <StyledLabel>선택된 사용자</StyledLabel>
-            <UserCells
-              typed="checked"
-              allocatedData={userData[1]}
-              subData={userData[0]}
-              onToggleUser={setUserData}
-              height="350px"
-            ></UserCells>
           </StyledUnit>
         </StyledMain>
         <StyledBottom>
