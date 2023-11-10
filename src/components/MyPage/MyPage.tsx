@@ -18,9 +18,9 @@ export const customStyles = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    height: '55%',
+    height: '57%',
     borderRadius: '8px',
-    overflow: 'hidden',
+    overflow: 'auto',
   },
 };
 

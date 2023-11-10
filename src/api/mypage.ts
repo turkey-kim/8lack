@@ -10,7 +10,7 @@ export interface UpdateUser {
 export const patchInfo = async (updateData: UpdateUser) => {
   try {
     const {name, picture} = updateData;
-    await axios.patch(`${SERVER_URL}/user`, updateData, {headers: authHeaders});
+    await axios.patch(`${SERVER_URL}/user`, updateData, {headers: authHeaders()});
     alert(`${name}님의 정보를 수정하였습니다.`);
   } catch (err: any) {
     console.log(err);
