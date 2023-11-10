@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react';
 import {authCheck} from 'api/auth';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState} from 'recoil';
 import {loginState} from 'states/atom';
 
 const useAuthCheck = () => {
   const [authorization, setAuthorization] = useState(false); // 토큰 유효성 여부
   const [isLoading, setIsLoading] = useState(true); // 로딩 지연 여부
-  const isLoggedIn = useRecoilValue(loginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
 
   useEffect(() => {
     const fetch = async () => {
@@ -18,6 +18,9 @@ const useAuthCheck = () => {
       } else {
         setIsLoading(false);
         setAuthorization(false);
+        if (isLoggedIn) {
+          setIsLoggedIn(false);
+        }
       }
     };
 
