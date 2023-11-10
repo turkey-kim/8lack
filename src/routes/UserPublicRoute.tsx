@@ -1,4 +1,4 @@
-import {ReactElement} from 'react';
+import {ReactElement, useEffect} from 'react';
 import {Navigate} from 'react-router';
 import useAuthCheck from 'hooks/useAuthCheck';
 
@@ -7,7 +7,7 @@ interface Props {
 }
 
 const UserPublicRoute = ({children}: Props): any => {
-  const {isLoading, authorization} = useAuthCheck();
+  const {authorization, isLoading} = useAuthCheck();
 
   if (isLoading && !authorization) return <>...is Loading</>;
   if (!isLoading && authorization) return children;

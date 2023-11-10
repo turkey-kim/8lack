@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import styled from 'styled-components';
-import {theme} from '../../styles/Theme';
+import {theme} from '../../../styles/Theme';
 import {useNavigate} from 'react-router';
-import {postSignIn} from '../../api/auth';
+import {postSignIn} from '../../../api/auth';
 import {useRecoilState} from 'recoil';
 import {loginState} from 'states/atom';
 
