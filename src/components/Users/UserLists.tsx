@@ -21,7 +21,7 @@ const UserLists = () => {
     getUsers().then(allUsers => {
       setUsers(allUsers); //모든 유저 정보를 저장
       setFilteredUsers(allUsers);
-      console.log(allUsers);
+      // console.log(allUsers);
     });
   }, []);
 
@@ -45,33 +45,46 @@ const UserLists = () => {
   };
 
   return (
-    <form onSubmit={handleSearch}>
+    <StyledForm onSubmit={handleSearch}>
       <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
       <StyledLine />
       <StyledSubTitle>유저목록</StyledSubTitle>
-      {filteredUsers
-        .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
-        .filter(user => user.name.toLowerCase())
-        .map(user => {
-          return (
-            <StyledUserContainer key={user.id}>
-              <StyledUserProfile src={user.picture} />
-              <StyledUserDescription>
-                <StyledUserName>
-                  {user.name}&nbsp;
-                  <StyledActiveCircle />
-                  <StyledStar />
-                </StyledUserName>
-                <StyledChatButton>1:1 채팅하기</StyledChatButton>
-              </StyledUserDescription>
-            </StyledUserContainer>
-          );
-        })}
-    </form>
+      {filteredUsers.length > 0
+        ? filteredUsers
+            .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
+            .filter(user => user.name.toLowerCase())
+            .map(user => {
+              return (
+                <StyledUserContainer key={user.id}>
+                  <StyledUserProfile src={user.picture} />
+                  <StyledUserDescription>
+                    <StyledUserName>
+                      {user.name}&nbsp;
+                      <StyledActiveCircle />
+                      <StyledStar />
+                    </StyledUserName>
+                    <StyledChatButton
+                      onClick={() => {
+                        window.confirm(`${user.name}님과 채팅 시작하시겠습니까?`);
+                        //채팅 로직 함수 구현 추가
+                      }}
+                    >
+                      1:1 채팅하기
+                    </StyledChatButton>
+                  </StyledUserDescription>
+                </StyledUserContainer>
+              );
+            })
+        : '검색된 유저가 없습니다.'}
+    </StyledForm>
   );
 };
 
 export default UserLists;
+
+const StyledForm = styled.form`
+  width: 100%;
+`;
 
 export const StyledUsersWrapper = styled.div`
   display: flex;

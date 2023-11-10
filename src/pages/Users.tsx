@@ -1,23 +1,22 @@
 import styled from 'styled-components';
 import UserLists from 'components/Users/UserLists';
-import FavorUserLists from 'components/Users/FavorUserLists';
 
 const Users = () => {
   return (
     <StyledPageContainer>
       <StyledMainTitle>사용자 리스트</StyledMainTitle>
-
       <UserLists />
     </StyledPageContainer>
   );
 };
 
 export const StyledPageContainer = styled.div`
-  // display: flex;
-  // flex-direction: column;
+  display: flex;
+  flex-direction: column;
   padding: 4rem 2rem;
   overflow-y: auto;
   height: 100vh;
+  width: 100%;
 `;
 
 export const StyledMainTitle = styled.div`
