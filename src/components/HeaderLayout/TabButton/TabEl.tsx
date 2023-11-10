@@ -45,4 +45,6 @@ const StyledTabEl = styled.button<{isSelected?: boolean}>`
   background-color: ${props => (props.isSelected ? theme.colors.blue700 : '')};
   color: ${props => (props.isSelected ? theme.colors.white : theme.colors.gray900)};
   border-radius: 4px;
+  white-space: nowrap;
+  padding: 0;
 `;
