@@ -1,5 +1,7 @@
+import {handleChatParticipate} from 'api/chat';
 import {useEffect, useState} from 'react';
 import {FaAngleDown} from 'react-icons/fa';
+import {useNavigate} from 'react-router';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 
@@ -23,6 +25,7 @@ interface Props {
 
 const ChatRoomEl = (props: Props) => {
   const [time, setTime] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const calcTime = () => {
@@ -41,6 +44,15 @@ const ChatRoomEl = (props: Props) => {
     }, 30000);
   }, [props.data.updatedAt]);
 
+  const joinHandler = () => {
+    const ID = props.data.id;
+    const NAME = props.data.name;
+    const confirm = window.confirm(`${NAME} 방에 참여하시겠어요?`);
+    if (confirm) {
+      handleChatParticipate(ID).then(res => navigate(`/chat/${ID}`));
+    }
+  };
+
   return (
     <StyledContainer>
       <StyledInner>
@@ -57,7 +69,7 @@ const ChatRoomEl = (props: Props) => {
             <span>참여 중인 사용자</span>
             <StyledAngleDown></StyledAngleDown>
           </StyledMemberListBtn>
-          <StyledEnterButton>들어가기</StyledEnterButton>
+          <StyledEnterButton onClick={joinHandler}>들어가기</StyledEnterButton>
         </StyledEnterance>
       </StyledInner>
     </StyledContainer>
