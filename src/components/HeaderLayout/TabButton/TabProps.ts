@@ -1,6 +1,6 @@
 interface TabProps {
   label: string;
-  isSelected: boolean;
+  selected: boolean;
 }
 
 export default TabProps;

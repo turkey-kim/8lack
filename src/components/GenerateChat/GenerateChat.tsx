@@ -53,7 +53,7 @@ const GenerateChat = (props: ModalProps) => {
     }
 
     if (userData[1].length < 2) {
-      // 자신을 포함 3명 이하 예외 조건 처리
+      // 자신을 포함 2명 이하 예외 조건 처리
       let temp: InputStates = [...inputStates];
       temp[1].state = 'error';
       setInputStates(temp);
@@ -104,7 +104,7 @@ const GenerateChat = (props: ModalProps) => {
               ></SearchBar>
             </StyledDiv>
             <div>
-              <StyledLabel>선택된 사용자 (3명 이상)</StyledLabel>
+              <StyledLabel>선택된 사용자 (2명 이상 선택)</StyledLabel>
               <UserCells
                 typed="checked"
                 allocatedData={userData[1]}
