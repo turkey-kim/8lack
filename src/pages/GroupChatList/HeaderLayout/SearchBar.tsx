@@ -1,19 +1,24 @@
 import {MdSearch} from 'react-icons/md';
 import styled from 'styled-components';
-import {theme} from '../../styles/Theme';
+import {theme} from '../../../styles/Theme';
 
 interface SearchBarProps {
   height: string;
   content: string;
   inputState?: string;
   onChangeName?: React.Dispatch<React.SetStateAction<string>>;
+  onSearchName?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SearchBar = (props: SearchBarProps) => {
-  const ChangeNameHander: React.ChangeEventHandler<HTMLInputElement> = e => {
+  const nameHander: React.ChangeEventHandler<HTMLInputElement> = e => {
     const tar = e.target as HTMLInputElement;
     if (props.onChangeName) {
       props.onChangeName(tar.value);
+    }
+    if (props.onSearchName) {
+      props.onSearchName(tar.value);
+      console.log('seachedData');
     }
   };
 
@@ -22,7 +27,7 @@ const SearchBar = (props: SearchBarProps) => {
       <StyledSearchIcon></StyledSearchIcon>
       <StyledSearchBar
         inputState={props.inputState}
-        onChange={ChangeNameHander}
+        onChange={nameHander}
         height={props.height}
         placeholder={props.content}
       ></StyledSearchBar>
