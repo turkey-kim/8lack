@@ -6,7 +6,7 @@ import {useState} from 'react';
 import {loginState} from 'states/atom';
 import {useRecoilState} from 'recoil';
 import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
-import {USER_DEFAULT_IMG} from '../../constant';
+import {USER_DEFAULT_IMG} from 'constant/constant';
 import {theme} from '../../styles/Theme';
 import {useLocation} from 'react-router-dom';
 

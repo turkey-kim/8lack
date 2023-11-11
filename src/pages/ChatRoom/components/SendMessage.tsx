@@ -1,15 +1,23 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {BsFillSendFill} from 'react-icons/bs';
-import {ISendMessage} from './SendMessage.types';
+import {useSocketContext} from 'contexts/SocketContext';
 
-const SendMessage: React.FC<ISendMessage> = ({onSendMessage}) => {
+const SendMessage: React.FC = () => {
   const [message, setMessage] = useState('');
+  const {socket} = useSocketContext();
+
+  const handleSendMessage = (messageText: string) => {
+    if (socket && messageText.trim()) {
+      socket.emit('message-to-server', messageText);
+      console.log('Sent message:', messageText);
+      setMessage('');
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSendMessage(message);
-    setMessage('');
+    handleSendMessage(message);
   };
 
   return (
@@ -28,6 +36,8 @@ const SendMessage: React.FC<ISendMessage> = ({onSendMessage}) => {
     </StyledForm>
   );
 };
+
+export default SendMessage;
 
 const StyledForm = styled.form`
   width: 100%;
@@ -76,5 +86,3 @@ const StyledButton = styled.button`
     height: 1rem;
   }
 `;
-
-export default SendMessage;
