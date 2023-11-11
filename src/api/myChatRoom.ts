@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {authHeaders} from './auth';
-import {SERVER_URL} from 'constant';
+import {SERVER_URL} from '../constant/constant';
 
 export const myChatRoom = async () => {
   try {
