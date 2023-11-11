@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {useState, useEffect, useRef} from 'react';
 import Modal from 'react-modal';
-import {StyledMainTitle, StyledLine} from '../../pages/Users';
+import {StyledMainTitle, StyledLine} from '../../pages/UsersList';
 import {AiOutlineClose} from 'react-icons/ai';
 import {authCheck} from '../../api/auth';
 import {patchInfo, uploadImage} from '../../api/mypage';

@@ -2,8 +2,9 @@ import {useState, useEffect} from 'react';
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
-import {StyledLine, StyledSearchBar} from 'pages/Users';
+import {StyledLine, StyledSearchBar} from 'pages/UsersList';
 import {getUsers} from 'api/users';
+import UserItem from './UserItem';
 
 export interface User {
   id: string;
@@ -48,36 +49,22 @@ const UserLists = () => {
     <StyledForm onSubmit={handleSearch}>
       <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />{' '}
       <StyledLine />
-      {/* <StyledSubTitle>즐겨찾기</StyledSubTitle> */}
-      {/* 즐겨찾기 된 애들만 필터링 */}
+      <StyledSubTitle>즐겨찾기</StyledSubTitle>
+      {filteredUsers.length > 0 ? (
+        filteredUsers
+          .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
+          .filter(user => user.name.toLowerCase())
+          .map(user => <UserItem key={user.id} user={user} />)
+      ) : (
+        <br />
+      )}
       <StyledLine />
       <StyledSubTitle>유저목록</StyledSubTitle>
       {filteredUsers.length > 0
         ? filteredUsers
             .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
             .filter(user => user.name.toLowerCase())
-            .map(user => {
-              return (
-                <StyledUserContainer key={user.id}>
-                  <StyledUserProfile src={user.picture} />
-                  <StyledUserDescription>
-                    <StyledUserName>
-                      {user.name}&nbsp;
-                      <StyledActiveCircle />
-                      <StyledStar />
-                    </StyledUserName>
-                    <StyledChatButton
-                      onClick={() => {
-                        window.confirm(`${user.name}님과 채팅 시작하시겠습니까?`);
-                        //채팅 로직 함수 구현 추가
-                      }}
-                    >
-                      1:1 채팅하기
-                    </StyledChatButton>
-                  </StyledUserDescription>
-                </StyledUserContainer>
-              );
-            })
+            .map(user => <UserItem key={user.id} user={user} />)
         : '검색된 유저가 없습니다.'}
     </StyledForm>
   );
