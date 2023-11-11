@@ -13,9 +13,9 @@ export const theme = {
     blue200: '#E5F0FF',
     blue100: '#F4F9FF',
 
-    pink800: 'EB4F27',
-    pink700: 'ED774D',
-    pink600: 'F1A187',
+    pink800: '#EB4F27',
+    pink700: '#ED774D',
+    pink600: '#F1A187',
 
     gray900: '#000000',
     gray800: '#414447',

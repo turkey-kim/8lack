@@ -2,11 +2,16 @@ import {MdSearch} from 'react-icons/md';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 
-const SearchBar = () => {
+interface SearchBarProps {
+  height: string;
+  content: string;
+}
+
+const SearchBar = (props: SearchBarProps) => {
   return (
     <StyledInputContainer>
       <StyledSearchIcon></StyledSearchIcon>
-      <StyledSearchBar placeholder="채팅방을 검색해보세요"></StyledSearchBar>
+      <StyledSearchBar height={props.height} placeholder={props.content}></StyledSearchBar>
     </StyledInputContainer>
   );
 };
@@ -22,15 +27,15 @@ const StyledSearchIcon = styled(MdSearch)`
   width: 24px;
   top: 0;
   bottom: 0;
-  margin: auto 16px;
+  margin: auto 8px;
 
   color: ${theme.colors.gray500};
 `;
 
 const StyledSearchBar = styled.input`
   width: 100%;
-  height: 50px;
-  padding-left: 48px;
+  height: ${props => props.height + 'px'};
+  padding-left: 36px;
   border: 1px solid ${theme.colors.gray500};
   border-radius: 4px;
 `;

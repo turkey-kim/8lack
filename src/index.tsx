@@ -11,7 +11,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import NotFound from './pages/NotFound';
 import Users from './pages/Users';
 import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+import SignUp from 'pages/SignUp';
 import ChatRoom from 'pages/ChatRoom';
 import GroupChatList from './pages/GroupChatList';
 import Modal from 'react-modal';
