@@ -1,22 +1,42 @@
+import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import PrivateChats from '../PrivateChat/PrivateChats';
 import {theme} from '../../styles/Theme';
-import {dummyPrivateRooms} from '../PrivateChat/dummyPrivateRooms';
-import {useNavigate} from 'react-router-dom';
+import GroupChat from 'components/GroupChat/GroupChats';
+import {authCheck} from '../../api/auth';
 
 export default function SideBar() {
-  const navigate = useNavigate();
-  const privateRoom = dummyPrivateRooms.map(dummyPrivateRoom => dummyPrivateRoom.isPrivate).includes(true);
+  const [categoryButton, setCategoryButton] = useState<boolean>(true);
+  const [name, setName] = useState<string>('');
+
+  const getAuth = async () => {
+    const res = await authCheck();
+    setName(res.user.name);
+  };
+
+  useEffect(() => {
+    getAuth();
+  }, []);
 
   return (
     <StyledContainer>
-      <StyledText>안녕하세요. 김팔락님👋</StyledText>
+      <StyledText>안녕하세요. {name}님👋</StyledText>
       <StyledCategoryContainer>
-        <StyledPrivateText>개인</StyledPrivateText>
-        <StyledGroupText>그룹</StyledGroupText>
+        <StyledPrivateButton
+          className={categoryButton ? 'selected_category' : ''}
+          onClick={() => setCategoryButton(true)}
+        >
+          개인
+        </StyledPrivateButton>
+        <StyledGroupButton
+          className={!categoryButton ? 'selected_category' : ''}
+          onClick={() => setCategoryButton(false)}
+        >
+          그룹
+        </StyledGroupButton>
       </StyledCategoryContainer>
       <StyledLine />
-      <PrivateChats />
+      <StyledChatContainer>{categoryButton ? <PrivateChats /> : <GroupChat />}</StyledChatContainer>
     </StyledContainer>
   );
 }
@@ -25,7 +45,6 @@ const StyledContainer = styled.div`
   width: 24rem;
   border-left: 1px solid ${theme.colors.gray400};
   border-right: 1px solid ${theme.colors.gray400};
-  background-color: ${theme.colors.gray100};
 `;
 
 const StyledText = styled.h2`
@@ -37,20 +56,27 @@ const StyledCategoryContainer = styled.div`
   margin: 3.5rem 1.5rem 1rem 1.5rem;
   gap: 1.5rem;
   display: flex;
+
+  .selected_category {
+    color: ${theme.colors.blue700};
+  }
 `;
 
-const StyledPrivateText = styled.button`
-  font-size: ${theme.fonts.subtitle5.fontSize};
-  font-weight: ${theme.fonts.subtitle5.fontWeight};
-  color: ${theme.colors.blue700};
-`;
-
-const StyledGroupText = styled.button`
+const StyledPrivateButton = styled.button`
   font-size: ${theme.fonts.subtitle5.fontSize};
   font-weight: ${theme.fonts.subtitle5.fontWeight};
   color: ${theme.colors.blue500};
 `;
 
+const StyledGroupButton = styled(StyledPrivateButton)`
+  color: ${theme.colors.blue500};
+`;
+
 const StyledLine = styled.div`
   border-bottom: 1px solid ${theme.colors.gray400};
+`;
+
+const StyledChatContainer = styled.div`
+  height: 100vh;
+  background-color: ${theme.colors.gray100};
 `;
