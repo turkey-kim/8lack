@@ -62,10 +62,13 @@ const GenerateChat = (props: ModalProps) => {
     }
 
     const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
-    console.log(users);
-    makeChatRoom(chatName, users, false); // 생성
-    alert(`${chatName} 방이 생성되었습니다.`);
-    navigate('/chat/all');
+    const madeChatRoom = makeChatRoom(chatName, users, false).then(res => {
+      let chatId = res.id;
+      alert(`${chatName} 방이 생성되었습니다.`);
+      navigate(`/chat/${chatId}`);
+    });
+    // 생성
+
     modalCloseHandler(); // 모달 닫기
   };
 
