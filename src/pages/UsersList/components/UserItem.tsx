@@ -10,6 +10,8 @@ import {
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
+import {makeChatRoom} from 'api/myChatRoom';
+import {useNavigate} from 'react-router';
 
 interface UserItemProps {
   user: User;
@@ -17,6 +19,7 @@ interface UserItemProps {
 }
 
 const UserItem = ({user}: UserItemProps) => {
+  const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false); //활동중 ..소켓에서 받아와서 저장해오기
   const [isChecked, setIsChecked] = useState(() => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
@@ -32,6 +35,20 @@ const UserItem = ({user}: UserItemProps) => {
   // useEffect(() => {
   //   console.log(isChecked);
   // }, [isChecked]); //즐찾 테스트
+
+  const handleCreateChat = async (userId: string, userName: string) => {
+    const isConfirmed = window.confirm(`${userName}님과 채팅 시작하시겠습니까?`);
+    if (isConfirmed) {
+      const chatName = `${userName}`; //이렇게 하면 나중에 중복되지 않나 체크
+      const users = [userId];
+      try {
+        const res = await makeChatRoom(chatName, users, true);
+        navigate(`/chat/${res.id}`);
+      } catch (err) {
+        console.error('채팅방 생성 실패', err);
+      }
+    }
+  };
 
   return (
     //유저마다 생성 되는 것
@@ -56,14 +73,7 @@ const UserItem = ({user}: UserItemProps) => {
             }}
           />
         </StyledUserName>
-        <StyledChatButton
-          onClick={() => {
-            window.confirm(`${user.name}님과 채팅 시작하시겠습니까?`);
-            //채팅방 생성 로직 + 채팅방 이동 추가
-          }}
-        >
-          1:1 채팅하기
-        </StyledChatButton>
+        <StyledChatButton onClick={() => handleCreateChat(user.id, user.name)}>1:1 채팅하기</StyledChatButton>
       </StyledUserDescription>
     </StyledUserContainer>
   );
