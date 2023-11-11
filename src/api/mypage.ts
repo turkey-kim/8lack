@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {SERVER_URL} from '../constant';
+import {SERVER_URL} from 'constant/constant';
 import {authHeaders} from './auth';
 
 export interface UpdateUser {

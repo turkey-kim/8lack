@@ -15,7 +15,6 @@ import SignUp from 'pages/SignUp';
 import ChatRoom from 'pages/ChatRoom';
 import GroupChatList from './pages/GroupChatList';
 import Modal from 'react-modal';
-import ChatAll from './pages/ChatAll';
 
 Modal.setAppElement('#root');
 const router = createBrowserRouter([
@@ -25,8 +24,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {index: true, path: '/', element: <GroupChatList />},
-      {path: '/chat/all', element: <ChatRoom />},
-      {path: '/chat/all', element: <p>모든 그룹채팅방 보임</p>},
+      {path: '/chat/:chatId', element: <ChatRoom />},
       {path: '/users', element: <Users />},
     ],
   },
@@ -37,14 +35,12 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <RecoilRoot>
-        <RouterProvider router={router}></RouterProvider>
-      </RecoilRoot>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <GlobalStyles />
+    <RecoilRoot>
+      <RouterProvider router={router}></RouterProvider>
+    </RecoilRoot>
+  </ThemeProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
