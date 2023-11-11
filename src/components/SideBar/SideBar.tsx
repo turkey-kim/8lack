@@ -42,7 +42,7 @@ export default function SideBar() {
 }
 
 const StyledContainer = styled.div`
-  width: 24rem;
+  width: 35rem;
   border-left: 1px solid ${theme.colors.gray400};
   border-right: 1px solid ${theme.colors.gray400};
 `;
