@@ -11,15 +11,6 @@ export const myChatRoom = async () => {
   }
 };
 
-export const allChatRoom = async () => {
-  try {
-    const response = await axios.get(`${SERVER_URL}/chat/all`, {headers: authHeaders()});
-    return response.data;
-  } catch (err) {
-    alert('⚠️예기치 못한 에러가 발생하였습니다.');
-  }
-};
-
 export const makeChatRoom = async (name: string, users: string[], isPrivate?: boolean) => {
   try {
     const response = await axios.post(

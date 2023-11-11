@@ -6,11 +6,11 @@ import {theme} from '../../../styles/Theme';
 
 const TabButton = () => {
   const [tabContents, setTabContents] = useState<TabProps[]>([
-    {label: '가나다 순', isSelected: true},
-    {label: '최근 채팅 순', isSelected: false},
-    {label: '사람 많은 순', isSelected: false},
-    {label: '새로운 순', isSelected: false},
-    {label: '홀로 있는 방', isSelected: false},
+    {label: '가나다 순', selected: true},
+    {label: '최근 채팅 순', selected: false},
+    {label: '사람 많은 순', selected: false},
+    {label: '새로운 순', selected: false},
+    {label: '홀로 있는 방', selected: false},
   ]);
 
   return (
@@ -18,7 +18,7 @@ const TabButton = () => {
       <StyledLabel>정렬</StyledLabel>
       <StyledTabContainer>
         {tabContents.map(contents => (
-          <TabEl onClick={setTabContents} tabContents={tabContents} contents={contents}></TabEl>
+          <TabEl key={contents.label} onClick={setTabContents} tabContents={tabContents} contents={contents}></TabEl>
         ))}
       </StyledTabContainer>
     </StyledDiv>

@@ -1,4 +1,4 @@
-import {allChatRoom} from 'api/myChatRoom';
+import {allChatRoom} from 'api/AllChatRoom';
 import ChatRoomEl from './ChatRoomEl';
 import styled from 'styled-components';
 import {useEffect, useState} from 'react';
