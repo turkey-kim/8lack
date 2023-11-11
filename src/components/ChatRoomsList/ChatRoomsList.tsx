@@ -1,4 +1,4 @@
-import {myChatRoom} from 'api/myChatRoom';
+import {allChatRoom} from 'api/myChatRoom';
 import ChatRoomEl from './ChatRoomEl';
 import styled from 'styled-components';
 import {useEffect, useState} from 'react';
@@ -16,7 +16,7 @@ const ChatLists = () => {
   const [chatRoomsList, setChatRoomsList] = useState<Chat[]>([]);
 
   useEffect(() => {
-    myChatRoom().then(res => {
+    allChatRoom().then(res => {
       setChatRoomsList(res.chats);
     });
   }, []);
