@@ -11,7 +11,7 @@ interface SearchBarProps {
 }
 
 const SearchBar = (props: SearchBarProps) => {
-  const nameHander: React.ChangeEventHandler<HTMLInputElement> = e => {
+  const nameHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
     const tar = e.target as HTMLInputElement;
     if (props.onChangeName) {
       props.onChangeName(tar.value);
@@ -27,7 +27,7 @@ const SearchBar = (props: SearchBarProps) => {
       <StyledSearchIcon></StyledSearchIcon>
       <StyledSearchBar
         inputState={props.inputState}
-        onChange={nameHander}
+        onChange={nameHandler}
         height={props.height}
         placeholder={props.content}
       ></StyledSearchBar>
