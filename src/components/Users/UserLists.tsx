@@ -21,7 +21,7 @@ const UserLists = () => {
     getUsers().then(allUsers => {
       setUsers(allUsers); //모든 유저 정보를 저장
       setFilteredUsers(allUsers);
-      // console.log(allUsers);
+      console.log(allUsers);
     });
   }, []);
 
@@ -46,7 +46,10 @@ const UserLists = () => {
 
   return (
     <StyledForm onSubmit={handleSearch}>
-      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
+      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />{' '}
+      <StyledLine />
+      {/* <StyledSubTitle>즐겨찾기</StyledSubTitle> */}
+      {/* 즐겨찾기 된 애들만 필터링 */}
       <StyledLine />
       <StyledSubTitle>유저목록</StyledSubTitle>
       {filteredUsers.length > 0
