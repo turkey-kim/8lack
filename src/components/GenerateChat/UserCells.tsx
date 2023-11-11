@@ -7,18 +7,18 @@ interface UserCellsProps {
   typed: string;
   height: string;
   marginTop?: string;
+  inputState?: string;
   allocatedData: User[];
   subData: User[];
   onToggleUser: React.Dispatch<React.SetStateAction<[User[], User[]]>>;
 }
 
 const UserCells = (props: UserCellsProps) => {
-  // 1. 체크박스에 상태 심기
-  // 2. 체크 되면
   return (
     <StyledUserContainer //
       height={props.height}
       marginTop={props.marginTop}
+      inputState={props.inputState}
     >
       {props.allocatedData.map(userData => (
         <UserCell
@@ -36,13 +36,22 @@ const UserCells = (props: UserCellsProps) => {
 
 export default UserCells;
 
-const StyledUserContainer = styled.div<Pick<UserCellsProps, 'height' | 'marginTop'>>`
+const StyledUserContainer = styled.div<Pick<UserCellsProps, 'height' | 'marginTop' | 'inputState'>>`
   width: 100%;
   height: ${props => props.height};
   margin-top: ${props => (props.marginTop ? props.marginTop : '')};
 
   background-color: ${theme.colors.gray100};
-  border: 1px solid ${theme.colors.gray400};
+  border: 1px solid
+    ${props => {
+      if (props.inputState === 'error') {
+        return theme.colors.error;
+      } else if (props.inputState === 'success') {
+        return theme.colors.success;
+      } else {
+        return theme.colors.gray400;
+      }
+    }};
   border-radius: 4px;
   overflow: scroll;
 `;
