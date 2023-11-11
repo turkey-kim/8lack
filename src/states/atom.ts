@@ -14,7 +14,11 @@ export const loginState = atom({
 
 export const userInformation = atom({
   key: 'userInformation',
-  default: {},
+  default: {
+    id: '',
+    name: '',
+    picture: '',
+  },
 });
 
 export const onlineUserList = atom({

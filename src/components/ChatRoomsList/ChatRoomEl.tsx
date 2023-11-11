@@ -7,20 +7,11 @@ import {format, register} from 'timeago.js'; //임포트하기 register 한국�
 import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
 register('ko', koLocale);
 
-interface Message {
-  id: string;
-  text: string;
-  userId: string;
-
-  createdAt: Date;
-}
-
 interface Chat {
   id: string;
   name: string;
   isPrivate: boolean;
   users: string[];
-  messages: Message[]; // message 객체가 속합니다.
 
   updatedAt: Date;
 }
