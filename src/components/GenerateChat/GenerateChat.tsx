@@ -9,6 +9,7 @@ import {getUsers} from 'api/users';
 import {makeChatRoom} from 'api/myChatRoom';
 import {useRecoilValue} from 'recoil';
 import {userInformation} from 'states/atom';
+import {useNavigate} from 'react-router';
 
 interface ModalProps {
   onClick: React.Dispatch<boolean>;
@@ -24,6 +25,7 @@ const GenerateChat = (props: ModalProps) => {
     {name: 'chatName', state: 'default'},
     {name: 'pickedUser', state: 'default'},
   ]);
+  const navigate = useNavigate();
 
   const myInfo = useRecoilValue(userInformation);
 
@@ -34,7 +36,7 @@ const GenerateChat = (props: ModalProps) => {
       const filtered = (res as User[]).slice().filter(val => val.id !== myInfo.id);
       setUserData([filtered, []]);
     });
-  }, []);
+  }, [myInfo.id]);
 
   const modalCloseHandler = () => {
     props.onClick(false);
@@ -50,17 +52,20 @@ const GenerateChat = (props: ModalProps) => {
       return;
     }
 
-    if (userData[1].length < 3) {
-      // 3명 이하 예외 조건 처리
+    if (userData[1].length < 2) {
+      // 자신을 포함 3명 이하 예외 조건 처리
       let temp: InputStates = [...inputStates];
       temp[1].state = 'error';
       setInputStates(temp);
-      alert('3명 이상을 선택해야 그룹 채팅방을 만들 수 있습니다.');
+      alert('자신을 제외하고 2명 이상을 선택해야 그룹 채팅방을 만들 수 있습니다.');
       return;
     }
-    const temp = userData[1].slice().map(val => val.name); // 이름만 있는 배열로 바꾸기
-    makeChatRoom(chatName, temp, false); // 생성
+
+    const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
+    console.log(users);
+    makeChatRoom(chatName, users, false); // 생성
     alert(`${chatName} 방이 생성되었습니다.`);
+    navigate('/chat/all');
     modalCloseHandler(); // 모달 닫기
   };
 
