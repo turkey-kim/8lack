@@ -1,6 +1,4 @@
 import {useState, useEffect} from 'react';
-import {FaRegStar, FaStar} from 'react-icons/fa';
-import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
 import {StyledLine, StyledSearchBar} from 'pages/UsersList';
 import {getUsers} from 'api/users';
@@ -12,19 +10,47 @@ export interface User {
   picture: string;
 }
 
+interface CheckedStates {
+  [key: string]: boolean;
+}
+
 const UserLists = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchUser, setSearchUser] = useState('');
-  //const [isActive, setIsActive] = useState(false);
+  const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
 
   useEffect(() => {
     getUsers().then(allUsers => {
-      setUsers(allUsers); //모든 유저 정보를 저장
+      const newCheckedStates: CheckedStates = {};
+      allUsers.forEach((user: User) => {
+        const saved = localStorage.getItem(`isChecked-${user.id}`);
+        newCheckedStates[user.id] = saved === 'true';
+      });
+      setCheckedStates(newCheckedStates);
+      setUsers(allUsers);
       setFilteredUsers(allUsers);
-      console.log(allUsers);
+      //console.log(allUsers);
     });
   }, []);
+
+  // const handleToggleChecked = () => {
+  //   toggleChecked(user.id); // 부모 컴포넌트에서 제공된 함수를 호출하여 상태를 업데이트
+  // };
+
+  useEffect(() => {
+    Object.keys(checkedStates).forEach(key => {
+      localStorage.setItem(`isChecked-${key}`, checkedStates[key].toString());
+    });
+  }, [checkedStates]);
+
+  // //toggledChecked로 즐찾 업데이트 되면 렌더링 되게 만드려고 했는데, 이걸 쓰면 값이 저장 안됨
+  const toggleChecked = (userId: string) => {
+    setCheckedStates(prevStates => ({
+      ...prevStates,
+      [userId]: !prevStates[userId],
+    }));
+  };
 
   //검색 구현
   useEffect(() => {
@@ -54,6 +80,7 @@ const UserLists = () => {
         filteredUsers
           .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
           .filter(user => user.name.toLowerCase())
+          .filter(user => checkedStates[user.id])
           .map(user => <UserItem key={user.id} user={user} />)
       ) : (
         <br />
@@ -123,16 +150,6 @@ export const StyledUserName = styled.div`
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-`;
-
-export const StyledActiveCircle = styled(MdCircle)`
-  color: ${props => props.theme.colors.success};
-`;
-
-export const StyledStar = styled(FaStar)`
-  margin-left: auto;
-  vertical-align: top;
-  color: ${props => props.theme.colors.blue700};
 `;
 
 export const StyledChatButton = styled.button`
