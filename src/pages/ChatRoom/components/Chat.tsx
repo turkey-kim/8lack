@@ -1,50 +1,25 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-import Drawer from '../Drawer/Drawer';
-import MessageList from '../MessageList/MessageList';
-import SendMessage from '../SendMessage/SendMessage';
-import {User, Message, ChatRoom} from '../../types/chatroom.types';
+import Drawer from 'components/Drawer/Drawer';
+import MessageList from 'pages/ChatRoom/components/MessageList';
+import SendMessage from 'pages/ChatRoom/components/SendMessage';
 import {RxHamburgerMenu} from 'react-icons/rx';
-import {connectedUsersIds, postMessages, dummyChatRoom} from './Chat.data';
+import {handleChatLeave} from 'api/chat';
 
-const Chat = () => {
-  const [chatRoom, setChatRoom] = useState<ChatRoom>(dummyChatRoom);
-  const [messages, setMessages] = useState<Message[]>(postMessages);
+const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // 채팅방 유저 객체
-  const usersMap = useMemo(() => {
-    const map: Record<string, User> = {};
-    for (const user of chatRoom.users) {
-      map[user.id] = user;
-    }
-    return map;
-  }, [chatRoom]);
+  // useEffect(() => {
+  //   handleChatParticipate(chatId);
+  // }, [chatId]);
 
-  const renderAvatars = () => {
-    const users = chatRoom.users;
-    if (chatRoom.isPrivate) {
-      // 비공개방: 개인 채팅방은 아바타 1개만 보여줌
-      const user = users[0];
-      return <StyledChatImg src={user.picture} alt={user.name} />;
-    } else {
-      const avatars = users
-        .slice(0, 2)
-        .map((user, index) => (
-          <StyledChatImg key={user.id} src={user.picture} alt={user.name} zIndex={1} marginLeft={index * -15} />
-        ));
-      return (
-        <>
-          {avatars}
-          {users.length > 2 && <StyledMore style={{marginLeft: -15 * avatars.length}}>+{users.length - 2}</StyledMore>}
-        </>
-      );
+  const navigate = useNavigate();
+  const handleLeaveChat = async () => {
+    const response = await handleChatLeave(chatId);
+    if (response) {
+      navigate(-1);
     }
-  };
-
-  const handleSendMessage = (messageText: string) => {
-    // socket.emit('message-to-server', { text: messageText, chatId: chatRoom?.id })
-    console.log(messageText);
   };
 
   const toggleDrawer = () => {
@@ -60,17 +35,16 @@ const Chat = () => {
       <StyledContainer>
         <StyledHeader>
           <StyledInfo>
-            {renderAvatars()}
-            <StyledTitle>{chatRoom?.name}</StyledTitle>
+            <StyledLeaveButton onClick={handleLeaveChat}>채팅 나가기</StyledLeaveButton>
           </StyledInfo>
           <StyleButton onClick={toggleDrawer}>
             <RxHamburgerMenu />
           </StyleButton>
         </StyledHeader>
-        <MessageList messages={messages} usersMap={usersMap} />
-        <SendMessage onSendMessage={handleSendMessage} />
+        <MessageList />
+        <SendMessage />
       </StyledContainer>
-      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} connectedUserIds={connectedUsersIds} usersMap={usersMap} />
+      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} />
     </>
   );
 };
@@ -93,6 +67,16 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: ${({theme}) => theme.colors.white};
+`;
+
+const StyledLeaveButton = styled.button`
+  background-color: ${({theme}) => theme.colors.blueBg1};
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  margin: 10px 0;
+  cursor: pointer;
 `;
 
 const StyledInfo = styled.div`

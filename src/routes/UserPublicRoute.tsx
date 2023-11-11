@@ -4,7 +4,7 @@ import useAuthCheck from 'hooks/useAuthCheck';
 import {useRecoilState} from 'recoil';
 import {onlineUserList} from 'states/atom';
 import {io} from 'socket.io-client';
-import {SERVER_URL} from 'constant';
+import {SERVER_URL} from 'constant/constant';
 
 const socketHeaders = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -22,18 +22,19 @@ const UserPublicRoute = ({children}: Props): any => {
   const {authorization, isLoading} = useAuthCheck();
   const [onlineUsers, setOnlineUsers] = useRecoilState(onlineUserList);
 
-  useEffect(() => {
-    const socket = io(`${SERVER_URL}/server`, {
-      extraHeaders: socketHeaders(),
-    });
-    socket.on('users-server-to-client', ({users}) => {
-      setOnlineUsers(users);
-    });
-
-    return () => {
-      socket.disconnect();
-    }; // 홈화면 언마운트(로그아웃) 시, 소켓 닫음.
-  }, []);
+  // FIXME: chat 소켓이 연결되지 않는 에러가 있어서 잠시 주석처리
+  // useEffect(() => {
+  //   const socket = io(`${SERVER_URL}/server`, {
+  //     extraHeaders: socketHeaders(),
+  //   });
+  //   socket.on('users-server-to-client', ({users}) => {
+  //     setOnlineUsers(users);
+  //   });
+  //
+  //   return () => {
+  //     socket.disconnect();
+  //   }; // 홈화면 언마운트(로그아웃) 시, 소켓 닫음.
+  // }, []);
 
   useEffect(() => {
     // console.log(onlineUsers);

@@ -1,17 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import {IUserList} from './UserList.types';
+import {useSocketContext} from 'contexts/SocketContext';
 
-const UserList: React.FC<IUserList> = ({connectedUserIds, usersMap}) => {
+const UserList: React.FC = () => {
+  const {users, socket} = useSocketContext();
+  const connectedUserIds = users.users;
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('users', {});
+    }
+  }, [socket]);
+
   return (
     <div className="user-list">
-      <h3>전체 유저 (온라인/자리비움)</h3>
+      <h3>전체 유저)</h3>
       <StyledList>
-        {Object.values(usersMap).map(user => (
-          <StyledUser key={user.id} $online={connectedUserIds.includes(user.id)}>
-            <StyledImage src={user.picture} alt={user.name} />
-            <span>{user.name}</span>
-            <StatusIndicator $online={connectedUserIds.includes(user.id)} />
+        {connectedUserIds.map(user => (
+          <StyledUser key={user}>
+            <span>{user}</span>
           </StyledUser>
         ))}
       </StyledList>
@@ -20,7 +27,7 @@ const UserList: React.FC<IUserList> = ({connectedUserIds, usersMap}) => {
 };
 
 interface UserStateProps {
-  $online: boolean;
+  $online?: boolean;
 }
 
 const StyledList = styled.ul`
