@@ -16,7 +16,7 @@ export const makeChatRoom = async (name: string, users: string[], isPrivate?: bo
     const response = await axios.post(
       'https://fastcampus-chat.net/chat',
       {name: name, users: users, isPrivate: isPrivate},
-      {headers: headers},
+      {headers: authHeaders()},
     );
     console.log(response, '성공?');
     return response.data;
