@@ -1,10 +1,8 @@
-import {useState, useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
-import {authCheck} from '../../api/auth';
 import {format, register} from 'timeago.js';
 import koLocale from 'timeago.js/lib/lang/ko';
-import {myChatRoom} from 'api/myChatRoom';
 
 register('ko', koLocale);
 
@@ -35,15 +33,15 @@ interface Props {
   data: Chat;
 }
 
-export default function PrivateChat(props: Props) {
+export default function GroupChat(props: Props) {
+  // const [privateRooms, setPrivateRooms] = useState<Chat[]>(dummyPrivateRooms);
   const {id, name, updatedAt, latestMessage, users} = props.data;
-
   return (
     <StyledContainer>
       <StyledSubContainer>
         <StyledImg src={users[1].picture} alt="사용자 프로필 이미지" />
         <StyledTextContainer>
-          <StyledTitle>{users[1].name}</StyledTitle>
+          <StyledTitle>{name}</StyledTitle>
           <StyledText>{latestMessage?.text}</StyledText>
         </StyledTextContainer>
       </StyledSubContainer>

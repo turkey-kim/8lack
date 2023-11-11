@@ -11,8 +11,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import NotFound from './pages/NotFound';
 import Users from './pages/Users';
 import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import ChatAll from 'pages/ChatAll';
+import SignUp from 'pages/SignUp';
 import ChatRoom from 'pages/ChatRoom';
 import GroupChatList from './pages/GroupChatList';
 import Modal from 'react-modal';
@@ -25,7 +24,6 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {index: true, path: '/', element: <GroupChatList />},
-      {index: true, path: '/chat', element: <ChatAll />},
       {path: '/chat/:chatId', element: <ChatRoom />},
       {path: '/users', element: <Users />},
     ],
