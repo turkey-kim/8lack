@@ -2,7 +2,10 @@ import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../../styles/Theme';
 import {useNavigate} from 'react-router';
-import {postSignUp, checkIdDuplication} from '../../../api/auth';
+import {postSignUp, checkIdDuplication, postSignIn} from 'api/auth';
+import {loginState} from 'states/atom';
+import {useRecoilState} from 'recoil';
+import {makeChatRoom} from 'api/myChatRoom';
 
 interface Props {
   isError?: string;
@@ -28,6 +31,7 @@ const SignUpBox = () => {
   let {name, id, pw, pw2} = inputs;
   const [validId, setValidId] = useState('default');
   const [validIdMsg, setValidIdMsg] = useState('사용 가능한 아이디 입니다');
+  const [isLogged, setIsLogged] = useRecoilState(loginState);
 
   useEffect(() => {
     checkPassword();
@@ -61,9 +65,22 @@ const SignUpBox = () => {
     });
   };
 
+  const signInAndFirstSet = async () => {
+    const res = await postSignIn(id, pw);
+    const {accessToken, refreshToken} = res;
+    localStorage.setItem('8lack_uid', id);
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    await makeChatRoom(name, ['나와의 채팅방 전용 가짜칭긔'], true); // 나와의 채팅방 생성
+    setIsLogged(true);
+    navigate('/');
+  };
+
   const signUp = async () => {
     if (pw && pw === pw2 && validId === 'true') {
-      return await postSignUp(id, pw, name);
+      // 성공했을 경우
+      await postSignUp(id, pw, name);
+      signInAndFirstSet();
     } else if (validId !== 'true') {
       alert('아이디 중복체크를 확인해주세요');
     } else {
