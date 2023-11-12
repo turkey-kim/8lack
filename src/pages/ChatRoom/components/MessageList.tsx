@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {useSocketContext} from 'contexts/SocketContext';
+import {useSocketContext} from 'contexts/ChatSocketContext';
 import {Message} from 'types/chatroom.types';
 import {formatMessageDate} from 'utils/formatDate';
 
