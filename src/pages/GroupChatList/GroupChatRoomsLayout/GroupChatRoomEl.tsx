@@ -1,20 +1,14 @@
+import {handleChatParticipate} from 'api/chat';
 import {useEffect, useState} from 'react';
 import {FaAngleDown} from 'react-icons/fa';
+import {useNavigate} from 'react-router';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
+import {Chat} from 'types/chatroom.types';
 
 import {format, register} from 'timeago.js'; //임포트하기 register 한국어 선택
 import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
 register('ko', koLocale);
-
-interface Chat {
-  id: string;
-  name: string;
-  isPrivate: boolean;
-  users: string[];
-
-  updatedAt: Date;
-}
 
 interface Props {
   key: string;
@@ -23,6 +17,7 @@ interface Props {
 
 const ChatRoomEl = (props: Props) => {
   const [time, setTime] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const calcTime = () => {
@@ -38,8 +33,17 @@ const ChatRoomEl = (props: Props) => {
 
     setInterval(() => {
       calcTime();
-    }, 30000);
+    }, 30000); // 마지막 채팅 시간은 30초 마다 갱신
   }, [props.data.updatedAt]);
+
+  const joinHandler = () => {
+    const ID = props.data.id;
+    const NAME = props.data.name;
+    const confirm = window.confirm(`${NAME} 방에 들어가시겠어요?`);
+    if (confirm) {
+      handleChatParticipate(ID).then(res => navigate(`/chat/${ID}`));
+    }
+  };
 
   return (
     <StyledContainer>
@@ -57,7 +61,7 @@ const ChatRoomEl = (props: Props) => {
             <span>참여 중인 사용자</span>
             <StyledAngleDown></StyledAngleDown>
           </StyledMemberListBtn>
-          <StyledEnterButton>들어가기</StyledEnterButton>
+          <StyledEnterButton onClick={joinHandler}>들어가기</StyledEnterButton>
         </StyledEnterance>
       </StyledInner>
     </StyledContainer>
