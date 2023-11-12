@@ -6,6 +6,7 @@ import {User} from 'types/chatroom.types';
 import {useRecoilValue} from 'recoil';
 import {userInformation} from 'states/atom';
 import {useUsersQuery} from 'hooks/useUsersQuery';
+import {theme} from 'styles/Theme';
 
 interface IAddUserModal {
   chatId: string;
@@ -26,11 +27,13 @@ const AddUserModal = ({chatId, onClose}: IAddUserModal) => {
     }
   }, [users, myInfo]);
 
-  const handleUserSelect = (userId: string) => {
+  const handleCheckboxChange = (userId: string) => {
     setSelectedUsers(prevSelectedUsers => {
-      return prevSelectedUsers.includes(userId)
-        ? prevSelectedUsers.filter(id => id !== userId)
-        : [...prevSelectedUsers, userId];
+      if (prevSelectedUsers.includes(userId)) {
+        return prevSelectedUsers.filter(id => id !== userId);
+      } else {
+        return [...prevSelectedUsers, userId];
+      }
     });
   };
 
@@ -41,15 +44,20 @@ const AddUserModal = ({chatId, onClose}: IAddUserModal) => {
     }
   };
 
-  console.log(userList);
-
   return (
     <Modal title="대화상대 추가" onClose={onClose} onSubmit={handleInviteUsers} buttonText="초대하기">
       <StyledUserList>
         {Array.from(userList.values()).map(user => (
-          <StyledUserItem key={user.id} onClick={() => handleUserSelect(user.id)}>
-            {user.name}
-            {selectedUsers.includes(user.id) && <span>선택됨</span>}
+          <StyledUserItem key={user.id} onClick={() => handleCheckboxChange(user.id)}>
+            <StyledPrf>
+              <StyledPrfImg src={user.picture} />
+              <StyledPrfName>{user.name}</StyledPrfName>
+            </StyledPrf>
+            <input
+              type="checkbox"
+              checked={selectedUsers.includes(user.id)}
+              onChange={() => handleCheckboxChange(user.id)}
+            />
           </StyledUserItem>
         ))}
       </StyledUserList>
@@ -62,16 +70,39 @@ export default AddUserModal;
 const StyledUserList = styled.ul`
   list-style: none;
   padding: 0;
-  max-height: 300px;
+  width: 100%;
+  max-height: 400px;
   overflow-y: auto;
 `;
 
 const StyledUserItem = styled.li`
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px 4px 4px;
+  background-color: ${theme.colors.white};
+  border-bottom: 1px solid ${theme.colors.gray400};
   cursor: pointer;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: ${theme.colors.blue100};
   }
+`;
+
+const StyledPrf = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const StyledPrfImg = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+`;
+
+const StyledPrfName = styled.span`
+  font-size: ${theme.fonts.body2.fontSize};
+  font-weight: ${theme.fonts.subtitle5.fontWeight};
+  line-height: ${theme.fonts.body2.lineHeight};
 `;

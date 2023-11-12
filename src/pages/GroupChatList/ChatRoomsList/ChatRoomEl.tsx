@@ -1,4 +1,4 @@
-import {handleChatParticipate} from 'api/chat';
+import {participateChatRoom} from 'api/myChatRoom';
 import {useEffect, useState} from 'react';
 import {FaAngleDown} from 'react-icons/fa';
 import {useNavigate} from 'react-router';
@@ -49,7 +49,7 @@ const ChatRoomEl = (props: Props) => {
     const NAME = props.data.name;
     const confirm = window.confirm(`${NAME} 방에 들어가시겠어요?`);
     if (confirm) {
-      handleChatParticipate(ID).then(res => navigate(`/chat/${ID}`));
+      participateChatRoom(ID).then(res => navigate(`/chat/${ID}`));
     }
   };
 
@@ -87,7 +87,7 @@ const StyledContainer = styled.div`
   height: 156px;
   border-bottom: 1px solid ${theme.colors.gray300};
   padding: 37px 80px;
-  transition: 0.3;
+  transition: 0.3s;
 
   &:hover {
     background-color: ${theme.colors.blue100};
@@ -150,7 +150,7 @@ const StyledMemberListBtn = styled.button`
   align-items: center;
   border-radius: 4px;
 
-  transition: 0.5;
+  transition: 0.5s;
 
   &:hover {
     background-color: ${theme.colors.blue200};

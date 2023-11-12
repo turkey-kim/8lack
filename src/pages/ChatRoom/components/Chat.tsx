@@ -1,23 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-import Drawer from 'components/Drawer/Drawer';
+import Drawer from 'components/Drawer';
 import MessageList from 'pages/ChatRoom/components/MessageList';
 import SendMessage from 'pages/ChatRoom/components/SendMessage';
+import UserList from 'pages/ChatRoom/components/UserList';
 import {RxHamburgerMenu} from 'react-icons/rx';
-import {handleChatLeave} from 'api/chat';
+import {AiOutlineUsergroupAdd} from 'react-icons/ai';
+import {leaveChatRoom} from 'api/myChatRoom';
+import AddUserModal from 'pages/ChatRoom/components/AddUserModal';
 
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  // useEffect(() => {
-  //   handleChatParticipate(chatId);
-  // }, [chatId]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const handleLeaveChat = async () => {
-    const response = await handleChatLeave(chatId);
-    if (response) {
+    const res = await leaveChatRoom(chatId);
+    if (res) {
       navigate(-1);
     }
   };
@@ -30,6 +30,14 @@ const Chat = ({chatId}: {chatId: string}) => {
     setIsDrawerOpen(false);
   };
 
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <StyledContainer>
@@ -37,14 +45,20 @@ const Chat = ({chatId}: {chatId: string}) => {
           <StyledInfo>
             <StyledLeaveButton onClick={handleLeaveChat}>채팅 나가기</StyledLeaveButton>
           </StyledInfo>
-          <StyleButton onClick={toggleDrawer}>
+          <StyledButton onClick={toggleDrawer}>
             <RxHamburgerMenu />
-          </StyleButton>
+          </StyledButton>
         </StyledHeader>
         <MessageList />
         <SendMessage />
       </StyledContainer>
-      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} />
+      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer}>
+        <UserList />
+        <StyledButton onClick={toggleModal}>
+          <AiOutlineUsergroupAdd /> 대화상대 초대
+        </StyledButton>
+        {isModalOpen && <AddUserModal chatId={chatId} onClose={closeModal} />}
+      </Drawer>
     </>
   );
 };
@@ -121,6 +135,6 @@ const StyledTitle = styled.div`
   margin-left: 1rem;
 `;
 
-const StyleButton = styled.button`
+const StyledButton = styled.button`
   display: flex;
 `;

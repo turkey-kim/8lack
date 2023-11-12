@@ -14,7 +14,6 @@ const UserList: React.FC = () => {
 
   return (
     <div className="user-list">
-      <h3>전체 유저)</h3>
       <StyledList>
         {connectedUserIds.map(user => (
           <StyledUser key={user}>
@@ -42,19 +41,19 @@ const StyledUser = styled.li<UserStateProps>`
   color: ${({$online, theme}) => ($online ? theme.colors.success : theme.colors.gray500)};
 `;
 
-const StyledImage = styled.img`
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  margin-right: 10px;
-`;
-
-const StatusIndicator = styled.span<UserStateProps>`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: ${({$online, theme}) => ($online ? theme.colors.success : theme.colors.gray500)};
-  margin-left: 5px;
-`;
+// const StyledImage = styled.img`
+//   width: 30px;
+//   height: 30px;
+//   border-radius: 50%;
+//   margin-right: 10px;
+// `;
+//
+// const StatusIndicator = styled.span<UserStateProps>`
+//   width: 10px;
+//   height: 10px;
+//   border-radius: 50%;
+//   background-color: ${({$online, theme}) => ($online ? theme.colors.success : theme.colors.gray500)};
+//   margin-left: 5px;
+// `;
 
 export default UserList;

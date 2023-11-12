@@ -5,13 +5,12 @@ import {IDrawer} from './Drawer.types';
 
 const Drawer: React.FC<IDrawer> = ({isOpen, onClose, children}) => {
   if (!isOpen) return null;
-  const portalRoot = document.getElementById('drawer-root') as HTMLElement;
   return ReactDOM.createPortal(
     <>
       <StyledBackdrop onClick={onClose} />
       <StyledDrawerContent>{children}</StyledDrawerContent>
     </>,
-    portalRoot,
+    document.getElementById('drawer-root') as HTMLElement,
   );
 };
 
@@ -24,7 +23,7 @@ const StyledBackdrop = styled.div`
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 3;
 `;
 
 const StyledDrawerContent = styled.div`
@@ -35,7 +34,7 @@ const StyledDrawerContent = styled.div`
   height: 100%;
   background-color: ${({theme}) => theme.colors.white};
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-  z-index: 1010;
+  z-index: 4;
   display: flex;
   flex-direction: column;
 `;
