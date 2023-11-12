@@ -3,17 +3,17 @@ import styled from 'styled-components';
 import {Outlet} from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import SideBar from './components/SideBar/SideBar';
-import UserPublicRoute from 'routes/UserPublicRoute';
+import {ServerSocketProvider} from 'contexts/ServerSocketContext';
 
 function App() {
   return (
-    <UserPublicRoute>
+    <ServerSocketProvider>
       <StyledContainer>
         <Navigation />
         <SideBar />
         <Outlet />
       </StyledContainer>
-    </UserPublicRoute>
+    </ServerSocketProvider>
   );
 }
 
