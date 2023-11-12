@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import TabEl from './TabEl';
 import {useState} from 'react';
 import TabProps from './TabProps';
-import {theme} from '../../../styles/Theme';
+import {theme} from '../../../../styles/Theme';
 
 const TabButton = () => {
   const [tabContents, setTabContents] = useState<TabProps[]>([

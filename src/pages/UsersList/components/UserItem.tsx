@@ -23,13 +23,13 @@ const UserItem = ({user}: UserItemProps) => {
   const [isActive, setIsActive] = useState(false); //활동중 ..소켓에서 받아와서 저장해오기
   const [isChecked, setIsChecked] = useState(() => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
-    console.log(`init ${user.id}:`, saved);
+    //console.log(`init ${user.id}:`, saved);
     return saved !== null ? saved === 'true' : 'false';
   });
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
-    console.log(`updated ${user.id}:`, isChecked);
+    //console.log(`updated ${user.id}:`, isChecked);
   }, [isChecked, user.id]);
 
   // useEffect(() => {
@@ -43,6 +43,7 @@ const UserItem = ({user}: UserItemProps) => {
       const users = [userId];
       try {
         const res = await makeChatRoom(chatName, users, true);
+        console.log(res); //채팅방 정보
         navigate(`/chat/${res.id}`);
       } catch (err) {
         console.error('채팅방 생성 실패', err);
@@ -69,7 +70,7 @@ const UserItem = ({user}: UserItemProps) => {
               // }
               //toggleChecked(user.id);
               setIsChecked(prev => !prev);
-              console.log(`on clicked ${user.id}`);
+              // console.log(`on clicked ${user.id}`);
             }}
           />
         </StyledUserName>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import HeaderLayout from '../components/HeaderLayout/HeaderLayout';
-import ChatRooms from '../components/ChatRoomsList/ChatRoomsList';
+import HeaderLayout from './HeaderLayout/HeaderLayout';
+import ChatRooms from './ChatRoomsList/ChatRoomsList';
 
 const StyledGroupLists = styled.div`
   width: 100%;

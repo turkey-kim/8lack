@@ -1,19 +1,24 @@
 import {MdSearch} from 'react-icons/md';
 import styled from 'styled-components';
-import {theme} from '../../styles/Theme';
+import {theme} from '../../../styles/Theme';
 
 interface SearchBarProps {
   height: string;
   content: string;
-  inputState?: string;
+  $inputState?: string;
   onChangeName?: React.Dispatch<React.SetStateAction<string>>;
+  onSearchName?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SearchBar = (props: SearchBarProps) => {
-  const ChangeNameHander: React.ChangeEventHandler<HTMLInputElement> = e => {
+  const nameHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
     const tar = e.target as HTMLInputElement;
     if (props.onChangeName) {
       props.onChangeName(tar.value);
+    }
+    if (props.onSearchName) {
+      props.onSearchName(tar.value);
+      console.log('seachedData');
     }
   };
 
@@ -21,8 +26,8 @@ const SearchBar = (props: SearchBarProps) => {
     <StyledInputContainer>
       <StyledSearchIcon></StyledSearchIcon>
       <StyledSearchBar
-        inputState={props.inputState}
-        onChange={ChangeNameHander}
+        $inputState={props.$inputState}
+        onChange={nameHandler}
         height={props.height}
         placeholder={props.content}
       ></StyledSearchBar>
@@ -46,10 +51,10 @@ const StyledSearchIcon = styled(MdSearch)`
   color: ${theme.colors.gray500};
 `;
 
-const StyledSearchBar = styled.input<Pick<SearchBarProps, 'height' | 'inputState'>>`
+const StyledSearchBar = styled.input<Pick<SearchBarProps, 'height' | '$inputState'>>`
   width: 100%;
   height: ${props => props.height + 'px'};
   padding-left: 36px;
-  border: 1px solid ${props => (props.inputState === 'error' ? theme.colors.error : props.theme.colors.gray500)};
+  border: 1px solid ${props => (props.$inputState === 'error' ? theme.colors.error : props.theme.colors.gray500)};
   border-radius: 4px;
 `;
