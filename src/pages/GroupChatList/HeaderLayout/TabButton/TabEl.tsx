@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {theme} from '../../../styles/Theme';
+import {theme} from '../../../../styles/Theme';
 import TabProps from './TabProps';
 
 interface Props {
