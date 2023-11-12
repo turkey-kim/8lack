@@ -1,4 +1,4 @@
-import {allChatRoom} from 'api/allChatRoom';
+import {wholeChatRoom} from 'api/wholeChatRoom';
 import {myChatRoom} from 'api/myChatRoom';
 import ChatRoomEl from './ChatRoomEl';
 import styled from 'styled-components';
@@ -19,12 +19,10 @@ const ChatLists = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allChat = await allChatRoom();
+        const allChat = await wholeChatRoom();
         const myChat = await myChatRoom();
         const refinedAllChat: Chat[] = allChat.chats;
         const refinedMyChat: Chat[] = myChat.chats;
-        // console.log(refinedAllChat);
-        console.log(refinedMyChat, 'MyChatList');
 
         const filtered = refinedAllChat.filter(allChat => {
           for (let i = 0; i < refinedMyChat.length; i++) {

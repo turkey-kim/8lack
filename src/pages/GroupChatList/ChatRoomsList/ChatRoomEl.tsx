@@ -41,13 +41,13 @@ const ChatRoomEl = (props: Props) => {
 
     setInterval(() => {
       calcTime();
-    }, 30000); // 시간은 30초 마다 갱신
+    }, 30000); // 마지막 채팅 시간은 30초 마다 갱신
   }, [props.data.updatedAt]);
 
   const joinHandler = () => {
     const ID = props.data.id;
     const NAME = props.data.name;
-    const confirm = window.confirm(`${NAME} 방에 참여하시겠어요?`);
+    const confirm = window.confirm(`${NAME} 방에 들어가시겠어요?`);
     if (confirm) {
       handleChatParticipate(ID).then(res => navigate(`/chat/${ID}`));
     }
