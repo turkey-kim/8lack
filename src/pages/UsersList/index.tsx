@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import UserLists from 'components/Users/UserLists';
+import UserLists from 'pages/UsersList/components/UserLists';
 
 const Users = () => {
   return (

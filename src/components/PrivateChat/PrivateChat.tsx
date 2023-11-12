@@ -1,10 +1,7 @@
-import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
-import {authCheck} from '../../api/auth';
 import {format, register} from 'timeago.js';
 import koLocale from 'timeago.js/lib/lang/ko';
-import {myChatRoom} from 'api/myChatRoom';
 
 register('ko', koLocale);
 
@@ -55,7 +52,7 @@ export default function PrivateChat(props: Props) {
   );
 }
 
-const StyledContainer = styled.li`
+export const StyledContainer = styled.li`
   display: flex;
   justify-content: space-around;
   width: 100%;
@@ -68,45 +65,46 @@ const StyledContainer = styled.li`
   }
 `;
 
-const StyledSubContainer = styled.div`
+export const StyledSubContainer = styled.div`
   display: flex;
   gap: 1rem;
 `;
 
-const StyledImg = styled.img`
+export const StyledImg = styled.img`
   width: 4rem;
   height: 4rem;
 `;
 
-const StyledTextContainer = styled.div`
+export const StyledTextContainer = styled.div`
+  width: 11.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   padding: 0.5rem;
 `;
 
-const StyledTitle = styled.h2`
+export const StyledTitle = styled.h2`
   font-size: ${props => props.theme.fonts.subtitle5.fontSize};
 `;
 
-const StyledText = styled.p`
+export const StyledText = styled.p`
   font-size: ${props => props.theme.fonts.body2.fontSize};
 `;
 
-const StyledDiv = styled.div`
+export const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
 `;
 
-const StyledDate = styled.p`
+export const StyledDate = styled.p`
   margin-top: 0.5rem;
   font-size: ${props => props.theme.fonts.body2.fontSize};
   color: ${props => props.theme.colors.gray600};
 `;
 
-const StyledLatestMessage = styled.div`
+export const StyledLatestMessage = styled.div`
   margin-bottom: 0.625rem;
   width: 0.875rem;
   height: 0.875rem;
