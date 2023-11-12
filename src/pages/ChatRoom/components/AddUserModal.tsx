@@ -48,7 +48,7 @@ const AddUserModal = ({chatId, onClose}: IAddUserModal) => {
     <Modal title="대화상대 추가" onClose={onClose} onSubmit={handleInviteUsers} buttonText="초대하기">
       <StyledUserList>
         {Array.from(userList.values()).map(user => (
-          <StyledUserItem key={user.id} onClick={() => handleCheckboxChange(user.id)}>
+          <StyledUserItem key={user.id}>
             <StyledPrf>
               <StyledPrfImg src={user.picture} />
               <StyledPrfName>{user.name}</StyledPrfName>

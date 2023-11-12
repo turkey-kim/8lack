@@ -38,7 +38,7 @@ export interface UserID {
 
 export interface NewUser {
   users: string[]; // 참여자들 id
-  joiners: Array<{id: string}>; // 새로운 참여자 id
+  joiners: string[]; // 새로운 참여자 id
 }
 
 export interface leaveUser {

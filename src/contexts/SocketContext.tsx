@@ -56,11 +56,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children
     // join 이벤트 데이터 처리
     newSocket.on('join', (data: NewUser) => {
       const joinMessage = data.joiners.map(joiner => ({
-        id: `join-${joiner.id}`,
-        text: `${joiner.id}님이 입장했습니다.`,
+        id: `join-${joiner}`,
+        text: `${joiner}님이 입장했습니다.`,
         userId: 'system',
         createdAt: new Date(),
       }));
+      console.log(data);
       setMessages(prevMessages => [...prevMessages, ...joinMessage]);
     });
     // leave 이벤트 데이터 처리
@@ -82,7 +83,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children
 
     return () => {
       if (newSocket.connected) {
-        console.log('소켓 연결종료');
         newSocket.close();
       }
     };
