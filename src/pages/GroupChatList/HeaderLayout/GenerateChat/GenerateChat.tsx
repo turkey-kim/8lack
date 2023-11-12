@@ -12,19 +12,16 @@ import {userInformation} from 'states/atom';
 import {useNavigate} from 'react-router';
 
 interface ModalProps {
-  onToggleModal: React.Dispatch<boolean>;
+  onClick: React.Dispatch<boolean>;
 }
 
 type InputStates = [{name: 'chatName'; state: string}, {name: 'pickedUser'; state: string}];
 
 const GenerateChat = (props: ModalProps) => {
   const [userData, setUserData] = useState<[User[], User[]]>([[], []]);
-  // [선택가능한 유저 배열, 선택된유저 배열]
   const [searchUserData, setSearchUserData] = useState('');
-  // 검색어
 
   const [chatName, setChatName] = useState<string>('');
-  // 방이름
 
   const [inputStates, setInputStates] = useState<InputStates>([
     {name: 'chatName', state: 'default'},
@@ -43,7 +40,7 @@ const GenerateChat = (props: ModalProps) => {
   }, [myInfo.id]);
 
   const modalCloseHandler = () => {
-    props.onToggleModal(false);
+    props.onClick(false);
   };
 
   const generateChatHandler = () => {
@@ -66,7 +63,7 @@ const GenerateChat = (props: ModalProps) => {
     }
 
     const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
-    makeChatRoom(chatName, users, false).then(res => {
+    const madeChatRoom = makeChatRoom(chatName, users, false).then(res => {
       let chatId = res.id;
       alert(`${chatName} 방이 생성되었습니다.`);
       navigate(`/chat/${chatId}`);
@@ -90,7 +87,7 @@ const GenerateChat = (props: ModalProps) => {
             <SearchBar content="사용자를 검색해보세요" height="40" onSearchName={setSearchUserData}></SearchBar>
             <UserCells
               height="312px"
-              $marginTop="8px"
+              marginTop="8px"
               typed=""
               allocatedData={userData[0]}
               subData={userData[1]}
@@ -102,7 +99,7 @@ const GenerateChat = (props: ModalProps) => {
             <StyledDiv>
               <StyledLabel>그룹 채팅방 제목 (필수)</StyledLabel>
               <SearchBar
-                $inputState={inputStates[0].state}
+                inputState={inputStates[0].state}
                 onChangeName={setChatName}
                 content="그룹 채팅방 이름을 적어주세요"
                 height="40"
@@ -116,7 +113,7 @@ const GenerateChat = (props: ModalProps) => {
                 subData={userData[0]}
                 onToggleUser={setUserData}
                 height="275px"
-                $inputState={inputStates[1].state}
+                inputState={inputStates[1].state}
               ></UserCells>
             </div>
           </StyledUnit>

@@ -7,8 +7,8 @@ import {useEffect, useState} from 'react';
 interface UserCellsProps {
   typed: string;
   height: string;
-  $marginTop?: string;
-  $inputState?: string;
+  marginTop?: string;
+  inputState?: string;
   filteredUserData?: User[];
   allocatedData: User[];
   subData: User[];
@@ -36,8 +36,8 @@ const UserCells = (props: UserCellsProps) => {
   return (
     <StyledUserContainer //
       height={props.height}
-      $marginTop={props.$marginTop}
-      $inputState={props.$inputState}
+      marginTop={props.marginTop}
+      inputState={props.inputState}
     >
       {searchUserData && filteredUserData
         ? filteredUserData.map(userData => (
@@ -66,17 +66,17 @@ const UserCells = (props: UserCellsProps) => {
 
 export default UserCells;
 
-const StyledUserContainer = styled.div<Pick<UserCellsProps, 'height' | '$marginTop' | '$inputState'>>`
+const StyledUserContainer = styled.div<Pick<UserCellsProps, 'height' | 'marginTop' | 'inputState'>>`
   width: 100%;
   height: ${props => props.height};
-  margin-top: ${props => (props.$marginTop ? props.$marginTop : '')};
+  margin-top: ${props => (props.marginTop ? props.marginTop : '')};
 
   background-color: ${theme.colors.gray100};
   border: 1px solid
     ${props => {
-      if (props.$inputState === 'error') {
+      if (props.inputState === 'error') {
         return theme.colors.error;
-      } else if (props.$inputState === 'success') {
+      } else if (props.inputState === 'success') {
         return theme.colors.success;
       } else {
         return theme.colors.gray400;

@@ -1,20 +1,24 @@
 import styled from 'styled-components';
 import TabEl from './TabEl';
-import {theme} from '../../../../styles/Theme';
+import {useState} from 'react';
 import TabProps from './TabProps';
+import {theme} from '../../../../styles/Theme';
 
-interface tabButtonProps {
-  setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>;
-  tabs: TabProps[];
-}
+const TabButton = () => {
+  const [tabContents, setTabContents] = useState<TabProps[]>([
+    {label: '가나다 순', selected: true},
+    {label: '최근 채팅 순', selected: false},
+    {label: '사람 많은 순', selected: false},
+    {label: '새로운 순', selected: false},
+    {label: '홀로 있는 방', selected: false},
+  ]);
 
-const TabButton = (props: tabButtonProps) => {
   return (
     <StyledDiv>
       <StyledLabel>정렬</StyledLabel>
       <StyledTabContainer>
-        {props.tabs.map(tab => (
-          <TabEl key={tab.label} onClick={props.setTabs} tabs={props.tabs} tab={tab}></TabEl>
+        {tabContents.map(contents => (
+          <TabEl key={contents.label} onClick={setTabContents} tabContents={tabContents} contents={contents}></TabEl>
         ))}
       </StyledTabContainer>
     </StyledDiv>
