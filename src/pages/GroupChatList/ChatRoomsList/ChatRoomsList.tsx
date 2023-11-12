@@ -1,4 +1,5 @@
 import {allChatRoom} from 'api/allChatRoom';
+import {myChatRoom} from 'api/myChatRoom';
 import ChatRoomEl from './ChatRoomEl';
 import styled from 'styled-components';
 import {useEffect, useState} from 'react';
@@ -16,9 +17,31 @@ const ChatLists = () => {
   const [chatRoomsList, setChatRoomsList] = useState<Chat[]>([]);
 
   useEffect(() => {
-    allChatRoom().then(res => {
-      setChatRoomsList(res.chats);
-    });
+    const fetchData = async () => {
+      try {
+        const allChat = await allChatRoom();
+        const myChat = await myChatRoom();
+        const refinedAllChat: Chat[] = allChat.chats;
+        const refinedMyChat: Chat[] = myChat.chats;
+        // console.log(refinedAllChat);
+        console.log(refinedMyChat, 'MyChatList');
+
+        const filtered = refinedAllChat.filter(allChat => {
+          for (let i = 0; i < refinedMyChat.length; i++) {
+            if (allChat.id === refinedMyChat[i].id) {
+              console.log(allChat.id, 'allChat id', refinedMyChat[i].id, 'refinedMyId');
+              return false;
+            }
+          }
+          return true;
+        });
+
+        setChatRoomsList(filtered);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
   }, []);
 
   return (

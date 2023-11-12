@@ -41,7 +41,7 @@ const ChatRoomEl = (props: Props) => {
 
     setInterval(() => {
       calcTime();
-    }, 30000);
+    }, 30000); // 시간은 30초 마다 갱신
   }, [props.data.updatedAt]);
 
   const joinHandler = () => {
