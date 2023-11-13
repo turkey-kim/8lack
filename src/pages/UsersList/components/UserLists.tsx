@@ -74,8 +74,8 @@ const UserLists = () => {
   };
 
   return (
-    <StyledForm onClick={e => e.stopPropagation()} onSubmit={handleSearch}>
-      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />{' '}
+    <StyledForm onSubmit={handleSearch}>
+      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
       <StyledLine />
       <StyledSubTitle>즐겨찾기</StyledSubTitle>
       {filteredUsers.length > 0 ? (
