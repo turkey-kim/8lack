@@ -7,52 +7,90 @@ import {
   StyledUserName,
   StyledChatButton,
 } from './UserLists';
-import {FaRegStar, FaStar} from 'react-icons/fa';
+import {FaStar} from 'react-icons/fa';
 import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
 import {makeChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router';
 import {isStarBtnClicked} from 'states/atom';
 import {useRecoilState} from 'recoil';
+import {authCheck} from 'api/auth';
+import {myChatRoom} from 'api/myChatRoom';
+import {ChatRoom} from 'types/chatroom.types';
 
 interface UserItemProps {
   user: User;
-  //toggleChecked: (userId: string) => void;
 }
 
 const UserItem = ({user}: UserItemProps) => {
   const navigate = useNavigate();
-  const [isActive, setIsActive] = useState(false); //활동중 ..소켓에서 받아와서 저장해오기
+  // const [isActive, setIsActive] = useState(false); //활동중 ..소켓에서 받아와서 저장해오기
   const [isChecked, setIsChecked] = useState(() => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
-    //console.log(`init ${user.id}:`, saved);
     return saved !== null ? saved === 'true' : 'false';
   });
+  const [myId, setMyId] = useState<string>('');
   const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
+
+  const getAuth = async () => {
+    const res = await authCheck();
+    setMyId(res.user.id);
+  };
+
+  useEffect(() => {
+    getAuth();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
-    //console.log(`updated ${user.id}:`, isChecked);
   }, [isChecked, user.id]);
 
-  const handleCreateChat = async (userId: string, userName: string) => {
-    const isConfirmed = window.confirm(`${userName}님과 채팅 시작하시겠습니까?`);
-    if (isConfirmed) {
-      const chatName = `${userName}`; //이렇게 하면 나중에 중복되지 않나 체크
-      const users = [userId];
-      try {
-        const res = await makeChatRoom(chatName, users, true);
-        console.log(res); //채팅방 정보
-        navigate(`/chat/${res.id}`);
-      } catch (err) {
-        console.error('채팅방 생성 실패', err);
+  const handleCreateChat = async (userId: string, userName: string, e: React.MouseEvent) => {
+    e.preventDefault();
+
+    try {
+      const isConfirmed = window.confirm(`${userName}님과 채팅을 시작하시겠습니까?`);
+      if (isConfirmed) {
+        const chatName = `${userName}`;
+        const users = [userId];
+
+        const existingChatRooms: {chats: ChatRoom[]} | undefined = await myChatRoom();
+        console.log(existingChatRooms);
+
+        if (existingChatRooms && Array.isArray(existingChatRooms.chats)) {
+          const existingChat = existingChatRooms.chats.find(
+            chatRoom =>
+              chatRoom.isPrivate &&
+              chatRoom.users.some(user => user.id === userId) &&
+              chatRoom.users.some(user => user.id === myId),
+          );
+
+          if (existingChat) {
+            console.log('기존 채팅방 사용', existingChat);
+            navigate(`/chat/${existingChat.id}`);
+          } else {
+            // 기존 채팅방이 없으면 새로운 채팅방 생성
+            const res = await makeChatRoom(chatName, users, true);
+            console.log('새로운 채팅방 생성', res);
+            navigate(`/chat/${res.id}`);
+          }
+        } else {
+          console.error('채팅방 목록이 유효하지 않습니다.');
+        }
       }
+    } catch (err) {
+      console.error('채팅방 생성 또는 조회 실패', err);
     }
   };
 
   return (
-    //유저마다 생성 되는 것
-    <StyledUserContainer key={user.id}>
+    <StyledUserContainer
+      key={user.id}
+      onClick={e => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+    >
       <StyledUserProfile src={user.picture} />
       <StyledUserDescription>
         <StyledUserName>
@@ -66,7 +104,13 @@ const UserItem = ({user}: UserItemProps) => {
             }}
           />
         </StyledUserName>
-        <StyledChatButton onClick={() => handleCreateChat(user.id, user.name)}>1:1 채팅하기</StyledChatButton>
+        <StyledChatButton
+          onClick={e => {
+            handleCreateChat(user.id, user.name, e);
+          }}
+        >
+          1:1 채팅하기
+        </StyledChatButton>
       </StyledUserDescription>
     </StyledUserContainer>
   );

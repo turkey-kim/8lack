@@ -5,6 +5,7 @@ import {getUsers} from 'api/users';
 import UserItem from './UserItem';
 import {isStarBtnClicked} from 'states/atom';
 import {useRecoilValue} from 'recoil';
+import {authCheck} from 'api/auth';
 
 export interface User {
   id: string;
@@ -22,6 +23,17 @@ const UserLists = () => {
   const [searchUser, setSearchUser] = useState('');
   const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
   const starBtnClicked = useRecoilValue(isStarBtnClicked);
+  const [myId, setMyId] = useState<string>('');
+
+  const getAuth = async () => {
+    const res = await authCheck();
+    setMyId(res.user.id);
+  };
+
+  useEffect(() => {
+    getAuth();
+    // console.log(id); //현재 로그인한 아이디
+  }, []);
 
   useEffect(() => {
     getUsers().then(allUsers => {
@@ -42,13 +54,11 @@ const UserLists = () => {
     });
   }, [checkedStates]);
 
-  //검색 구현
   useEffect(() => {
     filterUsers();
   }, [searchUser]);
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSearch = () => {
     filterUsers();
   };
 
@@ -62,8 +72,18 @@ const UserLists = () => {
   };
 
   return (
-    <StyledForm onSubmit={handleSearch}>
-      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />{' '}
+    <StyledForm
+      onSubmit={e => {
+        e.preventDefault();
+        handleSearch();
+      }}
+      onKeyPress={e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+        }
+      }}
+    >
+      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
       <StyledLine />
       <StyledSubTitle>즐겨찾기</StyledSubTitle>
       {filteredUsers.length > 0 ? (
@@ -71,6 +91,7 @@ const UserLists = () => {
           .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
           .filter(user => user.name.toLowerCase())
           .filter(user => checkedStates[user.id])
+          .filter(user => user.id !== myId)
           .map(user => <UserItem key={user.id} user={user} />)
       ) : (
         <br />
@@ -82,6 +103,7 @@ const UserLists = () => {
             .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
             .filter(user => user.name.toLowerCase())
             .filter(user => !checkedStates[user.id])
+            .filter(user => user.id !== myId)
             .map(user => <UserItem key={user.id} user={user} />)
         : '검색된 유저가 없습니다.'}
     </StyledForm>
@@ -108,7 +130,6 @@ export const StyledSubTitle = styled.div`
   font-weight: ${props => props.theme.fonts.subtitle5.fontWeight};
 `;
 
-// user container
 export const StyledUserContainer = styled.div`
   width: 14rem;
   height: 18rem;
