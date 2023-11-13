@@ -16,7 +16,6 @@ import {chatRoomState} from 'states/atom';
 
 // TODO: 불필요한 리렌더 줄이기
 const Chat = ({chatId}: {chatId: string}) => {
-  console.log(chatId);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {data: chatRoomData, isLoading, isError} = useChatRoomQuery(chatId);
