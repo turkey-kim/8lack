@@ -28,7 +28,7 @@ const UserItem = ({user}: UserItemProps) => {
     //console.log(`init ${user.id}:`, saved);
     return saved !== null ? saved === 'true' : 'false';
   });
-  const [starBtnClicked, setStarBtnCliced] = useRecoilState(isStarBtnClicked);
+  const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
@@ -62,7 +62,7 @@ const UserItem = ({user}: UserItemProps) => {
             className={isChecked ? 'checked' : 'unchecked'}
             onClick={() => {
               setIsChecked(prev => !prev);
-              setStarBtnCliced(!starBtnClicked);
+              setStarBtnClicked(!starBtnClicked);
             }}
           />
         </StyledUserName>
