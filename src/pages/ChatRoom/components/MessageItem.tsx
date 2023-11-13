@@ -17,7 +17,7 @@ const MessageItem: React.FC<MessageItemProps> = React.memo(({message, isCurrentU
     <StyledItem $currentUser={isCurrentUser}>
       <StyledInner $currentUser={isCurrentUser}>
         {!isCurrentUser && <StyledUser>{message.userId}</StyledUser>}
-        <StyledBubble $currentUser={isCurrentUser}>{message.text}</StyledBubble> {/* 수정된 부분 */}
+        <StyledBubble $currentUser={isCurrentUser}>{message.text}</StyledBubble>
         <StyledDate>{formatMessageDate(message.createdAt)}</StyledDate>
         <StyledSpacer $currentUser={isCurrentUser} />
       </StyledInner>

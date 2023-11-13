@@ -33,8 +33,10 @@ const StyledDrawerContent = styled.div`
   width: 300px;
   height: 100%;
   background-color: ${({theme}) => theme.colors.white};
+  padding: 1rem;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 4;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;

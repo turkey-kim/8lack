@@ -5,7 +5,7 @@ import Navigation from './components/Navigation/Navigation';
 import SideBar from './components/SideBar/SideBar';
 import {ServerSocketProvider} from 'contexts/ServerSocketContext';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools/build/modern';
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import React from 'react';
 
 const queryClient = new QueryClient();
