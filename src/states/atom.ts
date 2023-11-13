@@ -1,5 +1,6 @@
-import {atom} from 'recoil';
+import {atom, selector} from 'recoil';
 import {recoilPersist} from 'recoil-persist';
+import {IChatRoom, IUserInfo} from 'types/chatroom.types';
 
 const {persistAtom} = recoilPersist({
   key: 'localStorage',
@@ -29,4 +30,24 @@ export const onlineUserList = atom({
 export const isStarBtnClicked = atom({
   key: 'isStarBtnClicked',
   default: false,
+});
+
+export const chatRoomState = atom<IChatRoom | null>({
+  key: 'chatRoomState',
+  default: null,
+});
+
+export const chatRoomUsersSelector = selector<Record<string, IUserInfo> | null>({
+  key: 'chatRoomUsersSelector',
+  get: ({get}) => {
+    const chatRoom = get(chatRoomState);
+    if (chatRoom) {
+      const map: Record<string, IUserInfo> = {};
+      for (const user of chatRoom.users) {
+        map[user.id] = user;
+      }
+      return map;
+    }
+    return null;
+  },
 });

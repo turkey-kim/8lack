@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {format, register} from 'timeago.js';
 import koLocale from 'timeago.js/lib/lang/ko';
-import {Props, Chat} from 'types/chatroom.types';
+import {Props, IChat} from 'types/chatroom.types';
 import {useNavigate, useParams} from 'react-router-dom';
 import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
 import {authCheck} from 'api/auth';
@@ -20,7 +20,7 @@ export default function PrivateChat(props: Props) {
     updateQuery: {isLoading, data: realTimeData},
   } = useRealTimeUpdate();
 
-  const selectedChatRoom = realTimeData?.chats.find((chat: Chat) => chat.id === id);
+  const selectedChatRoom = realTimeData?.chats.find((chat: IChat) => chat.id === id);
 
   const getAuth = async () => {
     const res = await authCheck();

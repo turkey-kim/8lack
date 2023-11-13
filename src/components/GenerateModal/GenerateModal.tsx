@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import SearchBar from 'pages/GroupChatList/HeaderLayout/SearchBar';
 import {MdClose} from 'react-icons/md';
 import styled from 'styled-components';
@@ -10,7 +11,7 @@ import {makeChatRoom} from 'api/myChatRoom';
 import {useRecoilValue} from 'recoil';
 import {userInformation} from 'states/atom';
 import {useNavigate, useParams} from 'react-router';
-import {handleChatInvite} from 'api/chat';
+import {inviteChatRoom} from 'api/myChatRoom';
 
 interface ModalProps {
   onToggleModal: React.Dispatch<boolean>;
@@ -97,7 +98,7 @@ const GenerateModal = (props: ModalProps) => {
 
       const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
       if (chatId) {
-        handleChatInvite(chatId, users);
+        inviteChatRoom(chatId, users);
       } else {
         alert('알 수 없는 이유로 채팅방을 생성할 수 없습니다.');
       }
@@ -106,7 +107,7 @@ const GenerateModal = (props: ModalProps) => {
     }
   };
 
-  return (
+  return ReactDOM.createPortal(
     <Bundler>
       <BackDrop onClick={modalCloseHandler} />
       <StyledModalContainer>
@@ -158,7 +159,8 @@ const GenerateModal = (props: ModalProps) => {
           <StyledCancelButton onClick={modalCloseHandler}>취소하기</StyledCancelButton>
         </StyledBottom>
       </StyledModalContainer>
-    </Bundler>
+    </Bundler>,
+    document.getElementById('modal-root') as HTMLElement,
   );
 };
 
