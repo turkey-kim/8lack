@@ -4,6 +4,7 @@ import {Props, Chat} from 'types/chatroom.types';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {
+  StyledTopContainer,
   StyledSubContainer,
   StyledTextContainer,
   StyledTitle,
@@ -52,12 +53,6 @@ export default function GroupChat(props: Props) {
     </StyledTopContainer>
   );
 }
-
-const StyledTopContainer = styled.li`
-  .selected_chat {
-    background-color: ${theme.colors.blue100};
-  }
-`;
 
 const StyledGroupContainer = styled.div`
   display: flex;
