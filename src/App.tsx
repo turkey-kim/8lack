@@ -5,20 +5,23 @@ import Navigation from './components/Navigation/Navigation';
 import SideBar from './components/SideBar/SideBar';
 import {ServerSocketProvider} from 'contexts/ServerSocketContext';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
+import UserPublicRoute from 'routes/UserPublicRoute';
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ServerSocketProvider>
-        <StyledContainer>
-          <Navigation />
-          <SideBar />
-          <Outlet />
-        </StyledContainer>
-    </ServerSocketProvider>
-    </QueryClientProvider>
+    <UserPublicRoute>
+      <QueryClientProvider client={queryClient}>
+        <ServerSocketProvider>
+          <StyledContainer>
+            <Navigation />
+            <SideBar />
+            <Outlet />
+          </StyledContainer>
+        </ServerSocketProvider>
+      </QueryClientProvider>
+    </UserPublicRoute>
   );
 }
 
