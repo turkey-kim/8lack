@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
-import {Chat} from 'types/chatroom.types';
+import {IChat} from 'types/chatroom.types';
 import useRealTimeUpdate from './useRealTimeUpdate';
 
 export default function useSortedSidebarChat() {
-  const [sortedChat, setSortedChat] = useState<Chat[]>([]);
+  const [sortedChat, setSortedChat] = useState<IChat[]>([]);
   const {
     updateQuery: {isLoading, data: realTimeData},
   } = useRealTimeUpdate();
@@ -11,7 +11,7 @@ export default function useSortedSidebarChat() {
   useEffect(() => {
     if (!isLoading && realTimeData) {
       const sorted = realTimeData.chats.sort(
-        (a: Chat, b: Chat) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+        (a: IChat, b: IChat) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
       );
       setSortedChat(sorted);
     }
