@@ -87,7 +87,7 @@ const GenerateChat = (props: ModalProps) => {
             <SearchBar content="사용자를 검색해보세요" height="40" onSearchName={setSearchUserData}></SearchBar>
             <UserCells
               height="312px"
-              marginTop="8px"
+              $marginTop="8px"
               typed=""
               allocatedData={userData[0]}
               subData={userData[1]}
@@ -99,7 +99,7 @@ const GenerateChat = (props: ModalProps) => {
             <StyledDiv>
               <StyledLabel>그룹 채팅방 제목 (필수)</StyledLabel>
               <SearchBar
-                inputState={inputStates[0].state}
+                $inputState={inputStates[0].state}
                 onChangeName={setChatName}
                 content="그룹 채팅방 이름을 적어주세요"
                 height="40"
@@ -113,7 +113,7 @@ const GenerateChat = (props: ModalProps) => {
                 subData={userData[0]}
                 onToggleUser={setUserData}
                 height="275px"
-                inputState={inputStates[1].state}
+                $inputState={inputStates[1].state}
               ></UserCells>
             </div>
           </StyledUnit>

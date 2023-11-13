@@ -11,7 +11,7 @@ interface UserCellProps {
 }
 
 const UserCell = (props: UserCellProps) => {
-  const isCheckedHandler = (e: React.MouseEvent<HTMLInputElement>) => {
+  const isCheckedHandler: React.ChangeEventHandler = e => {
     const newAllocUser = props.allocatedData.slice().filter(arg => arg.id !== props.user.id);
     const newSubUser = props.subData.slice();
     newSubUser.push(props.user);
@@ -29,7 +29,7 @@ const UserCell = (props: UserCellProps) => {
         <StyledPrfImg src={props.user.picture} />
         <StyledPrfName>{props.user.name}</StyledPrfName>
       </StyledPrf>
-      <input type="checkbox" onClick={isCheckedHandler} checked={props.typed ? true : false} />
+      <input type="checkbox" onChange={isCheckedHandler} checked={props.typed ? true : false} />
     </StyledCellContainer>
   );
 };
