@@ -10,10 +10,6 @@ import {handleChatLeave} from 'api/chat';
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // useEffect(() => {
-  //   handleChatParticipate(chatId);
-  // }, [chatId]);
-
   const navigate = useNavigate();
   const handleLeaveChat = async () => {
     const response = await handleChatLeave(chatId);

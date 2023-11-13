@@ -1,10 +1,10 @@
 import {useState, useEffect} from 'react';
-import {FaRegStar, FaStar} from 'react-icons/fa';
-import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
 import {StyledLine, StyledSearchBar} from 'pages/UsersList';
 import {getUsers} from 'api/users';
 import UserItem from './UserItem';
+import {isStarBtnClicked} from 'states/atom';
+import {useRecoilValue} from 'recoil';
 
 export interface User {
   id: string;
@@ -12,19 +12,35 @@ export interface User {
   picture: string;
 }
 
+interface CheckedStates {
+  [key: string]: boolean;
+}
+
 const UserLists = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchUser, setSearchUser] = useState('');
-  //const [isActive, setIsActive] = useState(false);
+  const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
+  const starBtnClicked = useRecoilValue(isStarBtnClicked);
 
   useEffect(() => {
     getUsers().then(allUsers => {
-      setUsers(allUsers); //모든 유저 정보를 저장
+      const newCheckedStates: CheckedStates = {};
+      allUsers.forEach((user: User) => {
+        const saved = localStorage.getItem(`isChecked-${user.id}`);
+        newCheckedStates[user.id] = saved === 'true';
+      });
+      setCheckedStates(newCheckedStates);
+      setUsers(allUsers);
       setFilteredUsers(allUsers);
-      console.log(allUsers);
     });
-  }, []);
+  }, [starBtnClicked]);
+
+  useEffect(() => {
+    Object.keys(checkedStates).forEach(key => {
+      localStorage.setItem(`isChecked-${key}`, checkedStates[key].toString());
+    });
+  }, [checkedStates]);
 
   //검색 구현
   useEffect(() => {
@@ -54,6 +70,7 @@ const UserLists = () => {
         filteredUsers
           .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
           .filter(user => user.name.toLowerCase())
+          .filter(user => checkedStates[user.id])
           .map(user => <UserItem key={user.id} user={user} />)
       ) : (
         <br />
@@ -64,6 +81,7 @@ const UserLists = () => {
         ? filteredUsers
             .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
             .filter(user => user.name.toLowerCase())
+            .filter(user => !checkedStates[user.id])
             .map(user => <UserItem key={user.id} user={user} />)
         : '검색된 유저가 없습니다.'}
     </StyledForm>
@@ -123,16 +141,6 @@ export const StyledUserName = styled.div`
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-`;
-
-export const StyledActiveCircle = styled(MdCircle)`
-  color: ${props => props.theme.colors.success};
-`;
-
-export const StyledStar = styled(FaStar)`
-  margin-left: auto;
-  vertical-align: top;
-  color: ${props => props.theme.colors.blue700};
 `;
 
 export const StyledChatButton = styled.button`

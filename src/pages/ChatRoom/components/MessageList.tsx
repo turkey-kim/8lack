@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import styled from 'styled-components';
-import {useSocketContext} from 'contexts/SocketContext';
+import {useSocketContext} from 'contexts/ChatSocketContext';
 import {groupMessagesByDate} from 'utils/formatDate';
 import MessageItem from './MessageItem';
 import {Message} from 'types/chatroom.types';
