@@ -27,7 +27,7 @@ const ChatLists = () => {
         const filtered = refinedAllChat.filter(allChat => {
           for (let i = 0; i < refinedMyChat.length; i++) {
             if (allChat.id === refinedMyChat[i].id) {
-              console.log(allChat.id, 'allChat id', refinedMyChat[i].id, 'refinedMyId');
+              // console.log(allChat.id, 'allChat id', refinedMyChat[i].id, 'refinedMyId');
               return false;
             }
           }
@@ -43,11 +43,7 @@ const ChatLists = () => {
   }, []);
 
   return (
-    <StyledRoomContainer>
-      {chatRoomsList?.map(room => (
-        <ChatRoomEl key={room.id} data={room} />
-      ))}
-    </StyledRoomContainer>
+    <StyledRoomContainer>{chatRoomsList?.map(room => <ChatRoomEl key={room.id} data={room} />)}</StyledRoomContainer>
   );
 };
 

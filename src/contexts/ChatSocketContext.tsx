@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState, useMemo} from 'react';
 import io, {Socket} from 'socket.io-client';
 import {leaveUser, Message, NewUser, PrevMessage, UserID} from 'types/chatroom.types';
 import {authHeaders} from 'api/auth';
@@ -22,8 +22,10 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
   const [messages, setMessages] = useState<Message[]>([]);
   const [prevMessages, setPrevMessages] = useState<PrevMessage>({messages: []});
   const [users, setUsers] = useState<UserID>({users: []});
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
+    if (attempt > 1) return;
     const newSocket = io(url, {
       extraHeaders: authHeaders(),
     });
@@ -37,6 +39,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
 
     newSocket.on('connect', () => {
       console.log('Socket connected:', newSocket.id);
+      setAttempt(0);
     });
 
     newSocket.on('connect_error', error => {
@@ -45,7 +48,12 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
 
     newSocket.on('disconnect', reason => {
       console.log('Socket disconnect:', reason);
+      if (reason === 'io server disconnect') {
+        console.log('연결 시도');
+        setTimeout(() => setAttempt(attempt + 1), 1000);
+      }
     });
+
     // 메시지 수신
     newSocket.on('message-to-client', (data: Message) => {
       setMessages(prevMessages => [...prevMessages, data]);
@@ -86,7 +94,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
         newSocket.close();
       }
     };
-  }, [id, url]);
+  }, [id, url, attempt]);
 
   const contextValue = {
     socket,

@@ -22,7 +22,8 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
     const newSocket = io(`${SERVER_URL}/server`, {
       extraHeaders: authHeaders(),
     });
-
+    newSocket.off('connect');
+    newSocket.off('disconnect');
     newSocket.on('connect', () => {
       console.log('Server Socket connected:', newSocket.id);
     });
