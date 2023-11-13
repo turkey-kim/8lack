@@ -26,7 +26,7 @@ export default TabButton;
 const StyledLabel = styled.label`
   font-size: ${theme.fonts.body2.fontSize};
   color: ${theme.colors.gray700};
-  margin-right: 16px;
+  margin-right: 1rem;
 `;
 
 const StyledDiv = styled.div`
@@ -34,7 +34,7 @@ const StyledDiv = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  margin-top: 16px;
+  margin-top: 1rem;
 `;
 
 const StyledTabContainer = styled(StyledDiv)`
@@ -43,6 +43,6 @@ const StyledTabContainer = styled(StyledDiv)`
   margin-top: 0;
 
   background-color: ${theme.colors.gray100};
-  padding: 4px 12px;
-  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
 `;

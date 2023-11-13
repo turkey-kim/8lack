@@ -76,8 +76,8 @@ const StyledContainer = styled.div`
   position: relative;
 
   width: 100%;
-  height: 156px;
-  border-bottom: 1px solid ${theme.colors.gray300};
+  height: 9.75rem;
+  border-bottom: 0.063rem solid ${theme.colors.gray300};
   padding: 37px 80px;
   transition: 0.3;
 
@@ -87,7 +87,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledInner = styled.div`
-  height: 82px;
+  height: 5.125rem;
   width: Calc(100% - 160px);
   position: absolute;
 
@@ -102,7 +102,7 @@ const StyledH3 = styled.h3`
   font-size: ${theme.fonts.subtitle4.fontSize};
   font-weight: ${theme.fonts.subtitle4.fontWeight};
   line-height: ${theme.fonts.subtitle4.lineHeight};
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 `;
 
 const StyledChatInfo = styled.div`
@@ -112,7 +112,7 @@ const StyledChatInfo = styled.div`
 
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
 
   color: ${theme.colors.gray600};
 `;
@@ -120,15 +120,15 @@ const StyledChatInfo = styled.div`
 const StyledAmount = styled.span``;
 
 const StyledDivider = styled.div`
-  width: 1px;
-  height: 16px;
+  width: 0.063rem;
+  height: 1rem;
   background-color: ${theme.colors.gray500};
 `;
 const StyledLatestTime = styled.span``;
 
 const StyledEnterance = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
 `;
 
 const StyledMemberListBtn = styled.button`
@@ -138,9 +138,9 @@ const StyledMemberListBtn = styled.button`
 
   color: ${theme.colors.gray700};
   display: flex;
-  gap: 2px;
+  gap: 0.125rem;
   align-items: center;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 
   transition: 0.5;
 
@@ -154,16 +154,16 @@ const StyledEnterButton = styled.button`
   font-weight: ${theme.fonts.subtitle5.fontWeight};
   line-height: ${theme.fonts.subtitle5.lineHeight};
 
-  padding: 4px 28px;
+  padding: 0.25rem 1.75rem;
 
-  border: 2px solid ${theme.colors.blue700};
-  border-radius: 4px;
+  border: 0.125rem solid ${theme.colors.blue700};
+  border-radius: 0.25rem;
   color: ${theme.colors.blue700};
 
   &:hover {
     background-color: ${theme.colors.blue200};
     color: ${theme.colors.blue800};
-    border: 2px solid ${theme.colors.blue800};
+    border: 0.125rem solid ${theme.colors.blue800};
   }
 `;
 
