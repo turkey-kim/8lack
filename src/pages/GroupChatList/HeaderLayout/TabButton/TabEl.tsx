@@ -3,8 +3,8 @@ import {theme} from '../../../../styles/Theme';
 import TabProps from './TabProps';
 
 interface Props {
-  tabContents: TabProps[];
-  contents: TabProps;
+  tabs: TabProps[];
+  tab: TabProps;
   onClick: React.Dispatch<React.SetStateAction<TabProps[]>>;
 }
 
@@ -14,7 +14,7 @@ const TabEl = (props: Props) => {
     const targetLabel = tar.textContent;
     console.log(targetLabel);
 
-    let copied = props.tabContents.slice();
+    let copied = props.tabs.slice();
     copied.forEach(el => {
       if (el.label === targetLabel) {
         el.selected = true;
@@ -29,9 +29,9 @@ const TabEl = (props: Props) => {
   return (
     <StyledTabEl //
       onClick={clickHandler}
-      selected={props.contents.selected}
+      selected={props.tab.selected}
     >
-      {props.contents.label}
+      {props.tab.label}
     </StyledTabEl>
   );
 };
