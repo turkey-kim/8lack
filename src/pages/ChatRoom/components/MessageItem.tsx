@@ -17,7 +17,7 @@ const MessageItem: React.FC<MessageItemProps> = React.memo(({message, isCurrentU
     <StyledItem $currentUser={isCurrentUser}>
       <StyledInner $currentUser={isCurrentUser}>
         {!isCurrentUser && <StyledUser>{message.userId}</StyledUser>}
-        <StyledBubble>{message.text}</StyledBubble>
+        <StyledBubble $currentUser={isCurrentUser}>{message.text}</StyledBubble> {/* 수정된 부분 */}
         <StyledDate>{formatMessageDate(message.createdAt)}</StyledDate>
         <StyledSpacer $currentUser={isCurrentUser} />
       </StyledInner>
@@ -40,10 +40,10 @@ const StyledItem = styled.div<{$currentUser: boolean}>`
   justify-content: ${({$currentUser}) => ($currentUser ? 'flex-end' : 'flex-start')};
 `;
 
-const StyledBubble = styled.span`
+const StyledBubble = styled.span<{$currentUser: boolean}>`
   word-break: break-all;
-  background-color: ${({theme}) => theme.colors.blue700};
-  color: ${({theme}) => theme.colors.white};
+  background-color: ${({theme, $currentUser}) => ($currentUser ? theme.colors.blue700 : theme.colors.gray300)};
+  color: ${({theme, $currentUser}) => ($currentUser ? theme.colors.white : theme.colors.blueBg3)};
   padding: 0.8em 1.1rem;
   border-radius: 1rem;
   max-width: 500px;
