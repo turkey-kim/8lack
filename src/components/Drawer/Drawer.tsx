@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import UserList from 'pages/ChatRoom/components/UserList';
 import styled from 'styled-components';
 import {IDrawer} from './Drawer.types';
+import GenerateModal from 'components/GenerateModal/GenerateModal';
 
 // TODO: 공통 컴포넌트 만들 예정
-const Drawer: React.FC<IDrawer> = ({isOpen, onClose}) => {
+const Drawer: React.FC<IDrawer> = ({isOpen, onClose, onModalOpen, onModalClose, isModalOpen}) => {
   if (!isOpen) return null;
   const portalRoot = document.getElementById('drawer-root') as HTMLElement;
   return ReactDOM.createPortal(
@@ -13,7 +14,18 @@ const Drawer: React.FC<IDrawer> = ({isOpen, onClose}) => {
       <StyledBackdrop onClick={onClose} />
       <StyledDrawerContent>
         <UserList />
+        <StyledInviteBtn onClick={onModalOpen}>초대하기</StyledInviteBtn>
       </StyledDrawerContent>
+      {isModalOpen && (
+        <GenerateModal //
+          onToggleModal={onModalClose}
+          headline="그룹 채팅방에 초대하기"
+          label1="사용자 선택하기"
+          label2="새로 초대할 사용자"
+          optionInput={false}
+          primaryBtn="그룹 채팅방에 초대하기"
+        ></GenerateModal>
+      )}
     </>,
     portalRoot,
   );
@@ -41,5 +53,7 @@ const StyledDrawerContent = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const StyledInviteBtn = styled.button``;
 
 export default Drawer;

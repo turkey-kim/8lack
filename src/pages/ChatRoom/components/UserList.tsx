@@ -14,10 +14,10 @@ const UserList: React.FC = () => {
 
   return (
     <div className="user-list">
-      <h3>전체 유저)</h3>
+      <h3>전체 유저</h3>
       <StyledList>
         {connectedUserIds.map(user => (
-          <StyledUser key={user}>
+          <StyledUser key={user + Math.random()}>
             <span>{user}</span>
           </StyledUser>
         ))}
