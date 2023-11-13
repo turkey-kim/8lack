@@ -1,10 +1,10 @@
 import ChatRoomEl from './GroupChatRoomEl';
 import styled from 'styled-components';
-import {Chat} from 'types/chatroom.types';
+import {IChat} from 'types/chatroom.types';
 
 interface GroupChatRoomsLayoutProps {
-  filteredGroupChat: Chat[];
-  onSetGroupChat: React.Dispatch<React.SetStateAction<Chat[]>>;
+  filteredGroupChat: IChat[];
+  onSetGroupChat: React.Dispatch<React.SetStateAction<IChat[]>>;
 }
 
 const GroupChatRoomsLayout = (props: GroupChatRoomsLayoutProps) => {

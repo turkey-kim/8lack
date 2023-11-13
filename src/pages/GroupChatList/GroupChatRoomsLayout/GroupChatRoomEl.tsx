@@ -1,10 +1,10 @@
-import {handleChatParticipate} from 'api/chat';
+import {participateChatRoom} from 'api/myChatRoom';
 import {useEffect, useState} from 'react';
 import {FaAngleDown} from 'react-icons/fa';
 import {useNavigate} from 'react-router';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
-import {Chat} from 'types/chatroom.types';
+import {IChat} from 'types/chatroom.types';
 
 import {format, register} from 'timeago.js'; //임포트하기 register 한국어 선택
 import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
@@ -12,7 +12,7 @@ register('ko', koLocale);
 
 interface Props {
   key: string;
-  data: Chat;
+  data: IChat;
 }
 
 const ChatRoomEl = (props: Props) => {
@@ -41,7 +41,7 @@ const ChatRoomEl = (props: Props) => {
     const NAME = props.data.name;
     const confirm = window.confirm(`${NAME} 방에 들어가시겠어요?`);
     if (confirm) {
-      handleChatParticipate(ID).then(res => navigate(`/chat/${ID}`));
+      participateChatRoom(ID).then(res => navigate(`/chat/${ID}`));
     }
   };
 
@@ -79,7 +79,7 @@ const StyledContainer = styled.div`
   height: 9.75rem;
   border-bottom: 0.063rem solid ${theme.colors.gray300};
   padding: 37px 80px;
-  transition: 0.3;
+  transition: 0.3s;
 
   &:hover {
     background-color: ${theme.colors.blue100};
@@ -142,7 +142,7 @@ const StyledMemberListBtn = styled.button`
   align-items: center;
   border-radius: 0.25rem;
 
-  transition: 0.5;
+  transition: 0.5s;
 
   &:hover {
     background-color: ${theme.colors.blue200};

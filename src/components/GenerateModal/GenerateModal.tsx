@@ -1,23 +1,31 @@
-import SearchBar from '../SearchBar';
+import ReactDOM from 'react-dom';
+import SearchBar from 'pages/GroupChatList/HeaderLayout/SearchBar';
 import {MdClose} from 'react-icons/md';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import UserCells from './UserCells';
-import {User} from '../../../../types/chatroom.types';
+import {User} from 'types/chatroom.types';
 import {useEffect, useState} from 'react';
 import {getUsers} from 'api/users';
 import {makeChatRoom} from 'api/myChatRoom';
 import {useRecoilValue} from 'recoil';
 import {userInformation} from 'states/atom';
-import {useNavigate} from 'react-router';
+import {useNavigate, useParams} from 'react-router';
+import {inviteChatRoom} from 'api/myChatRoom';
 
 interface ModalProps {
   onToggleModal: React.Dispatch<boolean>;
+  headline: string;
+  label1: string;
+  optionLabel?: string;
+  optionInput: boolean;
+  label2: string;
+  primaryBtn: string;
 }
 
 type InputStates = [{name: 'chatName'; state: string}, {name: 'pickedUser'; state: string}];
 
-const GenerateChat = (props: ModalProps) => {
+const GenerateModal = (props: ModalProps) => {
   const [userData, setUserData] = useState<[User[], User[]]>([[], []]);
   // [선택가능한 유저 배열, 선택된유저 배열]
   const [searchUserData, setSearchUserData] = useState('');
@@ -32,6 +40,7 @@ const GenerateChat = (props: ModalProps) => {
   ]);
 
   const navigate = useNavigate();
+  const {chatId} = useParams();
   const myInfo = useRecoilValue(userInformation);
 
   useEffect(() => {
@@ -46,47 +55,69 @@ const GenerateChat = (props: ModalProps) => {
     props.onToggleModal(false);
   };
 
-  const generateChatHandler = () => {
-    if (chatName.trim().length === 0) {
-      // 채팅방 이름 0자 예외 조건 처리
-      let temp: InputStates = [...inputStates];
-      temp[0].state = 'error';
-      setInputStates(temp);
-      alert('그룹 채팅방 이름을 입력해주세요.');
-      return;
+  const actionHandler = () => {
+    if (props.headline === '그룹 채팅방 만들기') {
+      if (chatName.trim().length === 0) {
+        // 채팅방 이름 0자 예외 조건 처리
+        let temp: InputStates = [...inputStates];
+        temp[0].state = 'error';
+        setInputStates(temp);
+        alert('그룹 채팅방 이름을 입력해주세요.');
+        return;
+      }
+
+      if (userData[1].length < 2) {
+        // 자신을 포함 2명 이하 예외 조건 처리
+        let temp: InputStates = [...inputStates];
+        temp[1].state = 'error';
+        setInputStates(temp);
+        alert('자신을 제외하고 2명 이상을 선택해야 그룹 채팅방을 만들 수 있습니다.');
+        return;
+      }
+
+      const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
+      makeChatRoom(chatName, users, false).then(res => {
+        let chatId = res.id;
+        alert(`${chatName} 방이 생성되었습니다.`);
+        navigate(`/chat/${chatId}`);
+      });
+      // 생성
+
+      modalCloseHandler(); // 모달 닫기
     }
 
-    if (userData[1].length < 2) {
-      // 자신을 포함 2명 이하 예외 조건 처리
-      let temp: InputStates = [...inputStates];
-      temp[1].state = 'error';
-      setInputStates(temp);
-      alert('자신을 제외하고 2명 이상을 선택해야 그룹 채팅방을 만들 수 있습니다.');
-      return;
+    if (props.headline === '그룹 채팅방에 초대하기') {
+      if (userData[1].length === 0) {
+        // 한 명도 초대 안 할 시
+        let temp: InputStates = [...inputStates];
+        temp[1].state = 'error';
+        setInputStates(temp);
+        alert('초대할 사용자가 없습니다.');
+        return;
+      }
+
+      const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
+      if (chatId) {
+        inviteChatRoom(chatId, users);
+      } else {
+        alert('알 수 없는 이유로 채팅방을 생성할 수 없습니다.');
+      }
+
+      modalCloseHandler();
     }
-
-    const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
-    makeChatRoom(chatName, users, false).then(res => {
-      let chatId = res.id;
-      alert(`${chatName} 방이 생성되었습니다.`);
-      navigate(`/chat/${chatId}`);
-    });
-    // 생성
-
-    modalCloseHandler(); // 모달 닫기
   };
 
-  return (
+  return ReactDOM.createPortal(
     <Bundler>
       <BackDrop onClick={modalCloseHandler} />
       <StyledModalContainer>
         <StyledHeader>
-          <StyledH4>그룹 채팅방 만들기</StyledH4>
+          <StyledH4>{props.headline}</StyledH4>
           <StyledCloseIcon onClick={modalCloseHandler}></StyledCloseIcon>
         </StyledHeader>
         <StyledMain>
           <StyledUnit>
-            <StyledLabel>사용자 선택하기</StyledLabel>
+            <StyledLabel>{props.label1}</StyledLabel>
             <SearchBar content="사용자를 검색해보세요" height="40" onSearchName={setSearchUserData}></SearchBar>
             <UserCells
               height="312px"
@@ -99,38 +130,41 @@ const GenerateChat = (props: ModalProps) => {
             ></UserCells>
           </StyledUnit>
           <StyledUnit>
-            <StyledDiv>
-              <StyledLabel>그룹 채팅방 제목 (필수)</StyledLabel>
-              <SearchBar
-                $inputState={inputStates[0].state}
-                onChangeName={setChatName}
-                content="그룹 채팅방 이름을 적어주세요"
-                height="40"
-              ></SearchBar>
-            </StyledDiv>
+            {props.optionInput && (
+              <StyledDiv>
+                <StyledLabel>{props.optionLabel}</StyledLabel>
+                <SearchBar
+                  $inputState={inputStates[0].state}
+                  onChangeName={setChatName}
+                  content="그룹 채팅방 이름을 적어주세요"
+                  height="40"
+                ></SearchBar>
+              </StyledDiv>
+            )}
             <div>
-              <StyledLabel>선택된 사용자 (2명 이상 선택)</StyledLabel>
+              <StyledLabel>{props.label2}</StyledLabel>
               <UserCells
                 typed="checked"
                 allocatedData={userData[1]}
                 subData={userData[0]}
                 onToggleUser={setUserData}
-                height="275px"
+                height={props.optionInput ? '275px' : '360px'}
                 $inputState={inputStates[1].state}
               ></UserCells>
             </div>
           </StyledUnit>
         </StyledMain>
         <StyledBottom>
-          <StyledButton onClick={generateChatHandler}>그룹 채팅 만들기</StyledButton>
+          <StyledButton onClick={actionHandler}>{props.primaryBtn}</StyledButton>
           <StyledCancelButton onClick={modalCloseHandler}>취소하기</StyledCancelButton>
         </StyledBottom>
       </StyledModalContainer>
-    </Bundler>
+    </Bundler>,
+    document.getElementById('modal-root') as HTMLElement,
   );
 };
 
-export default GenerateChat;
+export default GenerateModal;
 
 const Bundler = styled.div``;
 
@@ -144,7 +178,7 @@ const BackDrop = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 5;
+  z-index: 1011;
 `;
 
 const StyledModalContainer = styled.div`
@@ -159,7 +193,7 @@ const StyledModalContainer = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 5;
+  z-index: 1011;
 
   margin: auto;
   box-shadow: ${theme.shadows.shadow3};

@@ -1,9 +1,10 @@
 import {format, register} from 'timeago.js';
 import koLocale from 'timeago.js/lib/lang/ko';
-import {Props, Chat} from 'types/chatroom.types';
+import {Props, IChat} from 'types/chatroom.types';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {
+  StyledTopContainer,
   StyledSubContainer,
   StyledTextContainer,
   StyledTitle,
@@ -24,7 +25,7 @@ export default function GroupChat(props: Props) {
     updateQuery: {isLoading, data: realTimeData},
   } = useRealTimeUpdate();
 
-  const selectedChatRoom = realTimeData?.chats.find((chat: Chat) => chat.id === id);
+  const selectedChatRoom = realTimeData?.chats.find((chat: IChat) => chat.id === id);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -52,12 +53,6 @@ export default function GroupChat(props: Props) {
     </StyledTopContainer>
   );
 }
-
-const StyledTopContainer = styled.li`
-  .selected_chat {
-    background-color: ${theme.colors.blue100};
-  }
-`;
 
 const StyledGroupContainer = styled.div`
   display: flex;

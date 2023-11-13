@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import HeaderLayout from './HeaderLayout/HeaderLayout';
 import GroupChatRoomsLayout from './GroupChatRoomsLayout/GroupChatRoomsLayout';
 import {useCallback, useEffect, useState} from 'react';
-import {Chat} from 'types/chatroom.types';
+import {IChat} from 'types/chatroom.types';
 import TabProps from './HeaderLayout/TabButton/TabProps';
 import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 
@@ -18,9 +18,9 @@ const GroupChatList = () => {
 
   const [searchedGroupChat, setSearchedGroupChat] = useState<string>('');
   // 검색어
-  const [filteredGroupChat, setFilteredGroupChat] = useState<Chat[]>([]);
+  const [filteredGroupChat, setFilteredGroupChat] = useState<IChat[]>([]);
   // 최종적인 검색결과 리스트
-  const [allGroupChat, setAllGroupChat] = useState<Chat[]>([]);
+  const [allGroupChat, setAllGroupChat] = useState<IChat[]>([]);
   // 모든 그룹채팅방 리스트
   const [tabs, setTabs] = useState<TabProps[]>([
     {label: '가나다 순', selected: true},
@@ -31,7 +31,7 @@ const GroupChatList = () => {
   // 탭 리스트
 
   const SortUsers = useCallback(
-    (groupChats: Chat[]) => {
+    (groupChats: IChat[]) => {
       const selectedTab = tabs.find(tab => tab.selected === true);
       if (!selectedTab) return groupChats;
 
@@ -75,8 +75,8 @@ const GroupChatList = () => {
         setIsLoading(true);
         const wholeChat = await wholeChatRoom();
         const myChat = await myChatRoom();
-        const refinedAllChat: Chat[] = wholeChat.chats;
-        const refinedMyChat: Chat[] = myChat.chats;
+        const refinedAllChat: IChat[] = wholeChat.chats;
+        const refinedMyChat: IChat[] = myChat.chats;
 
         const myChatExcepted = refinedAllChat.filter(wholeChat => {
           for (let i = 0; i < refinedMyChat.length; i++) {
