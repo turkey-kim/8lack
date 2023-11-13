@@ -6,7 +6,7 @@ import {useState} from 'react';
 import GenerateChat from './GenerateChat/GenerateChat';
 import TabProps from './TabButton/TabProps';
 
-const MARGIN = '80px';
+const MARGIN = '5rem';
 
 interface HeaderLayoutProps {
   onSearchGroupChat: React.Dispatch<React.SetStateAction<string>>;
@@ -53,12 +53,12 @@ const StyledHeaderDiv = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  margin: 0 ${MARGIN} 40px;
+  margin: 0 ${MARGIN} 2.5rem;
 `;
 
 const StyledButton = styled.button`
-  padding: 12px 32px;
-  border-radius: 12px;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
 
   font-size: ${theme.fonts.subtitle5};
 
