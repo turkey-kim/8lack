@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import GroupChat from './GroupChat';
 import {StyledContainer} from 'components/PrivateChat/PrivateChats';
-import {Chat} from 'types/chatroom.types';
+import {IChat} from 'types/chatroom.types';
 import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
 
 export default function GroupChats() {
-  const [sortedChat, setSortedChat] = useState<Chat[]>([]);
+  const [sortedChat, setSortedChat] = useState<IChat[]>([]);
   const {
     updateQuery: {isLoading, data: realTimeData},
   } = useRealTimeUpdate();
@@ -13,8 +13,8 @@ export default function GroupChats() {
   useEffect(() => {
     if (!isLoading && realTimeData) {
       const sorted = realTimeData.chats
-        .filter((room: Chat) => !room.isPrivate)
-        .sort((a: Chat, b: Chat) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+        .filter((room: IChat) => !room.isPrivate)
+        .sort((a: IChat, b: IChat) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
       setSortedChat(sorted);
     }
   }, [isLoading, realTimeData]);

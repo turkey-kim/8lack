@@ -4,7 +4,7 @@ import {FaAngleDown} from 'react-icons/fa';
 import {useNavigate} from 'react-router';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
-import {Chat} from 'types/chatroom.types';
+import {IChat} from 'types/chatroom.types';
 
 import {format, register} from 'timeago.js'; //임포트하기 register 한국어 선택
 import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
@@ -12,7 +12,7 @@ register('ko', koLocale);
 
 interface Props {
   key: string;
-  data: Chat;
+  data: IChat;
 }
 
 const ChatRoomEl = (props: Props) => {

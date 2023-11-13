@@ -1,12 +1,4 @@
-export interface ChatRoom {
-  id: string;
-  name: string;
-  users: User[]; // 자신을 포함한 참가자들 정보
-  isPrivate: boolean;
-  updatedAt: Date;
-}
-
-export interface Chat {
+export interface IChat {
   id: string;
   name: string;
   users: User[]; // 속한 유저 id
@@ -20,6 +12,9 @@ export interface User {
   name: string;
   picture: string;
 }
+
+export type IChatRoom = Pick<IChat, 'id' | 'name' | 'isPrivate' | 'latestMessage' | 'updatedAt'> & {users: IUserInfo[]};
+export type IUserInfo = Omit<User, 'name'> & {username: string};
 
 export interface Message {
   id: string;
@@ -48,5 +43,5 @@ export interface leaveUser {
 
 export interface Props {
   key: string;
-  data: Chat;
+  data: IChat;
 }
