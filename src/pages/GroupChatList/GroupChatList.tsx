@@ -6,6 +6,7 @@ import GroupChatRoomsLayout from './GroupChatRoomsLayout/GroupChatRoomsLayout';
 import {useCallback, useEffect, useState} from 'react';
 import {IChat} from 'types/chatroom.types';
 import TabProps from './HeaderLayout/TabButton/TabProps';
+import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 
 const StyledGroupLists = styled.div`
   width: 100%;
@@ -13,6 +14,8 @@ const StyledGroupLists = styled.div`
 `;
 
 const GroupChatList = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [searchedGroupChat, setSearchedGroupChat] = useState<string>('');
   // 검색어
   const [filteredGroupChat, setFilteredGroupChat] = useState<IChat[]>([]);
@@ -58,7 +61,7 @@ const GroupChatList = () => {
           }
         });
       } else if (label === '홀로 있는 방') {
-        let soloChat = groupChats.filter(cur => cur.users.length <= 1);
+        let soloChat = groupChats.filter(cur => cur.users.length === 1);
         return soloChat;
       }
       return groupChats;
@@ -69,14 +72,15 @@ const GroupChatList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allChat = await wholeChatRoom();
+        setIsLoading(true);
+        const wholeChat = await wholeChatRoom();
         const myChat = await myChatRoom();
-        const refinedAllChat: IChat[] = allChat.chats;
+        const refinedAllChat: IChat[] = wholeChat.chats;
         const refinedMyChat: IChat[] = myChat.chats;
 
-        const myChatExcepted = refinedAllChat.filter(allChat => {
+        const myChatExcepted = refinedAllChat.filter(wholeChat => {
           for (let i = 0; i < refinedMyChat.length; i++) {
-            if (allChat.id === refinedMyChat[i].id) {
+            if (wholeChat.id === refinedMyChat[i].id) {
               return false;
             }
           }
@@ -86,6 +90,8 @@ const GroupChatList = () => {
         setAllGroupChat(sorted);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -111,10 +117,14 @@ const GroupChatList = () => {
   return (
     <StyledGroupLists>
       <HeaderLayout onSearchGroupChat={setSearchedGroupChat} tabs={tabs} setTabs={setTabs}></HeaderLayout>
-      <GroupChatRoomsLayout
-        filteredGroupChat={filteredGroupChat}
-        onSetGroupChat={setFilteredGroupChat}
-      ></GroupChatRoomsLayout>
+      {isLoading ? (
+        <LoadingCircle height={'calc(100vh - 17.75rem)'} />
+      ) : (
+        <GroupChatRoomsLayout
+          filteredGroupChat={filteredGroupChat}
+          onSetGroupChat={setFilteredGroupChat}
+        ></GroupChatRoomsLayout>
+      )}
     </StyledGroupLists>
   );
 };

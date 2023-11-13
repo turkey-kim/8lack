@@ -39,12 +39,12 @@ const TabEl = (props: Props) => {
 export default TabEl;
 
 const StyledTabEl = styled.button<{selected?: boolean}>`
-  width: 84px;
-  height: 26px;
+  width: 5.25rem;
+  height: 1.625rem;
 
   background-color: ${props => (props.selected ? theme.colors.blue700 : '')};
   color: ${props => (props.selected ? theme.colors.white : theme.colors.gray900)};
-  border-radius: 4px;
+  border-radius: 0.25rem;
   white-space: nowrap;
   padding: 0;
 `;

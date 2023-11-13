@@ -47,10 +47,10 @@ const StyledInputContainer = styled.div`
 
 const StyledSearchIcon = styled(MdSearch)`
   position: absolute;
-  width: 24px;
+  width: 1.5rem;
   top: 0;
   bottom: 0;
-  margin: auto 8px;
+  margin: auto 0.5rem;
 
   color: ${theme.colors.gray500};
 `;
@@ -58,7 +58,7 @@ const StyledSearchIcon = styled(MdSearch)`
 const StyledSearchBar = styled.input<Pick<SearchBarProps, 'height' | '$inputState'>>`
   width: 100%;
   height: ${props => props.height + 'px'};
-  padding-left: 36px;
-  border: 1px solid ${props => (props.$inputState === 'error' ? theme.colors.error : props.theme.colors.gray500)};
-  border-radius: 4px;
+  padding-left: 2.25rem;
+  border: 0.063rem solid ${props => (props.$inputState === 'error' ? theme.colors.error : props.theme.colors.gray500)};
+  border-radius: 0.25rem;
 `;

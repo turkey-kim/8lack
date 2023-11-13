@@ -1,3 +1,11 @@
+export interface ChatRoom {
+  id: string;
+  name: string;
+  users: User[]; // 자신을 포함한 참가자들 정보
+  isPrivate: boolean;
+  updatedAt: Date;
+}
+
 export interface IChat {
   id: string;
   name: string;
@@ -10,6 +18,7 @@ export interface IChat {
 export interface User {
   id: string;
   name: string;
+  username: string;
   picture: string;
 }
 

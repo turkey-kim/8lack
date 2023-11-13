@@ -6,22 +6,24 @@ import SideBar from './components/SideBar/SideBar';
 import {ServerSocketProvider} from 'contexts/ServerSocketContext';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
-import React from 'react';
+import UserPublicRoute from 'routes/UserPublicRoute';
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={true} />
-      <ServerSocketProvider>
-        <StyledContainer>
-          <Navigation />
-          <SideBar />
-          <Outlet />
-        </StyledContainer>
-      </ServerSocketProvider>
-    </QueryClientProvider>
+    <UserPublicRoute>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={true} />
+        <ServerSocketProvider>
+          <StyledContainer>
+            <Navigation />
+            <SideBar />
+            <Outlet />
+          </StyledContainer>
+        </ServerSocketProvider>
+      </QueryClientProvider>
+    </UserPublicRoute>
   );
 }
 
