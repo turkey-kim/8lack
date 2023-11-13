@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState, useMemo} from 'react';
 import io, {Socket} from 'socket.io-client';
 import {leaveUser, Message, NewUser, PrevMessage, UserID} from 'types/chatroom.types';
 import {authHeaders} from 'api/auth';
@@ -9,7 +9,7 @@ interface SocketState {
   prevMessages: PrevMessage;
   users: UserID;
 }
-const SocketContext = createContext<SocketState | null>(null);
+const ChatSocketContext = createContext<SocketState | null>(null);
 
 interface SocketProviderProps {
   id: string;
@@ -17,19 +17,29 @@ interface SocketProviderProps {
   children: React.ReactNode;
 }
 
-export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children}) => {
+export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, children}) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [prevMessages, setPrevMessages] = useState<PrevMessage>({messages: []});
   const [users, setUsers] = useState<UserID>({users: []});
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
+    if (attempt > 1) return;
     const newSocket = io(url, {
       extraHeaders: authHeaders(),
     });
+    newSocket.off('connect');
+    newSocket.off('disconnect');
+    newSocket.off('message-to-client');
+    newSocket.off('messages-to-client');
+    newSocket.off('users-to-client');
+    newSocket.off('join');
+    newSocket.off('leave');
 
     newSocket.on('connect', () => {
       console.log('Socket connected:', newSocket.id);
+      setAttempt(0);
     });
 
     newSocket.on('connect_error', error => {
@@ -38,13 +48,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children
 
     newSocket.on('disconnect', reason => {
       console.log('Socket disconnect:', reason);
+      if (reason === 'io server disconnect') {
+        setTimeout(() => setAttempt(prev => prev + 1), 1000);
+      }
     });
 
-    newSocket.off('message-to-client');
-    newSocket.off('messages-to-client');
-    newSocket.off('users-to-client');
-    newSocket.off('join');
-    newSocket.off('leave');
     // 메시지 수신
     newSocket.on('message-to-client', (data: Message) => {
       setMessages(prevMessages => [...prevMessages, data]);
@@ -86,7 +94,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children
         newSocket.close();
       }
     };
-  }, [id, url]);
+  }, [id, url, attempt]);
 
   const contextValue = {
     socket,
@@ -95,11 +103,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children
     users,
   };
 
-  return <SocketContext.Provider value={contextValue}>{children}</SocketContext.Provider>;
+  return <ChatSocketContext.Provider value={contextValue}>{children}</ChatSocketContext.Provider>;
 };
 
 export const useSocketContext = () => {
-  const context = useContext(SocketContext);
+  const context = useContext(ChatSocketContext);
   if (!context) {
     throw new Error('useSocketContext must be used within a SocketProvider');
   }

@@ -67,6 +67,7 @@ export const StyledContainer = styled.li`
 
 export const StyledSubContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
 `;
 
@@ -77,6 +78,7 @@ export const StyledImg = styled.img`
 
 export const StyledTextContainer = styled.div`
   width: 11.25rem;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

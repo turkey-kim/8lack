@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import {RecoilRoot} from 'recoil';
 import {ThemeProvider} from 'styled-components';
 import {theme} from './styles/Theme';
@@ -35,17 +33,13 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-const queryClient = new QueryClient();
 
 root.render(
   <ThemeProvider theme={theme}>
     <GlobalStyles />
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={true} />
-      <RecoilRoot>
-        <RouterProvider router={router}></RouterProvider>
-      </RecoilRoot>
-    </QueryClientProvider>
+    <RecoilRoot>
+      <RouterProvider router={router}></RouterProvider>
+    </RecoilRoot>
   </ThemeProvider>,
 );
 

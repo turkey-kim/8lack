@@ -72,3 +72,14 @@ export const participateChatRoom = async (chatId: string) => {
     console.error('Error joining chat room:', error);
   }
 };
+
+export const getChatRoom = async (chatId: string) => {
+  try {
+    const response = await axios.get(`${SERVER_URL}/chat/only?chatId=${chatId}`, {
+      headers: authHeaders(),
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error joining chat room:', error);
+  }
+};
