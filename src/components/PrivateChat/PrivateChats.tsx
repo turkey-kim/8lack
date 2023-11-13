@@ -1,30 +1,14 @@
-import {useEffect, useState} from 'react';
 import PrivateChat from './PrivateChat';
-import {Chat} from 'types/chatroom.types';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
-import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
+import useSortedSidebarChat from 'hooks/useSortedSidebarChat';
 
 export default function PrivateChats() {
-  const [sortedChat, setSortedChat] = useState<Chat[]>([]);
-  const {
-    updateQuery: {isLoading, data: realTimeData},
-  } = useRealTimeUpdate();
-
-  useEffect(() => {
-    if (!isLoading && realTimeData) {
-      const sorted = realTimeData.chats
-        .filter((room: Chat) => room.isPrivate)
-        .sort((a: Chat, b: Chat) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-      setSortedChat(sorted);
-    }
-  }, [isLoading, realTimeData]);
+  const sortedChat = useSortedSidebarChat();
 
   return (
     <StyledContainer>
-      {sortedChat.map(room => (
-        <PrivateChat key={room.id} data={room} />
-      ))}
+      {sortedChat.map(room => room.isPrivate && <PrivateChat key={room.id} data={room} />)}
     </StyledContainer>
   );
 }
