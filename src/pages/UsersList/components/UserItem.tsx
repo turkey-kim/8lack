@@ -12,8 +12,8 @@ import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
 import {makeChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router';
-import {isStarBtnClicked} from 'states/atom';
-import {useRecoilState} from 'recoil';
+import {isStarBtnClicked, onlineUserList} from 'states/atom';
+import {useRecoilState, useRecoilValue} from 'recoil';
 
 interface UserItemProps {
   user: User;
@@ -29,6 +29,7 @@ const UserItem = ({user}: UserItemProps) => {
     return saved !== null ? saved === 'true' : 'false';
   });
   const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
+  const getOnlineUserList = useRecoilValue(onlineUserList);
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
@@ -57,7 +58,7 @@ const UserItem = ({user}: UserItemProps) => {
       <StyledUserDescription>
         <StyledUserName>
           {user.name}&nbsp;
-          <StyledActiveCircle />
+          {getOnlineUserList.some((item: string) => item === user.id) ? <StyledActiveCircle /> : null}
           <StyledStar
             className={isChecked ? 'checked' : 'unchecked'}
             onClick={() => {
