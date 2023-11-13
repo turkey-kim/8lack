@@ -3,53 +3,49 @@ import styled from 'styled-components';
 import {useSocketContext} from 'contexts/SocketContext';
 import {groupMessagesByDate} from 'utils/formatDate';
 import MessageItem from './MessageItem';
+import {Message} from 'types/chatroom.types';
 
 const MessageList: React.FC = () => {
   const {socket, prevMessages, messages} = useSocketContext();
-  const groupedMessages = groupMessagesByDate(prevMessages);
-  const [loadPrevMessages, setLoadPrevMessages] = useState(false);
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
   const uid = localStorage.getItem('8lack_uid');
   const messageRef = useRef<HTMLDivElement>(null);
 
+  // 이전 대화 불러오기
+  useEffect(() => {
+    if (socket) {
+      socket.emit('fetch-messages', {});
+    }
+  }, [socket]);
+
+  // 메시지 중복 제거
+  useEffect(() => {
+    const combinedMessages = [...prevMessages.messages, ...messages];
+    const uniqueMessages = Array.from(new Map(combinedMessages.map(msg => [msg.id, msg])).values());
+    setAllMessages(uniqueMessages);
+  }, [messages, prevMessages]);
+
+  // 스크롤 조정
   useEffect(() => {
     if (messageRef.current) {
       const list = messageRef.current;
-      const shouldScroll = list.scrollHeight - list.clientHeight <= list.scrollTop + 150;
-
-      if (shouldScroll) {
-        list.scrollTop = list.scrollHeight;
-      }
+      list.scrollTop = list.scrollHeight;
     }
-  }, [messages.length]);
+  }, [allMessages]);
 
-  useEffect(() => {
-    if (socket && loadPrevMessages) {
-      socket.emit('fetch-messages', {});
-    }
-  }, [socket, loadPrevMessages]);
+  const groupedMessages = groupMessagesByDate(allMessages);
 
-  // 이전 메시지 렌더링
-  const renderGroupedMessages = () =>
-    Object.entries(groupedMessages).map(([date, messages]) => (
-      <div key={date}>
-        <StyledDateHeader>{date}</StyledDateHeader>
-        {messages.map(message => (
-          <MessageItem key={message.id} message={message} isCurrentUser={message.userId === uid} />
-        ))}
-      </div>
-    ));
-
-  // 실시간 메시지 렌더링
   return (
-    <>
-      <StyledButton onClick={() => setLoadPrevMessages(true)}>이전 대화 불러오기</StyledButton>
-      <StyledList ref={messageRef}>
-        {renderGroupedMessages()}
-        {messages.map(message => (
-          <MessageItem key={message.id} message={message} isCurrentUser={message.userId === uid} />
-        ))}
-      </StyledList>
-    </>
+    <StyledList ref={messageRef}>
+      {Object.entries(groupedMessages).map(([date, msgs]) => (
+        <div key={date}>
+          <StyledDateHeader>{date}</StyledDateHeader>
+          {msgs.map(msg => (
+            <MessageItem key={msg.id} message={msg} isCurrentUser={msg.userId === uid} />
+          ))}
+        </div>
+      ))}
+    </StyledList>
   );
 };
 

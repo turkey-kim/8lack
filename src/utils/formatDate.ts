@@ -1,4 +1,4 @@
-import {PrevMessage, Message} from 'types/chatroom.types';
+import {Message} from 'types/chatroom.types';
 
 export const formatMessageDate = (data: Date) => {
   return new Date(data).toLocaleString('ko-KR', {
@@ -8,10 +8,10 @@ export const formatMessageDate = (data: Date) => {
   });
 };
 
-export const groupMessagesByDate = (prevMessages: PrevMessage) => {
+export const groupMessagesByDate = (messages: Message[]) => {
   const dateGroupedMessages: {[date: string]: Message[]} = {};
 
-  prevMessages.messages.forEach(message => {
+  messages.forEach(message => {
     const messageDate = new Date(message.createdAt).toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',

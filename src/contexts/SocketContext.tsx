@@ -47,7 +47,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({id, url, children
     newSocket.off('leave');
     // 메시지 수신
     newSocket.on('message-to-client', (data: Message) => {
-      setMessages(prevMessages => [...prevMessages, data]);
+      setMessages(prev => [...prev, data]);
     });
     // 이전 메시지 수신
     newSocket.on('messages-to-client', (data: PrevMessage) => {
