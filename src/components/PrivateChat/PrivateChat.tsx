@@ -2,55 +2,50 @@ import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {format, register} from 'timeago.js';
 import koLocale from 'timeago.js/lib/lang/ko';
+import {Props, Chat} from 'types/chatroom.types';
+import {useNavigate, useParams} from 'react-router-dom';
+import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
 
 register('ko', koLocale);
 
-export interface Chat {
-  id: string;
-  name: string;
-  users: User[]; // 속한 유저 id
-  isPrivate: boolean;
-  latestMessage: Message | null;
-  updatedAt: Date;
-}
-
-interface User {
-  id: string;
-  name: string;
-  picture: string;
-}
-
-interface Message {
-  id: string;
-  text: string;
-  userId: string;
-  createdAt: Date;
-}
-
-interface Props {
-  key: string;
-  data: Chat;
-}
-
 export default function PrivateChat(props: Props) {
-  const {id, name, updatedAt, latestMessage, users} = props.data;
+  const {id, users} = props.data;
+  const navigate = useNavigate();
+  const params = useParams();
+  const {
+    updateQuery: {isLoading, data: realTimeData},
+  } = useRealTimeUpdate();
+
+  const selectedChatRoom = realTimeData?.chats.find((chat: Chat) => chat.id === id);
+
+  if (isLoading) return <p>Loading...</p>;
+
+  console.log(users);
 
   return (
-    <StyledContainer>
-      <StyledSubContainer>
-        <StyledImg src={users[1].picture} alt="사용자 프로필 이미지" />
-        <StyledTextContainer>
-          <StyledTitle>{users[1].name}</StyledTitle>
-          <StyledText>{latestMessage?.text}</StyledText>
-        </StyledTextContainer>
-      </StyledSubContainer>
-      <StyledDiv>
-        <StyledDate>{format(updatedAt, 'ko')}</StyledDate>
-        {latestMessage === null ? '' : <StyledLatestMessage />}
-      </StyledDiv>
-    </StyledContainer>
+    <StyledTopContainer>
+      <StyledContainer onClick={() => navigate(`/chat/${id}`)} className={params.chatId === id ? 'selected_chat' : ''}>
+        <StyledSubContainer>
+          <StyledImg src={users[0].picture} alt="사용자 프로필 이미지" />
+          <StyledTextContainer>
+            <StyledTitle>{users[0].username}</StyledTitle>
+            <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
+          </StyledTextContainer>
+        </StyledSubContainer>
+        <StyledDiv>
+          <StyledDate>{format(selectedChatRoom?.updatedAt, 'ko')}</StyledDate>
+          {/* {latestMessage === null ? '' : <StyledLatestMessage />} */}
+        </StyledDiv>
+      </StyledContainer>
+    </StyledTopContainer>
   );
 }
+
+const StyledTopContainer = styled.li`
+  .selected_chat {
+    background-color: ${theme.colors.blue100};
+  }
+`;
 
 export const StyledContainer = styled.li`
   display: flex;
@@ -60,6 +55,7 @@ export const StyledContainer = styled.li`
   background-color: white;
   cursor: pointer;
   transition: all 0.3s ease-out;
+
   &:hover {
     background-color: ${theme.colors.blue100};
   }
@@ -74,6 +70,7 @@ export const StyledSubContainer = styled.div`
 export const StyledImg = styled.img`
   width: 4rem;
   height: 4rem;
+  border-radius: 50%;
 `;
 
 export const StyledTextContainer = styled.div`
@@ -83,14 +80,17 @@ export const StyledTextContainer = styled.div`
   flex-direction: column;
   justify-content: space-around;
   padding: 0.5rem;
+  overflow: hidden;
 `;
 
 export const StyledTitle = styled.h2`
-  font-size: ${props => props.theme.fonts.subtitle5.fontSize};
+  font-size: ${theme.fonts.subtitle5.fontSize};
 `;
 
 export const StyledText = styled.p`
-  font-size: ${props => props.theme.fonts.body2.fontSize};
+  font-size: ${theme.fonts.body2.fontSize};
+  width: 100%;
+  height: 1rem;
 `;
 
 export const StyledDiv = styled.div`
