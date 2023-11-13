@@ -64,11 +64,12 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     // join 이벤트 데이터 처리
     newSocket.on('join', (data: NewUser) => {
       const joinMessage = data.joiners.map(joiner => ({
-        id: `join-${joiner.id}`,
-        text: `${joiner.id}님이 입장했습니다.`,
+        id: `join-${joiner}`,
+        text: `${joiner}님이 입장했습니다.`,
         userId: 'system',
         createdAt: new Date(),
       }));
+      console.log(data);
       setMessages(prevMessages => [...prevMessages, ...joinMessage]);
     });
     // leave 이벤트 데이터 처리

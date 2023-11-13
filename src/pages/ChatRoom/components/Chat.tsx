@@ -1,28 +1,42 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-import Drawer from 'components/Drawer/Drawer';
+import Drawer from 'components/Drawer';
+import Avatars from 'components/Avatars';
 import MessageList from 'pages/ChatRoom/components/MessageList';
 import SendMessage from 'pages/ChatRoom/components/SendMessage';
+import UserList from 'pages/ChatRoom/components/UserList';
 import {RxHamburgerMenu} from 'react-icons/rx';
-import {handleChatLeave} from 'api/chat';
+import {RiAddFill} from 'react-icons/ri';
+import {leaveChatRoom} from 'api/myChatRoom';
+import GenerateModal from 'components/GenerateModal/GenerateModal';
+import {useChatRoomQuery} from 'hooks/useChatRoomQuery';
+import {useRecoilState} from 'recoil';
+import {chatRoomState} from 'states/atom';
 
+// TODO: 불필요한 리렌더 줄이기
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {data: chatRoomData, isLoading, isError} = useChatRoomQuery(chatId);
+  const [chatRoom, setChatRoom] = useRecoilState(chatRoomState);
+
+  useEffect(() => {
+    if (chatRoomData) {
+      setChatRoom(chatRoomData);
+    }
+  }, [chatRoomData, setChatRoom]);
 
   const navigate = useNavigate();
   const handleLeaveChat = async () => {
-    const response = await handleChatLeave(chatId);
-    if (response) {
+    const res = await leaveChatRoom(chatId);
+    if (res) {
       navigate(-1);
     }
   };
-
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
   const closeDrawer = () => {
     setIsDrawerOpen(false);
   };
@@ -36,22 +50,43 @@ const Chat = ({chatId}: {chatId: string}) => {
       <StyledContainer>
         <StyledHeader>
           <StyledInfo>
-            <StyledLeaveButton onClick={handleLeaveChat}>채팅 나가기</StyledLeaveButton>
+            <Avatars users={chatRoom?.users} isPrivate={chatRoom?.isPrivate} />
+            <StyledTitle>{chatRoom?.name}</StyledTitle>
           </StyledInfo>
-          <StyleButton onClick={toggleDrawer}>
+          <StyledButton onClick={toggleDrawer}>
             <RxHamburgerMenu />
-          </StyleButton>
+          </StyledButton>
         </StyledHeader>
         <MessageList />
         <SendMessage />
       </StyledContainer>
-      <Drawer //
-        isOpen={isDrawerOpen}
-        onClose={closeDrawer}
-        isModalOpen={isModalOpen}
-        onModalOpen={openModal}
-        onModalClose={setIsModalOpen}
-      />
+      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer}>
+        <StyledLabel>- 대화 상대</StyledLabel>
+        <StyledWrapper onClick={openModal}>
+          <StyledAddButton
+            onClick={e => {
+              e.stopPropagation();
+            }}
+          >
+            <RiAddFill />
+          </StyledAddButton>
+          <StyledName>대화상대 초대</StyledName>
+        </StyledWrapper>
+        <UserList />
+        <StyledSpace>
+          <StyledLeaveButton onClick={handleLeaveChat}>채팅 나가기</StyledLeaveButton>
+        </StyledSpace>
+        {isModalOpen && (
+          <GenerateModal
+            onToggleModal={() => setIsModalOpen(false)}
+            headline="그룹 채팅방에 초대하기"
+            label1="사용자 선택하기"
+            label2="새로 초대할 사용자"
+            optionInput={false}
+            primaryBtn="그룹 채팅방에 초대하기"
+          ></GenerateModal>
+        )}
+      </Drawer>
     </>
   );
 };
@@ -69,65 +104,75 @@ const StyledContainer = styled.div`
 
 const StyledHeader = styled.div`
   width: 100%;
-  height: 66px;
+  padding: 0.75rem 1.1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: ${({theme}) => theme.colors.white};
 `;
 
+const StyledSpace = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+`;
+
 const StyledLeaveButton = styled.button`
   background-color: ${({theme}) => theme.colors.blueBg1};
   color: white;
-  padding: 10px 15px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
   border: none;
-  border-radius: 5px;
-  margin: 10px 0;
+  border-radius: 7px;
+  width: 100%;
   cursor: pointer;
 `;
 
 const StyledInfo = styled.div`
   display: flex;
-`;
-
-interface StyledChatImgProps {
-  marginLeft?: number;
-  zIndex?: number;
-}
-
-const StyledChatImg = styled.img<StyledChatImgProps>`
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid ${({theme}) => theme.colors.white};
-  position: relative;
-  left: ${({marginLeft}) => marginLeft}px;
-  z-index: ${({zIndex}) => zIndex};
-`;
-
-const StyledMore = styled.div`
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  margin-left: -20px;
-  border-radius: 50%;
-  border: 2px solid ${({theme}) => theme.colors.white};
-  background-color: ${({theme}) => theme.colors.blue100};
-  color: ${({theme}) => theme.colors.blue700};
-  font-size: 0.75rem;
-  font-weight: 500;
-  position: relative;
-  z-index: 3;
 `;
 
 const StyledTitle = styled.div`
-  ${({theme}) => theme.fonts.subtitle4};
+  ${({theme}) => theme.fonts.subtitle4_5};
   margin-left: 1rem;
 `;
 
-const StyleButton = styled.button`
+const StyledLabel = styled.span`
+  font-size: 0.87rem;
+  font-weight: 500;
+  padding: 0.7rem 0.5rem;
+`;
+
+const StyledWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.65rem;
+  gap: 0.65rem;
+  color: ${({theme}) => theme.colors.blueBg1};
+  cursor: pointer;
+`;
+
+const StyledAddButton = styled.button`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid ${({theme}) => theme.colors.gray300};
+  color: ${({theme}) => theme.colors.blueBg1};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > svg {
+    width: 1rem;
+    height: 1rem;
+  }
+`;
+
+const StyledName = styled.span`
+  ${({theme}) => theme.fonts.body2};
+`;
+
+const StyledButton = styled.button`
   display: flex;
 `;
