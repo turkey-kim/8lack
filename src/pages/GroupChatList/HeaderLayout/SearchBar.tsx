@@ -8,6 +8,7 @@ interface SearchBarProps {
   $inputState?: string;
   onChangeName?: React.Dispatch<React.SetStateAction<string>>;
   onSearchName?: React.Dispatch<React.SetStateAction<string>>;
+  onSearchGroupChat?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SearchBar = (props: SearchBarProps) => {
@@ -18,7 +19,10 @@ const SearchBar = (props: SearchBarProps) => {
     }
     if (props.onSearchName) {
       props.onSearchName(tar.value);
-      console.log('seachedData');
+    }
+    if (props.onSearchGroupChat) {
+      props.onSearchGroupChat(tar.value);
+      console.log('Searched GroupChat');
     }
   };
 
