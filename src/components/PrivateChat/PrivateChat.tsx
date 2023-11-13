@@ -26,9 +26,9 @@ export default function PrivateChat(props: Props) {
     <StyledTopContainer>
       <StyledContainer onClick={() => navigate(`/chat/${id}`)} className={params.chatId === id ? 'selected_chat' : ''}>
         <StyledSubContainer>
-          <StyledImg src={users[0].picture} alt="사용자 프로필 이미지" />
+          <StyledImg src={users[1]?.picture} alt="사용자 프로필 이미지" />
           <StyledTextContainer>
-            <StyledTitle>{users[0].username}</StyledTitle>
+            <StyledTitle>{users[1]?.username}</StyledTitle>
             <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
           </StyledTextContainer>
         </StyledSubContainer>
