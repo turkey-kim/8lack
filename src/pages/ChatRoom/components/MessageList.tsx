@@ -35,8 +35,6 @@ const MessageList: React.FC = () => {
 
   const groupedMessages = groupMessagesByDate(allMessages);
 
-  console.log('렌더링되나용?');
-
   return (
     <StyledList ref={messageRef}>
       {Object.entries(groupedMessages).map(([date, msgs]) => (
