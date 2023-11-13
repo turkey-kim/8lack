@@ -9,7 +9,7 @@ import UserList from 'pages/ChatRoom/components/UserList';
 import {RxHamburgerMenu} from 'react-icons/rx';
 import {RiAddFill} from 'react-icons/ri';
 import {leaveChatRoom} from 'api/myChatRoom';
-import AddUserModal from 'pages/ChatRoom/components/AddUserModal';
+import GenerateModal from 'components/GenerateModal/GenerateModal';
 import {useChatRoomQuery} from 'hooks/useChatRoomQuery';
 import {useRecoilState} from 'recoil';
 import {chatRoomState} from 'states/atom';
@@ -40,11 +40,9 @@ const Chat = ({chatId}: {chatId: string}) => {
   const closeDrawer = () => {
     setIsDrawerOpen(false);
   };
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
   return (
@@ -64,7 +62,7 @@ const Chat = ({chatId}: {chatId: string}) => {
       </StyledContainer>
       <Drawer isOpen={isDrawerOpen} onClose={closeDrawer}>
         <StyledLabel>- 대화 상대</StyledLabel>
-        <StyledWrapper onClick={toggleModal}>
+        <StyledWrapper onClick={openModal}>
           <StyledAddButton
             onClick={e => {
               e.stopPropagation();
@@ -78,7 +76,16 @@ const Chat = ({chatId}: {chatId: string}) => {
         <StyledSpace>
           <StyledLeaveButton onClick={handleLeaveChat}>채팅 나가기</StyledLeaveButton>
         </StyledSpace>
-        {isModalOpen && <AddUserModal chatId={chatId} onClose={closeModal} />}
+        {isModalOpen && (
+          <GenerateModal
+            onToggleModal={() => setIsModalOpen(false)}
+            headline="그룹 채팅방에 초대하기"
+            label1="사용자 선택하기"
+            label2="새로 초대할 사용자"
+            optionInput={false}
+            primaryBtn="그룹 채팅방에 초대하기"
+          ></GenerateModal>
+        )}
       </Drawer>
     </>
   );
@@ -131,10 +138,6 @@ const StyledTitle = styled.div`
   margin-left: 1rem;
 `;
 
-const StyledButton = styled.button`
-  display: flex;
-`;
-
 const StyledLabel = styled.span`
   font-size: 0.87rem;
   font-weight: 500;
@@ -168,4 +171,8 @@ const StyledAddButton = styled.button`
 
 const StyledName = styled.span`
   ${({theme}) => theme.fonts.body2};
+`;
+
+const StyledButton = styled.button`
+  display: flex;
 `;

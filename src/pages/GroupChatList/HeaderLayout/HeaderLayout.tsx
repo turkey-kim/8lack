@@ -3,7 +3,7 @@ import {theme} from '../../../styles/Theme';
 import TabButtons from './TabButton/TabButtons';
 import SearchBar from './SearchBar';
 import {useState} from 'react';
-import GenerateChat from './GenerateChat/GenerateChat';
+import GenerateChat from 'components/GenerateModal/GenerateModal';
 import TabProps from './TabButton/TabProps';
 
 const MARGIN = '5rem';
@@ -23,7 +23,17 @@ const HeaderLayout = (props: HeaderLayoutProps) => {
 
   return (
     <StyledContainer>
-      {isModalOpened && <GenerateChat onToggleModal={setModalOpened}></GenerateChat>}
+      {isModalOpened && (
+        <GenerateChat //
+          onToggleModal={setModalOpened}
+          headline="그룹 채팅방 만들기"
+          label1="사용자 선택하기"
+          label2="그룹 채팅방 제목 (필수)"
+          optionInput={true}
+          optionLabel="선택된 사용자 (2명 이상 선택)"
+          primaryBtn="그룹 채팅방 만들기"
+        ></GenerateChat>
+      )}
       <StyledHeaderDiv>
         <StyledH1>입장가능한 그룹 채팅방</StyledH1>
         <StyledButton onClick={generateModalOpenHander}>그룹 채팅방 만들기</StyledButton>
