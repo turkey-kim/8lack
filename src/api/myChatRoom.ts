@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {authHeaders} from './auth';
-import {SERVER_URL} from '../constant/constant';
+import {SERVER_URL} from 'constant/constant';
 
 export const myChatRoom = async () => {
   try {
@@ -14,7 +14,7 @@ export const myChatRoom = async () => {
 export const makeChatRoom = async (name: string, users: string[], isPrivate?: boolean) => {
   try {
     const response = await axios.post(
-      'https://fastcampus-chat.net/chat',
+      `${SERVER_URL}/chat`,
       {name: name, users: users, isPrivate: isPrivate},
       {headers: authHeaders()},
     );

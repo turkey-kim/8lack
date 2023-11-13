@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import {theme} from '../../styles/Theme';
+import {theme} from '../../../styles/Theme';
 import TabButtons from './TabButton/TabButtons';
 import SearchBar from './SearchBar';
 import {useState} from 'react';
-import GenerateChat from 'components/GenerateChat/GenerateChat';
+import GenerateChat from './GenerateChat/GenerateChat';
 
 const MARGIN = '80px';
 

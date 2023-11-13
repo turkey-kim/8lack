@@ -9,11 +9,11 @@ import {theme} from './styles/Theme';
 import GlobalStyles from './styles/GlobalStyles';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import NotFound from './pages/NotFound';
-import Users from './pages/Users';
+import Users from './pages/UsersList';
 import SignIn from './pages/SignIn';
 import SignUp from 'pages/SignUp';
 import ChatRoom from 'pages/ChatRoom';
-import GroupChatList from './pages/GroupChatList';
+import GroupChatList from './pages/GroupChatList/GroupChatList';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');

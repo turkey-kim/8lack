@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {theme} from '../../../styles/Theme';
+import {theme} from '../../../../styles/Theme';
 import TabProps from './TabProps';
 
 interface Props {
@@ -17,9 +17,9 @@ const TabEl = (props: Props) => {
     let copied = props.tabContents.slice();
     copied.forEach(el => {
       if (el.label === targetLabel) {
-        el.isSelected = true;
+        el.selected = true;
       } else {
-        el.isSelected = false;
+        el.selected = false;
       }
     });
 
@@ -29,7 +29,7 @@ const TabEl = (props: Props) => {
   return (
     <StyledTabEl //
       onClick={clickHandler}
-      isSelected={props.contents.isSelected}
+      selected={props.contents.selected}
     >
       {props.contents.label}
     </StyledTabEl>
@@ -38,12 +38,12 @@ const TabEl = (props: Props) => {
 
 export default TabEl;
 
-const StyledTabEl = styled.button<{isSelected?: boolean}>`
+const StyledTabEl = styled.button<{selected?: boolean}>`
   width: 84px;
   height: 26px;
 
-  background-color: ${props => (props.isSelected ? theme.colors.blue700 : '')};
-  color: ${props => (props.isSelected ? theme.colors.white : theme.colors.gray900)};
+  background-color: ${props => (props.selected ? theme.colors.blue700 : '')};
+  color: ${props => (props.selected ? theme.colors.white : theme.colors.gray900)};
   border-radius: 4px;
   white-space: nowrap;
   padding: 0;

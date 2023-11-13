@@ -1,9 +1,9 @@
-import SearchBar from 'components/HeaderLayout/SearchBar';
+import SearchBar from '../SearchBar';
 import {MdClose} from 'react-icons/md';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import UserCells from './UserCells';
-import {User} from '../../types/chatroom.types';
+import {User} from '../../../../types/chatroom.types';
 import {useEffect, useState} from 'react';
 import {getUsers} from 'api/users';
 import {makeChatRoom} from 'api/myChatRoom';
@@ -19,19 +19,20 @@ type InputStates = [{name: 'chatName'; state: string}, {name: 'pickedUser'; stat
 
 const GenerateChat = (props: ModalProps) => {
   const [userData, setUserData] = useState<[User[], User[]]>([[], []]);
+  const [searchUserData, setSearchUserData] = useState('');
+
   const [chatName, setChatName] = useState<string>('');
 
   const [inputStates, setInputStates] = useState<InputStates>([
     {name: 'chatName', state: 'default'},
     {name: 'pickedUser', state: 'default'},
   ]);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const myInfo = useRecoilValue(userInformation);
 
   useEffect(() => {
     // 사용자 불러오기
-
     getUsers().then(res => {
       const filtered = (res as User[]).slice().filter(val => val.id !== myInfo.id);
       setUserData([filtered, []]);
@@ -53,7 +54,7 @@ const GenerateChat = (props: ModalProps) => {
     }
 
     if (userData[1].length < 2) {
-      // 자신을 포함 3명 이하 예외 조건 처리
+      // 자신을 포함 2명 이하 예외 조건 처리
       let temp: InputStates = [...inputStates];
       temp[1].state = 'error';
       setInputStates(temp);
@@ -83,35 +84,36 @@ const GenerateChat = (props: ModalProps) => {
         <StyledMain>
           <StyledUnit>
             <StyledLabel>사용자 선택하기</StyledLabel>
-            <SearchBar content="사용자를 검색해보세요" height="40"></SearchBar>
+            <SearchBar content="사용자를 검색해보세요" height="40" onSearchName={setSearchUserData}></SearchBar>
             <UserCells
               height="312px"
-              marginTop="8px"
+              $marginTop="8px"
               typed=""
               allocatedData={userData[0]}
               subData={userData[1]}
               onToggleUser={setUserData}
+              searchUserData={searchUserData}
             ></UserCells>
           </StyledUnit>
           <StyledUnit>
             <StyledDiv>
               <StyledLabel>그룹 채팅방 제목 (필수)</StyledLabel>
               <SearchBar
-                inputState={inputStates[0].state}
+                $inputState={inputStates[0].state}
                 onChangeName={setChatName}
                 content="그룹 채팅방 이름을 적어주세요"
                 height="40"
               ></SearchBar>
             </StyledDiv>
             <div>
-              <StyledLabel>선택된 사용자 (3명 이상)</StyledLabel>
+              <StyledLabel>선택된 사용자 (2명 이상 선택)</StyledLabel>
               <UserCells
                 typed="checked"
                 allocatedData={userData[1]}
                 subData={userData[0]}
                 onToggleUser={setUserData}
                 height="275px"
-                inputState={inputStates[1].state}
+                $inputState={inputStates[1].state}
               ></UserCells>
             </div>
           </StyledUnit>
