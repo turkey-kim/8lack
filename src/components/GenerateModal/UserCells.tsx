@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import UserCell from './UserCell';
-import {User} from '../../../../types/chatroom.types';
+import {User} from 'types/chatroom.types';
 import {useEffect, useState} from 'react';
 
 interface UserCellsProps {

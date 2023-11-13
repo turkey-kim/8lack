@@ -9,6 +9,7 @@ import {handleChatLeave} from 'api/chat';
 
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const handleLeaveChat = async () => {
@@ -26,6 +27,10 @@ const Chat = ({chatId}: {chatId: string}) => {
     setIsDrawerOpen(false);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <StyledContainer>
@@ -40,7 +45,13 @@ const Chat = ({chatId}: {chatId: string}) => {
         <MessageList />
         <SendMessage />
       </StyledContainer>
-      <Drawer isOpen={isDrawerOpen} onClose={closeDrawer} />
+      <Drawer //
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        isModalOpen={isModalOpen}
+        onModalOpen={openModal}
+        onModalClose={setIsModalOpen}
+      />
     </>
   );
 };
