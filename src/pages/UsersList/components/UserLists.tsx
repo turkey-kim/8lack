@@ -58,10 +58,8 @@ const UserLists = () => {
     filterUsers();
   }, [searchUser]);
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSearch = () => {
     filterUsers();
-    e.stopPropagation();
   };
 
   const filterUsers = () => {
@@ -74,7 +72,17 @@ const UserLists = () => {
   };
 
   return (
-    <StyledForm onSubmit={handleSearch}>
+    <StyledForm
+      onSubmit={e => {
+        e.preventDefault();
+        handleSearch();
+      }}
+      onKeyPress={e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+        }
+      }}
+    >
       <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
       <StyledLine />
       <StyledSubTitle>즐겨찾기</StyledSubTitle>

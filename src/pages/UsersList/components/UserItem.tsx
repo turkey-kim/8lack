@@ -45,7 +45,9 @@ const UserItem = ({user}: UserItemProps) => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
   }, [isChecked, user.id]);
 
-  const handleCreateChat = async (userId: string, userName: string) => {
+  const handleCreateChat = async (userId: string, userName: string, e: React.MouseEvent) => {
+    e.preventDefault();
+
     try {
       const isConfirmed = window.confirm(`${userName}님과 채팅을 시작하시겠습니까?`);
       if (isConfirmed) {
@@ -104,7 +106,7 @@ const UserItem = ({user}: UserItemProps) => {
         </StyledUserName>
         <StyledChatButton
           onClick={e => {
-            handleCreateChat(user.id, user.name);
+            handleCreateChat(user.id, user.name, e);
           }}
         >
           1:1 채팅하기
