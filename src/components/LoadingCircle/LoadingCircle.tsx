@@ -4,9 +4,9 @@ const LoadingCircle = ({width = '300px', height = '300px'}) => {
   return (
     <Player
       autoplay
-      loop={true}
+      loop
       src="https://lottie.host/53b372a7-cf44-44ba-b0bb-983aa17d5beb/QH7g1FpHbT.json"
-      style={{height: height, width: width}}
+      style={{height: '300px', width: '300px'}}
     ></Player>
   );
 };
