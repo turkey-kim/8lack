@@ -55,7 +55,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
 
     // 메시지 수신
     newSocket.on('message-to-client', (data: Message) => {
-      setMessages(prevMessages => [...prevMessages, data]);
+      setMessages(prev => [...prev, data]);
     });
     // 이전 메시지 수신
     newSocket.on('messages-to-client', (data: PrevMessage) => {
