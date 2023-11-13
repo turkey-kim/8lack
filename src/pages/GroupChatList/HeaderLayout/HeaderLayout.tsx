@@ -4,26 +4,37 @@ import TabButtons from './TabButton/TabButtons';
 import SearchBar from './SearchBar';
 import {useState} from 'react';
 import GenerateChat from './GenerateChat/GenerateChat';
+import TabProps from './TabButton/TabProps';
 
 const MARGIN = '80px';
 
-const HeaderLayout = () => {
-  const [isOpened, setGenOpened] = useState<boolean>(false);
+interface HeaderLayoutProps {
+  onSearchGroupChat: React.Dispatch<React.SetStateAction<string>>;
+  setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>;
+  tabs: TabProps[];
+}
 
-  const modalOpenHander = () => {
-    setGenOpened(true);
+const HeaderLayout = (props: HeaderLayoutProps) => {
+  const [isModalOpened, setModalOpened] = useState<boolean>(false);
+
+  const generateModalOpenHander = () => {
+    setModalOpened(true);
   };
 
   return (
     <StyledContainer>
-      {isOpened && <GenerateChat onClick={setGenOpened}></GenerateChat>}
+      {isModalOpened && <GenerateChat onToggleModal={setModalOpened}></GenerateChat>}
       <StyledHeaderDiv>
         <StyledH1>입장가능한 그룹 채팅방</StyledH1>
-        <StyledButton onClick={modalOpenHander}>그룹 채팅방 만들기</StyledButton>
+        <StyledButton onClick={generateModalOpenHander}>그룹 채팅방 만들기</StyledButton>
       </StyledHeaderDiv>
       <StyledDiv>
-        <SearchBar content="채팅방을 검색해보세요" height="50"></SearchBar>
-        <TabButtons></TabButtons>
+        <SearchBar
+          content="채팅방을 검색해보세요" //
+          height="50"
+          onSearchGroupChat={props.onSearchGroupChat}
+        ></SearchBar>
+        <TabButtons setTabs={props.setTabs} tabs={props.tabs}></TabButtons>
       </StyledDiv>
     </StyledContainer>
   );

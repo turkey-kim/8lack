@@ -12,16 +12,19 @@ import {userInformation} from 'states/atom';
 import {useNavigate} from 'react-router';
 
 interface ModalProps {
-  onClick: React.Dispatch<boolean>;
+  onToggleModal: React.Dispatch<boolean>;
 }
 
 type InputStates = [{name: 'chatName'; state: string}, {name: 'pickedUser'; state: string}];
 
 const GenerateChat = (props: ModalProps) => {
   const [userData, setUserData] = useState<[User[], User[]]>([[], []]);
+  // [선택가능한 유저 배열, 선택된유저 배열]
   const [searchUserData, setSearchUserData] = useState('');
+  // 검색어
 
   const [chatName, setChatName] = useState<string>('');
+  // 방이름
 
   const [inputStates, setInputStates] = useState<InputStates>([
     {name: 'chatName', state: 'default'},
@@ -40,7 +43,7 @@ const GenerateChat = (props: ModalProps) => {
   }, [myInfo.id]);
 
   const modalCloseHandler = () => {
-    props.onClick(false);
+    props.onToggleModal(false);
   };
 
   const generateChatHandler = () => {
@@ -63,7 +66,7 @@ const GenerateChat = (props: ModalProps) => {
     }
 
     const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
-    const madeChatRoom = makeChatRoom(chatName, users, false).then(res => {
+    makeChatRoom(chatName, users, false).then(res => {
       let chatId = res.id;
       alert(`${chatName} 방이 생성되었습니다.`);
       navigate(`/chat/${chatId}`);
