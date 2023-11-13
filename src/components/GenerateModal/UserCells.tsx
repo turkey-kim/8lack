@@ -72,7 +72,7 @@ const StyledUserContainer = styled.div<Pick<UserCellsProps, 'height' | '$marginT
   margin-top: ${props => (props.$marginTop ? props.$marginTop : '')};
 
   background-color: ${theme.colors.gray100};
-  border: 1px solid
+  border: 0.063rem solid
     ${props => {
       if (props.$inputState === 'error') {
         return theme.colors.error;
@@ -82,6 +82,6 @@ const StyledUserContainer = styled.div<Pick<UserCellsProps, 'height' | '$marginT
         return theme.colors.gray400;
       }
     }};
-  border-radius: 4px;
+  border-radius: 0.25rem;
   overflow: scroll;
 `;

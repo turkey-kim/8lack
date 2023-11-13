@@ -180,9 +180,9 @@ const BackDrop = styled.div`
 `;
 
 const StyledModalContainer = styled.div`
-  width: 747px;
-  height: 562px;
-  border-radius: 8px;
+  width: 46.688rem;
+  height: 35.125rem;
+  border-radius: 0.5rem;
 
   background-color: ${theme.colors.white};
 
@@ -198,11 +198,11 @@ const StyledModalContainer = styled.div`
 `;
 
 const StyledHeader = styled.div`
-  height: 70px;
+  height: 4.375rem;
   display: flex;
   justify-content: space-between;
-  padding: 16px 24px;
-  border-bottom: 1px solid ${theme.colors.gray400};
+  padding: 1rem 1.5rem;
+  border-bottom: 0.063rem solid ${theme.colors.gray400};
 `;
 
 const StyledH4 = styled.h4`
@@ -223,13 +223,13 @@ const StyledCloseIcon = styled(MdClose)`
 
 const StyledMain = styled.div`
   display: flex;
-  padding: 16px 24px;
-  gap: 24px;
+  padding: 1rem 1.5rem;
+  gap: 1.5rem;
 `;
 
 const StyledUnit = styled.div`
-  width: 338px;
-  height: 380px;
+  width: 21.125rem;
+  height: 23.75rem;
 `;
 
 const StyledLabel = styled.label`
@@ -238,7 +238,7 @@ const StyledLabel = styled.label`
   line-height: ${theme.fonts.body2.lineHeight};
 
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 0.375rem;
 `;
 
 const StyledBottom = styled.div`
@@ -246,21 +246,21 @@ const StyledBottom = styled.div`
   bottom: 0;
 
   width: 100%;
-  height: 72px;
-  border-top: 1px solid ${theme.colors.gray400};
+  height: 4.5rem;
+  border-top: 0.063rem solid ${theme.colors.gray400};
 
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 1.5rem;
 
-  gap: 8px;
+  gap: 0.5rem;
 `;
 
 const StyledButton = styled.button`
-  height: 48px;
-  padding: 12px 32px;
-  border-radius: 12px;
+  height: 3rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
 
   font-size: ${theme.fonts.subtitle5};
 
@@ -284,5 +284,5 @@ const StyledCancelButton = styled(StyledButton)`
 `;
 
 const StyledDiv = styled.div`
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 `;
