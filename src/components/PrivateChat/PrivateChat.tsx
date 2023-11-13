@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {format, register} from 'timeago.js';
@@ -5,10 +6,13 @@ import koLocale from 'timeago.js/lib/lang/ko';
 import {Props, IChat} from 'types/chatroom.types';
 import {useNavigate, useParams} from 'react-router-dom';
 import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
+import {authCheck} from 'api/auth';
+import {USER_DEFAULT_IMG} from 'constant/constant';
 
 register('ko', koLocale);
 
 export default function PrivateChat(props: Props) {
+  const [myId, setMyId] = useState<string>('');
   const {id, users} = props.data;
   const navigate = useNavigate();
   const params = useParams();
@@ -18,36 +22,55 @@ export default function PrivateChat(props: Props) {
 
   const selectedChatRoom = realTimeData?.chats.find((chat: IChat) => chat.id === id);
 
-  if (isLoading) return <p>Loading...</p>;
+  const getAuth = async () => {
+    const res = await authCheck();
+    setMyId(res.user.id);
+  };
 
-  console.log(users);
+  useEffect(() => {
+    getAuth();
+  }, []);
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <StyledTopContainer>
       <StyledContainer onClick={() => navigate(`/chat/${id}`)} className={params.chatId === id ? 'selected_chat' : ''}>
         <StyledSubContainer>
-          <StyledImg src={users[1]?.picture} alt="사용자 프로필 이미지" />
+          {users.map(user =>
+            user.id !== myId ? (
+              <StyledImg src={user.picture} alt="사용자 프로필 이미지" />
+            ) : (
+              users.length === 1 && <StyledImg src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
+            ),
+          )}
           <StyledTextContainer>
-            <StyledTitle>{users[1]?.username}</StyledTitle>
+            {users.map(user =>
+              user.id !== myId ? (
+                <StyledTitle>{user.username}</StyledTitle>
+              ) : (
+                users.length === 1 && <StyledTitle>(알 수 없음)</StyledTitle>
+              ),
+            )}
             <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
           </StyledTextContainer>
         </StyledSubContainer>
         <StyledDiv>
           <StyledDate>{format(selectedChatRoom?.updatedAt, 'ko')}</StyledDate>
-          {/* {latestMessage === null ? '' : <StyledLatestMessage />} */}
+          {/* {selectedChatRoom?.latestMessage === null ? '' : <StyledLatestMessage />} */}
         </StyledDiv>
       </StyledContainer>
     </StyledTopContainer>
   );
 }
 
-const StyledTopContainer = styled.li`
+export const StyledTopContainer = styled.li`
   .selected_chat {
     background-color: ${theme.colors.blue100};
   }
 `;
 
-export const StyledContainer = styled.li`
+const StyledContainer = styled.li`
   display: flex;
   justify-content: space-around;
   width: 100%;
@@ -67,7 +90,7 @@ export const StyledSubContainer = styled.div`
   gap: 1rem;
 `;
 
-export const StyledImg = styled.img`
+const StyledImg = styled.img`
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
