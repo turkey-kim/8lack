@@ -15,6 +15,7 @@ import SignUp from 'pages/SignUp';
 import ChatRoom from 'pages/ChatRoom';
 import GroupChatList from './pages/GroupChatList/GroupChatList';
 import Modal from 'react-modal';
+import NonUserRoute from 'routes/NonUserRoute';
 
 Modal.setAppElement('#root');
 const router = createBrowserRouter([
@@ -28,8 +29,22 @@ const router = createBrowserRouter([
       {path: '/users', element: <Users />},
     ],
   },
-  {path: '/signin', element: <SignIn />},
-  {path: '/signup', element: <SignUp />},
+  {
+    path: '/signin',
+    element: (
+      <NonUserRoute>
+        <SignIn />
+      </NonUserRoute>
+    ),
+  },
+  {
+    path: '/signup',
+    element: (
+      <NonUserRoute>
+        <SignUp />
+      </NonUserRoute>
+    ),
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
