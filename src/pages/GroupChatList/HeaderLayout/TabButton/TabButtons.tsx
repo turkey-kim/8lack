@@ -1,24 +1,20 @@
 import styled from 'styled-components';
 import TabEl from './TabEl';
-import {useState} from 'react';
-import TabProps from './TabProps';
 import {theme} from '../../../../styles/Theme';
+import TabProps from './TabProps';
 
-const TabButton = () => {
-  const [tabContents, setTabContents] = useState<TabProps[]>([
-    {label: '가나다 순', selected: true},
-    {label: '최근 채팅 순', selected: false},
-    {label: '사람 많은 순', selected: false},
-    {label: '새로운 순', selected: false},
-    {label: '홀로 있는 방', selected: false},
-  ]);
+interface tabButtonProps {
+  setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>;
+  tabs: TabProps[];
+}
 
+const TabButton = (props: tabButtonProps) => {
   return (
     <StyledDiv>
       <StyledLabel>정렬</StyledLabel>
       <StyledTabContainer>
-        {tabContents.map(contents => (
-          <TabEl key={contents.label} onClick={setTabContents} tabContents={tabContents} contents={contents}></TabEl>
+        {props.tabs.map(tab => (
+          <TabEl key={tab.label} onClick={props.setTabs} tabs={props.tabs} tab={tab}></TabEl>
         ))}
       </StyledTabContainer>
     </StyledDiv>
@@ -30,7 +26,7 @@ export default TabButton;
 const StyledLabel = styled.label`
   font-size: ${theme.fonts.body2.fontSize};
   color: ${theme.colors.gray700};
-  margin-right: 16px;
+  margin-right: 1rem;
 `;
 
 const StyledDiv = styled.div`
@@ -38,7 +34,7 @@ const StyledDiv = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  margin-top: 16px;
+  margin-top: 1rem;
 `;
 
 const StyledTabContainer = styled(StyledDiv)`
@@ -47,6 +43,6 @@ const StyledTabContainer = styled(StyledDiv)`
   margin-top: 0;
 
   background-color: ${theme.colors.gray100};
-  padding: 4px 12px;
-  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
 `;

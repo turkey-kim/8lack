@@ -40,20 +40,20 @@ const StyledCellContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 16px 4px 4px;
+  padding: 0.25rem 1rem 0.25rem 0.25rem;
   background-color: ${theme.colors.white};
-  border-bottom: 1px solid ${theme.colors.gray400};
+  border-bottom: 0.063rem solid ${theme.colors.gray400};
 `;
 
 const StyledPrf = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 `;
 
 const StyledPrfImg = styled.img`
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
 `;
 

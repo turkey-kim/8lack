@@ -37,7 +37,7 @@ export const postSignUp = async (id: string, pw: string, name: string) => {
       {id: id, password: pw, name: name, picture: USER_DEFAULT_IMG},
       {headers: headers},
     );
-    alert(`${name}님 회원가입에 성공하셨습니다!`);
+    alert(`${name}님 회원가입에 성공하셨습니다!, 홈페이지로 이동합니다!`);
   } catch (err: any) {
     alert('잘못된 형식입니다!');
   }

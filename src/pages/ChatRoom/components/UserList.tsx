@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import {useSocketContext} from 'contexts/SocketContext';
+import {useSocketContext} from 'contexts/ChatSocketContext';
 
 const UserList: React.FC = () => {
   const {users, socket} = useSocketContext();

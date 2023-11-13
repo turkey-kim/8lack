@@ -1,6 +1,6 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
-import {SocketProvider} from 'contexts/SocketContext';
+import {ChatSocketProvider} from 'contexts/ChatSocketContext';
 import Chat from 'pages/ChatRoom/components/Chat';
 import styled from 'styled-components';
 import {SERVER_URL} from 'constant/constant';
@@ -11,9 +11,9 @@ function ChatRoom() {
 
   return (
     <StyledContainer>
-      <SocketProvider id={`Room_${chatId}`} url={SOCKET_URL}>
+      <ChatSocketProvider id={`Room_${chatId}`} url={SOCKET_URL}>
         <Chat chatId={chatId!} />
-      </SocketProvider>
+      </ChatSocketProvider>
     </StyledContainer>
   );
 }
