@@ -49,8 +49,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     newSocket.on('disconnect', reason => {
       console.log('Socket disconnect:', reason);
       if (reason === 'io server disconnect') {
-        console.log('연결 시도');
-        setTimeout(() => setAttempt(attempt + 1), 1000);
+        setTimeout(() => setAttempt(prev => prev + 1), 1000);
       }
     });
 
