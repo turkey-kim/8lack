@@ -4,19 +4,11 @@ import {FaAngleDown} from 'react-icons/fa';
 import {useNavigate} from 'react-router';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
+import {Chat} from 'types/chatroom.types';
 
 import {format, register} from 'timeago.js'; //임포트하기 register 한국어 선택
 import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
 register('ko', koLocale);
-
-interface Chat {
-  id: string;
-  name: string;
-  isPrivate: boolean;
-  users: string[];
-
-  updatedAt: Date;
-}
 
 interface Props {
   key: string;
@@ -41,7 +33,7 @@ const ChatRoomEl = (props: Props) => {
 
     setInterval(() => {
       calcTime();
-    }, 30000); // 마지막 채팅 시간은 30초 마다 갱신
+    }, 30000); // 마지막 채팅 시간(by updatedAt)은 30초 마다 갱신
   }, [props.data.updatedAt]);
 
   const joinHandler = () => {
