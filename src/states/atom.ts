@@ -25,3 +25,8 @@ export const onlineUserList = atom({
   key: 'onlineUserList',
   default: [],
 });
+
+export const isStarBtnClicked = atom({
+  key: 'isStarBtnClicked',
+  default: false,
+});

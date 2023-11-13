@@ -12,6 +12,8 @@ import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
 import {makeChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router';
+import {isStarBtnClicked} from 'states/atom';
+import {useRecoilState} from 'recoil';
 
 interface UserItemProps {
   user: User;
@@ -26,15 +28,12 @@ const UserItem = ({user}: UserItemProps) => {
     //console.log(`init ${user.id}:`, saved);
     return saved !== null ? saved === 'true' : 'false';
   });
+  const [starBtnClicked, setStarBtnCliced] = useRecoilState(isStarBtnClicked);
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
     //console.log(`updated ${user.id}:`, isChecked);
   }, [isChecked, user.id]);
-
-  // useEffect(() => {
-  //   console.log(isChecked);
-  // }, [isChecked]); //즐찾 테스트
 
   const handleCreateChat = async (userId: string, userName: string) => {
     const isConfirmed = window.confirm(`${userName}님과 채팅 시작하시겠습니까?`);
@@ -62,15 +61,8 @@ const UserItem = ({user}: UserItemProps) => {
           <StyledStar
             className={isChecked ? 'checked' : 'unchecked'}
             onClick={() => {
-              //이 부분 수정
-              // if (isChecked === true) {
-              //   window.confirm(`${user.name}님을 즐겨찾기 하시겠습니가?`);
-              // } else {
-              //   window.confirm(`${user.name}님을 즐겨찾기 해제 하시겠습니가?`);
-              // }
-              //toggleChecked(user.id);
               setIsChecked(prev => !prev);
-              // console.log(`on clicked ${user.id}`);
+              setStarBtnCliced(!starBtnClicked);
             }}
           />
         </StyledUserName>
