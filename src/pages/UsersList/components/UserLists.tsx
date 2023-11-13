@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import {StyledLine, StyledSearchBar} from 'pages/UsersList';
 import {getUsers} from 'api/users';
 import UserItem from './UserItem';
+import {isStarBtnClicked} from 'states/atom';
+import {useRecoilValue} from 'recoil';
+import {authCheck} from 'api/auth';
 
 export interface User {
   id: string;
@@ -19,6 +22,18 @@ const UserLists = () => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchUser, setSearchUser] = useState('');
   const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
+  const starBtnClicked = useRecoilValue(isStarBtnClicked);
+  const [id, setId] = useState<string>('');
+
+  const getAuth = async () => {
+    const res = await authCheck();
+    setId(res.user.id);
+  };
+
+  useEffect(() => {
+    getAuth();
+    console.log(id);
+  }, []);
 
   useEffect(() => {
     getUsers().then(allUsers => {
@@ -30,27 +45,14 @@ const UserLists = () => {
       setCheckedStates(newCheckedStates);
       setUsers(allUsers);
       setFilteredUsers(allUsers);
-      //console.log(allUsers);
     });
-  }, []);
-
-  // const handleToggleChecked = () => {
-  //   toggleChecked(user.id); // 부모 컴포넌트에서 제공된 함수를 호출하여 상태를 업데이트
-  // };
+  }, [starBtnClicked]);
 
   useEffect(() => {
     Object.keys(checkedStates).forEach(key => {
       localStorage.setItem(`isChecked-${key}`, checkedStates[key].toString());
     });
   }, [checkedStates]);
-
-  // //toggledChecked로 즐찾 업데이트 되면 렌더링 되게 만드려고 했는데, 이걸 쓰면 값이 저장 안됨
-  const toggleChecked = (userId: string) => {
-    setCheckedStates(prevStates => ({
-      ...prevStates,
-      [userId]: !prevStates[userId],
-    }));
-  };
 
   //검색 구현
   useEffect(() => {
@@ -81,6 +83,7 @@ const UserLists = () => {
           .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
           .filter(user => user.name.toLowerCase())
           .filter(user => checkedStates[user.id])
+          .filter(user => user.id !== id)
           .map(user => <UserItem key={user.id} user={user} />)
       ) : (
         <br />
@@ -91,6 +94,8 @@ const UserLists = () => {
         ? filteredUsers
             .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
             .filter(user => user.name.toLowerCase())
+            .filter(user => !checkedStates[user.id])
+            .filter(user => user.id !== id)
             .map(user => <UserItem key={user.id} user={user} />)
         : '검색된 유저가 없습니다.'}
     </StyledForm>

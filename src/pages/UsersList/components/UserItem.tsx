@@ -12,10 +12,11 @@ import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
 import {makeChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router';
+import {isStarBtnClicked} from 'states/atom';
+import {useRecoilState} from 'recoil';
 
 interface UserItemProps {
   user: User;
-  //toggleChecked: (userId: string) => void;
 }
 
 const UserItem = ({user}: UserItemProps) => {
@@ -23,18 +24,13 @@ const UserItem = ({user}: UserItemProps) => {
   const [isActive, setIsActive] = useState(false); //활동중 ..소켓에서 받아와서 저장해오기
   const [isChecked, setIsChecked] = useState(() => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
-    //console.log(`init ${user.id}:`, saved);
     return saved !== null ? saved === 'true' : 'false';
   });
+  const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
-    //console.log(`updated ${user.id}:`, isChecked);
   }, [isChecked, user.id]);
-
-  // useEffect(() => {
-  //   console.log(isChecked);
-  // }, [isChecked]); //즐찾 테스트
 
   const handleCreateChat = async (userId: string, userName: string) => {
     const isConfirmed = window.confirm(`${userName}님과 채팅 시작하시겠습니까?`);
@@ -52,7 +48,6 @@ const UserItem = ({user}: UserItemProps) => {
   };
 
   return (
-    //유저마다 생성 되는 것
     <StyledUserContainer key={user.id}>
       <StyledUserProfile src={user.picture} />
       <StyledUserDescription>
@@ -62,15 +57,8 @@ const UserItem = ({user}: UserItemProps) => {
           <StyledStar
             className={isChecked ? 'checked' : 'unchecked'}
             onClick={() => {
-              //이 부분 수정
-              // if (isChecked === true) {
-              //   window.confirm(`${user.name}님을 즐겨찾기 하시겠습니가?`);
-              // } else {
-              //   window.confirm(`${user.name}님을 즐겨찾기 해제 하시겠습니가?`);
-              // }
-              //toggleChecked(user.id);
               setIsChecked(prev => !prev);
-              // console.log(`on clicked ${user.id}`);
+              setStarBtnClicked(!starBtnClicked);
             }}
           />
         </StyledUserName>
