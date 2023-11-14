@@ -4,18 +4,29 @@ import PrivateChats from '../PrivateChat/PrivateChats';
 import {theme} from '../../styles/Theme';
 import GroupChat from 'components/GroupChat/GroupChats';
 import {authCheck} from '../../api/auth';
+import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 
 export default function SideBar() {
   const [categoryButton, setCategoryButton] = useState<boolean>(true);
   const [name, setName] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getAuth = async () => {
-    const res = await authCheck();
-    setName(res.user.name);
+  const handleTabClick = async () => {
+    setIsLoading(true);
+    try {
+      const res = await authCheck();
+      setName(res.user.name);
+    } catch (error) {
+      alert('⚠️사용자의 이름을 불러오지 못하였습니다.');
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1500);
+    }
   };
 
   useEffect(() => {
-    getAuth();
+    handleTabClick();
   }, []);
 
   return (
@@ -24,25 +35,42 @@ export default function SideBar() {
       <StyledCategoryContainer>
         <StyledPrivateButton
           className={categoryButton ? 'selected_category' : ''}
-          onClick={() => setCategoryButton(true)}
+          onClick={() => {
+            setCategoryButton(true);
+            handleTabClick();
+          }}
         >
           개인
         </StyledPrivateButton>
         <StyledGroupButton
           className={!categoryButton ? 'selected_category' : ''}
-          onClick={() => setCategoryButton(false)}
+          onClick={() => {
+            setCategoryButton(false);
+            handleTabClick();
+          }}
         >
           그룹
         </StyledGroupButton>
       </StyledCategoryContainer>
       <StyledLine />
-      <StyledChatContainer>{categoryButton ? <PrivateChats /> : <GroupChat />}</StyledChatContainer>
+      <StyledChatContainer>
+        {isLoading ? (
+          <LoadingCircle width="130px" height={'calc(100vh - 15rem)'} />
+        ) : categoryButton ? (
+          <PrivateChats />
+        ) : (
+          <GroupChat />
+        )}
+      </StyledChatContainer>
     </StyledContainer>
   );
 }
 
 const StyledContainer = styled.div`
   width: 35rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   border-left: 1px solid ${theme.colors.gray400};
   border-right: 1px solid ${theme.colors.gray400};
 `;
@@ -77,6 +105,16 @@ const StyledLine = styled.div`
 `;
 
 const StyledChatContainer = styled.div`
-  height: 100vh;
   background-color: ${theme.colors.gray100};
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 6px;
+    background: ${theme.colors.gray100};
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.gray300};
+    border-radius: 6px;
+  }
 `;

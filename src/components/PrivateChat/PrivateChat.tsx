@@ -39,17 +39,17 @@ export default function PrivateChat(props: Props) {
         <StyledSubContainer>
           {users.map(user =>
             user.id !== myId ? (
-              <StyledImg src={user.picture} alt="사용자 프로필 이미지" />
+              <StyledImg key={user.id} src={user.picture} alt="사용자 프로필 이미지" />
             ) : (
-              users.length === 1 && <StyledImg src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
+              users.length === 1 && <StyledImg key={user.id} src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
             ),
           )}
           <StyledTextContainer>
             {users.map(user =>
               user.id !== myId ? (
-                <StyledTitle>{user.username}</StyledTitle>
+                <StyledTitle key={user.id}>{user.username}</StyledTitle>
               ) : (
-                users.length === 1 && <StyledTitle>(알 수 없음)</StyledTitle>
+                users.length === 1 && <StyledTitle key={user.id}>(알 수 없음)</StyledTitle>
               ),
             )}
             <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
@@ -64,7 +64,7 @@ export default function PrivateChat(props: Props) {
   );
 }
 
-export const StyledTopContainer = styled.li`
+export const StyledTopContainer = styled.div`
   .selected_chat {
     background-color: ${theme.colors.blue100};
   }

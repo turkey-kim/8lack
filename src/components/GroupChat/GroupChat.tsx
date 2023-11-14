@@ -38,8 +38,12 @@ export default function GroupChat(props: Props) {
         <StyledSubContainer>
           <StyledImgContainer>
             {users.length >= 4
-              ? users.slice(0, 4).map(user => <StyledGroupImg src={user.picture} alt="그룹 채팅방 이미지" />)
-              : users.map(user => <StyledGroupImg src={user.picture} alt="그룹 채팅방 이미지" className="group_img" />)}
+              ? users
+                  .slice(0, 4)
+                  .map(user => <StyledGroupImg key={user.id} src={user.picture} alt="그룹 채팅방 이미지" />)
+              : users.map(user => (
+                  <StyledGroupImg key={user.id} src={user.picture} alt="그룹 채팅방 이미지" className="group_img" />
+                ))}
           </StyledImgContainer>
           <StyledTextContainer>
             <StyledTitle>{name}</StyledTitle>
