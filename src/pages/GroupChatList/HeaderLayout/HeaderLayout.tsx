@@ -17,7 +17,7 @@ interface HeaderLayoutProps {
 const HeaderLayout = (props: HeaderLayoutProps) => {
   const [isModalOpened, setModalOpened] = useState<boolean>(false);
 
-  const generateModalOpenHander = () => {
+  const generateModalOpenHandler = () => {
     setModalOpened(true);
   };
 
@@ -36,7 +36,7 @@ const HeaderLayout = (props: HeaderLayoutProps) => {
       )}
       <StyledHeaderDiv>
         <StyledH1>입장가능한 그룹 채팅방</StyledH1>
-        <StyledButton onClick={generateModalOpenHander}>그룹 채팅방 만들기</StyledButton>
+        <StyledButton onClick={generateModalOpenHandler}>그룹 채팅방 만들기</StyledButton>
       </StyledHeaderDiv>
       <StyledDiv>
         <SearchBar content="채팅방을 검색해보세요" height="50" onSearchGroupChat={props.onSearchGroupChat}></SearchBar>

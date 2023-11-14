@@ -94,7 +94,7 @@ const UserItem = ({user}: UserItemProps) => {
       <StyledUserDescription>
         <StyledUserName>
           {user.name}&nbsp;
-          {getOnlineUserList.some((item: string) => item === user.id) ? <StyledActiveCircle /> : null}
+          {getOnlineUserList.some((item: string) => item === user.id) ? <StyledActiveCircle  className="active" /> : <StyledActiveCircle  className="Inactive" />}
           <StyledStar
             className={isChecked ? 'checked' : 'unchecked'}
             onClick={() => {
@@ -118,7 +118,14 @@ const UserItem = ({user}: UserItemProps) => {
 export default UserItem;
 
 const StyledActiveCircle = styled(MdCircle)`
-  color: ${props => props.theme.colors.success};
+color: ${props => props.theme.colors.gray300};
+
+  &.active {
+    color: ${props => props.theme.colors.success};
+  }
+  &.Inactive {
+    color: ${props => props.theme.colors.gray300};
+  }
 `;
 
 const StyledStar = styled(FaStar)`
