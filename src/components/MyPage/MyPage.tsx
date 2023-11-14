@@ -65,6 +65,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
         setPicture(imagePreviewUrl);
       }
       setEditing(false);
+      window.location.reload();
     } catch (error) {
       console.error('업데이트 실패', error);
     }
