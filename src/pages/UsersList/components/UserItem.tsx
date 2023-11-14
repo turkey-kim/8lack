@@ -36,13 +36,13 @@ const UserItem = ({user}: UserItemProps) => {
 
   const getAuth = async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const res = await authCheck();
       setMyId(res.user.id);
     } catch {
       console.error('error 발생');
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -93,43 +93,43 @@ const UserItem = ({user}: UserItemProps) => {
 
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         <LoadingCircle height={'calc(100vh - 17.75rem)'} />
-      ) : (
-        <StyledUserContainer
-          key={user.id}
-          onClick={e => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-        >
-          <StyledUserProfile src={user.picture} />
-          <StyledUserDescription>
-            <StyledUserName>
-              {user.name}&nbsp;
-              {getOnlineUserList.some((item: string) => item === user.id) ? (
-                <StyledActiveCircle className="active" />
-              ) : (
-                <StyledActiveCircle className="Inactive" />
-              )}
-              <StyledStar
-                className={isChecked ? 'checked' : 'unchecked'}
-                onClick={() => {
-                  setIsChecked(prev => !prev);
-                  setStarBtnClicked(!starBtnClicked);
-                }}
-              />
-            </StyledUserName>
-            <StyledChatButton
-              onClick={e => {
-                handleCreateChat(user.id, user.name, e);
+      ) : ( */}
+      <StyledUserContainer
+        key={user.id}
+        onClick={e => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
+        <StyledUserProfile src={user.picture} />
+        <StyledUserDescription>
+          <StyledUserName>
+            {user.name}&nbsp;
+            {getOnlineUserList.some((item: string) => item === user.id) ? (
+              <StyledActiveCircle className="active" />
+            ) : (
+              <StyledActiveCircle className="Inactive" />
+            )}
+            <StyledStar
+              className={isChecked ? 'checked' : 'unchecked'}
+              onClick={() => {
+                setIsChecked(prev => !prev);
+                setStarBtnClicked(!starBtnClicked);
               }}
-            >
-              1:1 채팅하기
-            </StyledChatButton>
-          </StyledUserDescription>
-        </StyledUserContainer>
-      )}
+            />
+          </StyledUserName>
+          <StyledChatButton
+            onClick={e => {
+              handleCreateChat(user.id, user.name, e);
+            }}
+          >
+            1:1 채팅하기
+          </StyledChatButton>
+        </StyledUserDescription>
+      </StyledUserContainer>
+      {/* )} */}
     </>
   );
 };
