@@ -64,9 +64,11 @@ const StyledContainer = styled.div`
   align-items: center;
   width: 70%;
   max-width: 500px;
+  min-width: 300px;
   min-height: 500px;
   box-shadow: ${theme.shadows.shadow3.shadow};
   border-radius: 8px;
+  background-color: ${theme.colors.white};
 `;
 
 const StyledNavBar = styled.div`
