@@ -50,7 +50,6 @@ export const inviteChatRoom = async (chatId: string, users: string[]) => {
         headers: authHeaders(),
       },
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error inviting users:', error);
@@ -78,7 +77,7 @@ export const getChatRoom = async (chatId: string) => {
     const response = await axios.get(`${SERVER_URL}/chat/only?chatId=${chatId}`, {
       headers: authHeaders(),
     });
-    // console.log(response.data.chat);
+    console.log(response.data.chat);
     return response.data.chat;
   } catch (error) {
     console.error('Error joining chat room:', error);

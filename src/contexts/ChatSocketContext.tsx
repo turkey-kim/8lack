@@ -36,6 +36,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     newSocket.off('users-to-client');
     newSocket.off('join');
     newSocket.off('leave');
+
     // 새로운 소켓 연결 시 이전 메시지 초기화
     setMessages([]);
     setPrevMessages({messages: []});
@@ -71,7 +72,6 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
         userId: 'system',
         createdAt: new Date(),
       }));
-      console.log(data);
       setMessages(prevMessages => [...prevMessages, ...joinMessage]);
     });
     // leave 이벤트 데이터 처리

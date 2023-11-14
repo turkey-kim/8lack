@@ -69,7 +69,6 @@ const SignUpBox = () => {
     const res = await postSignIn(id, pw);
     if (res) {
       const {accessToken, refreshToken} = res;
-      localStorage.setItem('8lack_uid', id);
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       await makeChatRoom(name, ['나와의 채팅방 전용 가짜칭긔'], true); // 나와의 채팅방 생성
