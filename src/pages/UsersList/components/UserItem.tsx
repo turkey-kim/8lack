@@ -17,7 +17,6 @@ import {useRecoilState, useRecoilValue} from 'recoil';
 import {authCheck} from 'api/auth';
 import {myChatRoom} from 'api/myChatRoom';
 import {ChatRoom} from 'types/chatroom.types';
-import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 
 interface UserItemProps {
   user: User;
@@ -32,18 +31,10 @@ const UserItem = ({user}: UserItemProps) => {
   const [myId, setMyId] = useState<string>('');
   const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
   const getOnlineUserList = useRecoilValue(onlineUserList);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getAuth = async () => {
-    try {
-      // setIsLoading(true);
-      const res = await authCheck();
-      setMyId(res.user.id);
-    } catch {
-      console.error('error 발생');
-    } finally {
-      // setIsLoading(false);
-    }
+    const res = await authCheck();
+    setMyId(res.user.id);
   };
 
   useEffect(() => {
@@ -75,11 +66,11 @@ const UserItem = ({user}: UserItemProps) => {
           );
 
           if (existingChat) {
-            // console.log('기존 채팅방 사용', existingChat);
+            console.log('기존 채팅방 사용', existingChat);
             navigate(`/chat/${existingChat.id}`);
           } else {
             const res = await makeChatRoom(chatName, users, true);
-            //   console.log('새로운 채팅방 생성', res);
+            console.log('새로운 채팅방 생성', res);
             navigate(`/chat/${res.id}`);
           }
         } else {
@@ -93,9 +84,6 @@ const UserItem = ({user}: UserItemProps) => {
 
   return (
     <>
-      {/* {isLoading ? (
-        <LoadingCircle height={'calc(100vh - 17.75rem)'} />
-      ) : ( */}
       <StyledUserContainer
         key={user.id}
         onClick={e => {
@@ -129,7 +117,6 @@ const UserItem = ({user}: UserItemProps) => {
           </StyledChatButton>
         </StyledUserDescription>
       </StyledUserContainer>
-      {/* )} */}
     </>
   );
 };
