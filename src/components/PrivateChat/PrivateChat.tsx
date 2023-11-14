@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {format, register} from 'timeago.js';
@@ -13,24 +13,29 @@ register('ko', koLocale);
 
 export default function PrivateChat(props: Props) {
   const [myId, setMyId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const {id, users} = props.data;
   const params = useParams();
   const {
-    updateQuery: {isLoading, data: realTimeData},
+    updateQuery: {data: realTimeData},
   } = useRealTimeUpdate();
 
   const selectedChatRoom = realTimeData?.chats.find((chat: IChat) => chat.id === id);
 
   const getAuth = async () => {
-    const res = await authCheck();
-    setMyId(res.user.id);
+    try {
+      const res = await authCheck();
+      setMyId(res.user.id);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     getAuth();
   }, []);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <></>;
 
   return (
     <StyledTopContainer>
@@ -57,7 +62,6 @@ export default function PrivateChat(props: Props) {
           </StyledSubContainer>
           <StyledDiv>
             <StyledDate>{format(selectedChatRoom?.updatedAt, 'ko')}</StyledDate>
-            {/* {selectedChatRoom?.latestMessage === null ? '' : <StyledLatestMessage />} */}
           </StyledDiv>
         </StyledContainer>
       </Link>
