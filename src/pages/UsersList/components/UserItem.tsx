@@ -17,6 +17,7 @@ import {useRecoilState, useRecoilValue} from 'recoil';
 import {authCheck} from 'api/auth';
 import {myChatRoom} from 'api/myChatRoom';
 import {ChatRoom} from 'types/chatroom.types';
+import _ from 'lodash';
 
 interface UserItemProps {
   user: User;
@@ -45,7 +46,7 @@ const UserItem = ({user}: UserItemProps) => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
   }, [isChecked, user.id]);
 
-  const handleCreateChat = async (userId: string, userName: string, e: React.MouseEvent) => {
+  const handleCreateChat = _.debounce(async (userId: string, userName: string, e: React.MouseEvent) => {
     e.preventDefault();
 
     try {
@@ -80,7 +81,7 @@ const UserItem = ({user}: UserItemProps) => {
     } catch (err) {
       console.error('채팅방 생성 또는 조회 실패', err);
     }
-  };
+  }, 1000);
 
   return (
     <>
