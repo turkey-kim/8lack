@@ -15,6 +15,7 @@ import ChatRoom from 'pages/ChatRoom';
 import GroupChatList from './pages/GroupChatList/GroupChatList';
 import Modal from 'react-modal';
 import NonUserRoute from 'routes/NonUserRoute';
+import Home from './pages/Home';
 
 Modal.setAppElement('#root');
 const router = createBrowserRouter([
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
         <SignIn />
       </NonUserRoute>
     ),
+  },
+  {
+    path: '/home',
+    element: <Home />,
   },
 ]);
 
