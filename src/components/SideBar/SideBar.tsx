@@ -21,7 +21,7 @@ export default function SideBar() {
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1500);
+      }, 1000);
     }
   };
 
