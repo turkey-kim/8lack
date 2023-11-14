@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import {User} from 'types/chatroom.types';
+import {FaStar} from 'react-icons/fa';
 
 interface UserCellProps {
   typed: string;
@@ -28,6 +29,7 @@ const UserCell = (props: UserCellProps) => {
       <StyledPrf>
         <StyledPrfImg src={props.user.picture} />
         <StyledPrfName>{props.user.name}</StyledPrfName>
+        {localStorage.getItem(`isChecked-${props.user.id}`) === 'true' && <StyledStar></StyledStar>}
       </StyledPrf>
       <input type="checkbox" onChange={isCheckedHandler} checked={props.typed ? true : false} />
     </StyledCellContainer>
@@ -61,4 +63,11 @@ const StyledPrfName = styled.span`
   font-size: ${theme.fonts.body2.fontSize};
   font-weight: ${theme.fonts.subtitle5.fontWeight};
   line-height: ${theme.fonts.body2.lineHeight};
+`;
+
+const StyledStar = styled(FaStar)`
+  font-size: 16px;
+  color: ${theme.colors.blue700};
+  position: relative;
+  top: -1px;
 `;
