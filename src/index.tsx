@@ -16,6 +16,7 @@ import GroupChatList from './pages/GroupChatList/GroupChatList';
 import Modal from 'react-modal';
 import NonUserRoute from 'routes/NonUserRoute';
 import Home from './pages/Home';
+import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 
 Modal.setAppElement('#root');
 const router = createBrowserRouter([
@@ -53,13 +54,17 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
+const queryClient = new QueryClient();
+
 root.render(
-  <ThemeProvider theme={theme}>
-    <GlobalStyles />
-    <RecoilRoot>
-      <RouterProvider router={router}></RouterProvider>
-    </RecoilRoot>
-  </ThemeProvider>,
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <RecoilRoot>
+        <RouterProvider router={router}></RouterProvider>
+      </RecoilRoot>
+    </ThemeProvider>
+  </QueryClientProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
