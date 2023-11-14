@@ -9,7 +9,7 @@ import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 import {StyledInputContainer, StyledSearchIcon} from 'pages/GroupChatList/HeaderLayout/SearchBar';
 import NoSearchResult from './../../../components/NoSearchResult/index';
 import {useUid} from 'hooks/useUid';
-
+import {authCheck} from 'api/auth';
 export interface User {
   id: string;
   name: string;
@@ -26,8 +26,22 @@ const UserLists = () => {
   const [searchUser, setSearchUser] = useState('');
   const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
   const starBtnClicked = useRecoilValue(isStarBtnClicked);
-  const {uid, isLoading, error} = useUid();
-  const myId = uid;
+  // const {uid, isLoading, error} = useUid();
+  // const myId = uid;
+
+  const [myId, setMyId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const getAuth = async () => {
+    setIsLoading(true);
+    const res = await authCheck();
+    setMyId(res.user.id);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getAuth();
+  }, []);
 
   useEffect(() => {
     getUsers().then(allUsers => {
@@ -64,6 +78,8 @@ const UserLists = () => {
       setFilteredUsers(filtered);
     }
   };
+
+  if (isLoading) return <LoadingCircle height={'calc(100vh - 17.75rem)'} />;
 
   return (
     <>
