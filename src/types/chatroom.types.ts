@@ -9,7 +9,7 @@ export interface ChatRoom {
 export interface IChat {
   id: string;
   name: string;
-  users: User[]; // 속한 유저 id
+  users: User[];
   isPrivate: boolean;
   latestMessage: Message | null;
   updatedAt: Date;

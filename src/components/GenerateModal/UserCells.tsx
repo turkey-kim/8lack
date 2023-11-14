@@ -3,6 +3,7 @@ import {theme} from 'styles/Theme';
 import UserCell from './UserCell';
 import {User} from 'types/chatroom.types';
 import {useEffect, useState} from 'react';
+import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 
 interface UserCellsProps {
   typed: string;
@@ -14,11 +15,13 @@ interface UserCellsProps {
   subData: User[];
   onToggleUser: React.Dispatch<React.SetStateAction<[User[], User[]]>>;
   searchUserData?: string;
+  isLoading?: boolean;
 }
 
 const UserCells = (props: UserCellsProps) => {
   const [filteredUserData, setFilteredUserData] = useState<User[]>([]);
-  const {searchUserData, allocatedData} = props;
+
+  const {searchUserData, allocatedData, isLoading} = props;
 
   useEffect(() => {
     filterUsers();
@@ -39,7 +42,8 @@ const UserCells = (props: UserCellsProps) => {
       $marginTop={props.$marginTop}
       $inputState={props.$inputState}
     >
-      {searchUserData && filteredUserData
+      {isLoading && <LoadingCircle width="200px" height="300px"></LoadingCircle>}
+      {!isLoading && searchUserData
         ? filteredUserData.map(userData => (
             <UserCell
               typed={props.typed}
