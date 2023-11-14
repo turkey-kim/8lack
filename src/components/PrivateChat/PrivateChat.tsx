@@ -4,7 +4,7 @@ import {theme} from '../../styles/Theme';
 import {format, register} from 'timeago.js';
 import koLocale from 'timeago.js/lib/lang/ko';
 import {Props, IChat} from 'types/chatroom.types';
-import {useNavigate, useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
 import {authCheck} from 'api/auth';
 import {USER_DEFAULT_IMG} from 'constant/constant';
@@ -14,7 +14,6 @@ register('ko', koLocale);
 export default function PrivateChat(props: Props) {
   const [myId, setMyId] = useState<string>('');
   const {id, users} = props.data;
-  const navigate = useNavigate();
   const params = useParams();
   const {
     updateQuery: {isLoading, data: realTimeData},
@@ -35,31 +34,33 @@ export default function PrivateChat(props: Props) {
 
   return (
     <StyledTopContainer>
-      <StyledContainer onClick={() => navigate(`/chat/${id}`)} className={params.chatId === id ? 'selected_chat' : ''}>
-        <StyledSubContainer>
-          {users.map(user =>
-            user.id !== myId ? (
-              <StyledImg key={user.id} src={user.picture} alt="사용자 프로필 이미지" />
-            ) : (
-              users.length === 1 && <StyledImg key={user.id} src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
-            ),
-          )}
-          <StyledTextContainer>
+      <Link to={`/chat/${id}`}>
+        <StyledContainer className={params.chatId === id ? 'selected_chat' : ''}>
+          <StyledSubContainer>
             {users.map(user =>
               user.id !== myId ? (
-                <StyledTitle key={user.id}>{user.username}</StyledTitle>
+                <StyledImg key={user.id} src={user.picture} alt="사용자 프로필 이미지" />
               ) : (
-                users.length === 1 && <StyledTitle key={user.id}>(알 수 없음)</StyledTitle>
+                users.length === 1 && <StyledImg key={user.id} src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
               ),
             )}
-            <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
-          </StyledTextContainer>
-        </StyledSubContainer>
-        <StyledDiv>
-          <StyledDate>{format(selectedChatRoom?.updatedAt, 'ko')}</StyledDate>
-          {/* {selectedChatRoom?.latestMessage === null ? '' : <StyledLatestMessage />} */}
-        </StyledDiv>
-      </StyledContainer>
+            <StyledTextContainer>
+              {users.map(user =>
+                user.id !== myId ? (
+                  <StyledTitle key={user.id}>{user.username}</StyledTitle>
+                ) : (
+                  users.length === 1 && <StyledTitle key={user.id}>(알 수 없음)</StyledTitle>
+                ),
+              )}
+              <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
+            </StyledTextContainer>
+          </StyledSubContainer>
+          <StyledDiv>
+            <StyledDate>{format(selectedChatRoom?.updatedAt, 'ko')}</StyledDate>
+            {/* {selectedChatRoom?.latestMessage === null ? '' : <StyledLatestMessage />} */}
+          </StyledDiv>
+        </StyledContainer>
+      </Link>
     </StyledTopContainer>
   );
 }
