@@ -44,7 +44,6 @@ const Chat = ({chatId}: {chatId: string}) => {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
   return (
     <>
       <StyledContainer>

@@ -35,6 +35,8 @@ const MessageList: React.FC = () => {
 
   const groupedMessages = groupMessagesByDate(allMessages);
 
+  console.log('socket:', socket?.id, 'MessageList: ', prevMessages);
+
   return (
     <StyledList ref={messageRef}>
       {Object.entries(groupedMessages).map(([date, msgs]) => (
