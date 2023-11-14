@@ -5,7 +5,6 @@ import {getUsers} from 'api/users';
 import UserItem from './UserItem';
 import {isStarBtnClicked} from 'states/atom';
 import {useRecoilValue} from 'recoil';
-import {authCheck} from 'api/auth';
 import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 import {StyledInputContainer, StyledSearchIcon} from 'pages/GroupChatList/HeaderLayout/SearchBar';
 import NoSearchResult from './../../../components/NoSearchResult/index';
