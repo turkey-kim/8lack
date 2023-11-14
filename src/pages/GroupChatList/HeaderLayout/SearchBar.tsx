@@ -41,11 +41,11 @@ const SearchBar = (props: SearchBarProps) => {
 
 export default SearchBar;
 
-const StyledInputContainer = styled.div`
+export const StyledInputContainer = styled.div`
   position: relative;
 `;
 
-const StyledSearchIcon = styled(MdSearch)`
+export const StyledSearchIcon = styled(MdSearch)`
   position: absolute;
   width: 1.5rem;
   top: 0;
@@ -61,4 +61,9 @@ const StyledSearchBar = styled.input<Pick<SearchBarProps, 'height' | '$inputStat
   padding-left: 2.25rem;
   border: 0.063rem solid ${props => (props.$inputState === 'error' ? theme.colors.error : props.theme.colors.gray500)};
   border-radius: 0.25rem;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.blue700};
+  }
 `;

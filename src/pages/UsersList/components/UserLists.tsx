@@ -6,6 +6,8 @@ import UserItem from './UserItem';
 import {isStarBtnClicked} from 'states/atom';
 import {useRecoilValue} from 'recoil';
 import {authCheck} from 'api/auth';
+import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
+import {StyledInputContainer, StyledSearchIcon} from 'pages/GroupChatList/HeaderLayout/SearchBar';
 
 export interface User {
   id: string;
@@ -24,15 +26,17 @@ const UserLists = () => {
   const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
   const starBtnClicked = useRecoilValue(isStarBtnClicked);
   const [myId, setMyId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getAuth = async () => {
+    setIsLoading(true);
     const res = await authCheck();
     setMyId(res.user.id);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     getAuth();
-    // console.log(id); //현재 로그인한 아이디
   }, []);
 
   useEffect(() => {
@@ -72,41 +76,50 @@ const UserLists = () => {
   };
 
   return (
-    <StyledForm
-      onSubmit={e => {
-        e.preventDefault();
-        handleSearch();
-      }}
-      onKeyPress={e => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-        }
-      }}
-    >
-      <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
-      <StyledLine />
-      <StyledSubTitle>즐겨찾기</StyledSubTitle>
-      {filteredUsers.length > 0 ? (
-        filteredUsers
-          .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
-          .filter(user => user.name.toLowerCase())
-          .filter(user => checkedStates[user.id])
-          .filter(user => user.id !== myId)
-          .map(user => <UserItem key={user.id} user={user} />)
+    <>
+      {isLoading ? (
+        <LoadingCircle height={'calc(100vh - 17.75rem)'} />
       ) : (
-        <br />
+        <StyledForm
+          onSubmit={e => {
+            e.preventDefault();
+            handleSearch();
+          }}
+          onKeyPress={e => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
+        >
+          <StyledInputContainer>
+            <StyledSearchIcon />
+            <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
+          </StyledInputContainer>
+          <StyledLine />
+          <StyledSubTitle>즐겨찾기</StyledSubTitle>
+          {filteredUsers.length > 0 ? (
+            filteredUsers
+              .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
+              .filter(user => user.name.toLowerCase())
+              .filter(user => checkedStates[user.id])
+              .filter(user => user.id !== myId)
+              .map(user => <UserItem key={user.id} user={user} />)
+          ) : (
+            <br />
+          )}
+          <StyledLine />
+          <StyledSubTitle>유저목록</StyledSubTitle>
+          {filteredUsers.length > 0
+            ? filteredUsers
+                .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
+                .filter(user => user.name.toLowerCase())
+                .filter(user => !checkedStates[user.id])
+                .filter(user => user.id !== myId)
+                .map(user => <UserItem key={user.id} user={user} />)
+            : '검색된 유저가 없습니다.'}
+        </StyledForm>
       )}
-      <StyledLine />
-      <StyledSubTitle>유저목록</StyledSubTitle>
-      {filteredUsers.length > 0
-        ? filteredUsers
-            .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
-            .filter(user => user.name.toLowerCase())
-            .filter(user => !checkedStates[user.id])
-            .filter(user => user.id !== myId)
-            .map(user => <UserItem key={user.id} user={user} />)
-        : '검색된 유저가 없습니다.'}
-    </StyledForm>
+    </>
   );
 };
 

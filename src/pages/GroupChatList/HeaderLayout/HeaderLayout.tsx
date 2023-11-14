@@ -17,7 +17,7 @@ interface HeaderLayoutProps {
 const HeaderLayout = (props: HeaderLayoutProps) => {
   const [isModalOpened, setModalOpened] = useState<boolean>(false);
 
-  const generateModalOpenHander = () => {
+  const generateModalOpenHandler = () => {
     setModalOpened(true);
   };
 
@@ -36,14 +36,10 @@ const HeaderLayout = (props: HeaderLayoutProps) => {
       )}
       <StyledHeaderDiv>
         <StyledH1>입장가능한 그룹 채팅방</StyledH1>
-        <StyledButton onClick={generateModalOpenHander}>그룹 채팅방 만들기</StyledButton>
+        <StyledButton onClick={generateModalOpenHandler}>그룹 채팅방 만들기</StyledButton>
       </StyledHeaderDiv>
       <StyledDiv>
-        <SearchBar
-          content="채팅방을 검색해보세요" //
-          height="50"
-          onSearchGroupChat={props.onSearchGroupChat}
-        ></SearchBar>
+        <SearchBar content="채팅방을 검색해보세요" height="50" onSearchGroupChat={props.onSearchGroupChat}></SearchBar>
         <TabButtons setTabs={props.setTabs} tabs={props.tabs}></TabButtons>
       </StyledDiv>
     </StyledContainer>
@@ -58,7 +54,7 @@ const StyledContainer = styled.div`
   padding-top: 3rem;
 `;
 
-const StyledHeaderDiv = styled.div`
+export const StyledHeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,7 +78,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledH1 = styled.h1`
+export const StyledH1 = styled.h1`
   font-size: ${theme.fonts.subtitle2.fontSize};
 `;
 

@@ -6,6 +6,7 @@ import {AiOutlineClose} from 'react-icons/ai';
 import {authCheck} from '../../api/auth';
 import {patchInfo, uploadImage} from '../../api/mypage';
 import {USER_DEFAULT_IMG} from 'constant/constant';
+import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 
 export interface AppModalProps {
   isOpen: boolean;
@@ -31,6 +32,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const [picture, setPicture] = useState<string>(USER_DEFAULT_IMG);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getAuth = async () => {
     const res = await authCheck();
@@ -50,6 +52,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
 
   const toggleUpdating = async () => {
     try {
+      setIsLoading(true);
       const updateData = {name, picture};
       if (imagePreviewUrl) {
         updateData.picture = imagePreviewUrl;
@@ -61,6 +64,8 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
       setEditing(false);
     } catch (error) {
       console.error('업데이트 실패', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -101,71 +106,77 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
 
   return (
     <>
-      {editing ? (
-        <Modal isOpen={isOpen} style={customStyles}>
-          <StyledPageContainer>
-            <StyledTitle>
-              <StyledMainTitle>내 정보 수정</StyledMainTitle>
-              <AiOutlineClose onClick={handleClose} style={{cursor: 'pointer'}} />
-            </StyledTitle>
-            <StyledLine />
-            {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
-
-            <StyledContainer>
-              <StyledDiv>이름</StyledDiv>
-              <StyledInput
-                type="text"
-                value={name}
-                onChange={e => {
-                  e.preventDefault();
-                  setName(e.target.value);
-                }}
-              />
-              <StyledDiv>아이디</StyledDiv>
-              <StyledNextDiv>{id}</StyledNextDiv>
-              <StyledDiv>이미지</StyledDiv>
-              <StyledNextDiv>
-                <StyledImgDiv onClick={handleDivClick}>이미지 변경</StyledImgDiv>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleImageChange}
-                  style={{display: 'none'}}
-                  accept="image/*"
-                />
-                <StyledImgDiv onClick={removePic}>이미지 삭제</StyledImgDiv>
-                <StyledPicDescription>※ 이미지는 400*400으로 보여집니다.</StyledPicDescription>
-              </StyledNextDiv>
-            </StyledContainer>
-            <StyledLine />
-            <StyledButtonContainer>
-              <StyledEditButton onClick={toggleUpdating}>수정 완료</StyledEditButton>
-              <StyledCancelButton onClick={handleClose}>수정 취소</StyledCancelButton>
-            </StyledButtonContainer>
-          </StyledPageContainer>
-        </Modal>
+      {isLoading ? (
+        <LoadingCircle height={'calc(100vh - 17.75rem)'} />
       ) : (
-        <Modal isOpen={isOpen} style={customStyles}>
-          <StyledPageContainer>
-            <StyledTitle>
-              <StyledMainTitle>내 정보</StyledMainTitle>
-              <AiOutlineClose onClick={handleClose} style={{cursor: 'pointer'}} />
-            </StyledTitle>
-            <StyledLine />
-            <StyledPicImg src={picture} />
-            <StyledContainer>
-              <StyledDiv>이름</StyledDiv>
-              <StyledNextDiv>{name}</StyledNextDiv>
-              <StyledDiv>아이디</StyledDiv>
-              <StyledNextDiv>{id}</StyledNextDiv>
-            </StyledContainer>
-            <StyledLine />
-            <StyledButtonContainer>
-              <StyledEditButton onClick={toggleEditing}>내 정보 수정</StyledEditButton>
-              <StyledCancelButton onClick={handleClose}>닫기</StyledCancelButton>
-            </StyledButtonContainer>
-          </StyledPageContainer>
-        </Modal>
+        <>
+          {editing ? (
+            <Modal isOpen={isOpen} style={customStyles}>
+              <StyledPageContainer>
+                <StyledTitle>
+                  <StyledMainTitle>내 정보 수정</StyledMainTitle>
+                  <AiOutlineClose onClick={handleClose} style={{cursor: 'pointer'}} />
+                </StyledTitle>
+                <StyledLine />
+                {imagePreviewUrl ? <StyledPicImg src={imagePreviewUrl} /> : <StyledPicImg src={picture} />}
+
+                <StyledContainer>
+                  <StyledDiv>이름</StyledDiv>
+                  <StyledInput
+                    type="text"
+                    value={name}
+                    onChange={e => {
+                      e.preventDefault();
+                      setName(e.target.value);
+                    }}
+                  />
+                  <StyledDiv>아이디</StyledDiv>
+                  <StyledNextDiv>{id}</StyledNextDiv>
+                  <StyledDiv>이미지</StyledDiv>
+                  <StyledNextDiv>
+                    <StyledImgDiv onClick={handleDivClick}>이미지 변경</StyledImgDiv>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleImageChange}
+                      style={{display: 'none'}}
+                      accept="image/*"
+                    />
+                    <StyledImgDiv onClick={removePic}>이미지 삭제</StyledImgDiv>
+                    <StyledPicDescription>※ 이미지는 400*400으로 보여집니다.</StyledPicDescription>
+                  </StyledNextDiv>
+                </StyledContainer>
+                <StyledLine />
+                <StyledButtonContainer>
+                  <StyledEditButton onClick={toggleUpdating}>수정 완료</StyledEditButton>
+                  <StyledCancelButton onClick={handleClose}>수정 취소</StyledCancelButton>
+                </StyledButtonContainer>
+              </StyledPageContainer>
+            </Modal>
+          ) : (
+            <Modal isOpen={isOpen} style={customStyles}>
+              <StyledPageContainer>
+                <StyledTitle>
+                  <StyledMainTitle>내 정보</StyledMainTitle>
+                  <AiOutlineClose onClick={handleClose} style={{cursor: 'pointer'}} />
+                </StyledTitle>
+                <StyledLine />
+                <StyledPicImg src={picture} />
+                <StyledContainer>
+                  <StyledDiv>이름</StyledDiv>
+                  <StyledNextDiv>{name}</StyledNextDiv>
+                  <StyledDiv>아이디</StyledDiv>
+                  <StyledNextDiv>{id}</StyledNextDiv>
+                </StyledContainer>
+                <StyledLine />
+                <StyledButtonContainer>
+                  <StyledEditButton onClick={toggleEditing}>내 정보 수정</StyledEditButton>
+                  <StyledCancelButton onClick={handleClose}>닫기</StyledCancelButton>
+                </StyledButtonContainer>
+              </StyledPageContainer>
+            </Modal>
+          )}
+        </>
       )}
     </>
   );
