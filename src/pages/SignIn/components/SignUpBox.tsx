@@ -117,7 +117,7 @@ const SignUpBox = () => {
         <StyledIdField>
           <StyledInput
             name="id"
-            placeholder="영문으로 이루어진 아이디를 입력해주세요"
+            placeholder="영문 아이디를 입력해주세요"
             value={id}
             onChange={onChange}
             autoComplete="off"
@@ -167,9 +167,14 @@ const StyledContainer = styled.div`
   align-items: center;
   width: 70%;
   max-width: 500px;
-  min-height: 500px;
+  min-width: 300px;
   box-shadow: ${theme.shadows.shadow3.shadow};
   border-radius: 8px;
+  background-color: ${theme.colors.white};
+
+  @media screen and (max-height: 750px) {
+    height: 500px;
+  }
 `;
 
 const StyledNavField = styled.div`
@@ -207,6 +212,15 @@ const StyledForm = styled.div`
   align-items: center;
   width: 80%;
   margin-top: 2rem;
+
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media screen and (max-width: 990px) {
+    margin-top: 0;
+  }
 `;
 
 const StyledLabel = styled.label`
@@ -253,6 +267,10 @@ const StyledSubmit = styled.button`
 
   &:hover {
     background-color: ${theme.colors.blue800};
+  }
+
+  @media screen and (max-height: 750px) {
+    padding: 1rem;
   }
 `;
 
