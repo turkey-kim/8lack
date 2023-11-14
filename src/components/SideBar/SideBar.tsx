@@ -11,21 +11,19 @@ export default function SideBar() {
   const [name, setName] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getAuth = async () => {
+  const handleTabClick = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const res = await authCheck();
       setName(res.user.name);
+    } catch (error) {
+      alert('⚠️사용자의 이름을 불러오지 못하였습니다.');
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000);
+      }, 1500);
     }
   };
-
-  useEffect(() => {
-    getAuth();
-  }, [categoryButton]);
 
   return (
     <StyledContainer>
@@ -35,6 +33,7 @@ export default function SideBar() {
           className={categoryButton ? 'selected_category' : ''}
           onClick={() => {
             setCategoryButton(true);
+            handleTabClick();
           }}
         >
           개인
@@ -43,6 +42,7 @@ export default function SideBar() {
           className={!categoryButton ? 'selected_category' : ''}
           onClick={() => {
             setCategoryButton(false);
+            handleTabClick();
           }}
         >
           그룹
