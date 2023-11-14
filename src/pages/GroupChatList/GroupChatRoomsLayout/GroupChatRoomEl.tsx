@@ -51,7 +51,7 @@ const ChatRoomEl = (props: Props) => {
         <StyledInformation>
           <StyledH3>{props.data.name}</StyledH3>
           <StyledChatInfo>
-            <StyledAmount>{props.data.users.length} 명의 맴버</StyledAmount>
+            <StyledAmount>{props.data.users.length}명의 멤버</StyledAmount>
             <StyledDivider></StyledDivider>
             <StyledLatestTime>{time}</StyledLatestTime>
           </StyledChatInfo>
