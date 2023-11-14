@@ -41,7 +41,7 @@ const UserPublicRoute = ({children}: Props): any => {
 
   if (isLoading && !authorization) return <></>;
   if (!isLoading && authorization) return children;
-  if (!isLoading && !authorization) return <Navigate to="/signin" />;
+  if (!isLoading && !authorization) return <Navigate to="/home" />;
 };
 
 export default UserPublicRoute;
