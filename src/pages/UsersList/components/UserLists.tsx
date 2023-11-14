@@ -9,6 +9,7 @@ import {authCheck} from 'api/auth';
 import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 import {StyledInputContainer, StyledSearchIcon} from 'pages/GroupChatList/HeaderLayout/SearchBar';
 import NoSearchResult from './../../../components/NoSearchResult/index';
+import {useUid} from 'hooks/useUid';
 
 export interface User {
   id: string;
@@ -26,24 +27,8 @@ const UserLists = () => {
   const [searchUser, setSearchUser] = useState('');
   const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
   const starBtnClicked = useRecoilValue(isStarBtnClicked);
-  const [myId, setMyId] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const getAuth = async () => {
-    try {
-      setIsLoading(true);
-      const res = await authCheck();
-      setMyId(res.user.id);
-    } catch {
-      console.error('error 발생');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getAuth();
-  }, []);
+  const {uid, isLoading, error} = useUid();
+  const myId = uid;
 
   useEffect(() => {
     getUsers().then(allUsers => {

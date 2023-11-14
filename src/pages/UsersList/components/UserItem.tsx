@@ -14,10 +14,10 @@ import {makeChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router';
 import {isStarBtnClicked, onlineUserList} from 'states/atom';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {authCheck} from 'api/auth';
 import {myChatRoom} from 'api/myChatRoom';
 import {ChatRoom} from 'types/chatroom.types';
-import _ from 'lodash';
+import {debounce} from 'lodash';
+import {useUid} from 'hooks/useUid';
 
 interface UserItemProps {
   user: User;
@@ -29,24 +29,16 @@ const UserItem = ({user}: UserItemProps) => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
     return saved !== null ? saved === 'true' : 'false';
   });
-  const [myId, setMyId] = useState<string>('');
+  const {uid, isLoading, error} = useUid();
+  const myId = uid;
   const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
   const getOnlineUserList = useRecoilValue(onlineUserList);
-
-  const getAuth = async () => {
-    const res = await authCheck();
-    setMyId(res.user.id);
-  };
-
-  useEffect(() => {
-    getAuth();
-  }, []);
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
   }, [isChecked, user.id]);
 
-  const handleCreateChat = _.debounce(async (userId: string, userName: string, e: React.MouseEvent) => {
+  const handleCreateChat = debounce(async (userId: string, userName: string, e: React.MouseEvent) => {
     e.preventDefault();
 
     try {
