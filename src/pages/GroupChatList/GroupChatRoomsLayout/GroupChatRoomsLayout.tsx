@@ -1,3 +1,4 @@
+import NoSearchResult from 'components/NoSearchResult';
 import ChatRoomEl from './GroupChatRoomEl';
 import styled from 'styled-components';
 import {IChat} from 'types/chatroom.types';
@@ -10,9 +11,11 @@ interface GroupChatRoomsLayoutProps {
 const GroupChatRoomsLayout = (props: GroupChatRoomsLayoutProps) => {
   return (
     <StyledRoomContainer>
-      {props.filteredGroupChat.map(room => (
-        <ChatRoomEl key={room.id} data={room} />
-      ))}
+      {props.filteredGroupChat.length ? (
+        props.filteredGroupChat.map(room => <ChatRoomEl key={room.id} data={room} />)
+      ) : (
+        <NoSearchResult text="조건에 맞는 그룹채팅방이 없습니다" />
+      )}
     </StyledRoomContainer>
   );
 };

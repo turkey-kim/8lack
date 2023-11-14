@@ -24,7 +24,6 @@ interface UserItemProps {
 
 const UserItem = ({user}: UserItemProps) => {
   const navigate = useNavigate();
-  // const [isActive, setIsActive] = useState(false); //활동중 ..소켓에서 받아와서 저장해오기
   const [isChecked, setIsChecked] = useState(() => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
     return saved !== null ? saved === 'true' : 'false';
@@ -67,16 +66,15 @@ const UserItem = ({user}: UserItemProps) => {
           );
 
           if (existingChat) {
-            console.log('기존 채팅방 사용', existingChat);
+            // console.log('기존 채팅방 사용', existingChat);
             navigate(`/chat/${existingChat.id}`);
           } else {
-            // 기존 채팅방이 없으면 새로운 채팅방 생성
             const res = await makeChatRoom(chatName, users, true);
-            console.log('새로운 채팅방 생성', res);
+            //   console.log('새로운 채팅방 생성', res);
             navigate(`/chat/${res.id}`);
           }
         } else {
-          console.error('채팅방 목록이 유효하지 않습니다.');
+          console.error('채팅방 목록이 존재하지 않습니다.');
         }
       }
     } catch (err) {
@@ -96,7 +94,7 @@ const UserItem = ({user}: UserItemProps) => {
       <StyledUserDescription>
         <StyledUserName>
           {user.name}&nbsp;
-          {getOnlineUserList.some((item: string) => item === user.id) ? <StyledActiveCircle /> : null}
+          {getOnlineUserList.some((item: string) => item === user.id) ? <StyledActiveCircle  className="active" /> : <StyledActiveCircle  className="Inactive" />}
           <StyledStar
             className={isChecked ? 'checked' : 'unchecked'}
             onClick={() => {
@@ -120,7 +118,14 @@ const UserItem = ({user}: UserItemProps) => {
 export default UserItem;
 
 const StyledActiveCircle = styled(MdCircle)`
-  color: ${props => props.theme.colors.success};
+color: ${props => props.theme.colors.gray300};
+
+  &.active {
+    color: ${props => props.theme.colors.success};
+  }
+  &.Inactive {
+    color: ${props => props.theme.colors.gray300};
+  }
 `;
 
 const StyledStar = styled(FaStar)`

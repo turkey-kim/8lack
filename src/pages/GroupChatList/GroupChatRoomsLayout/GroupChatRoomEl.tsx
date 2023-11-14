@@ -1,11 +1,10 @@
+import GroupChatParticipant from './GroupChatParticipant';
 import {participateChatRoom} from 'api/myChatRoom';
 import {useEffect, useState} from 'react';
-import {FaAngleDown} from 'react-icons/fa';
 import {useNavigate} from 'react-router';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import {IChat} from 'types/chatroom.types';
-
 import {format, register} from 'timeago.js'; //임포트하기 register 한국어 선택
 import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
 register('ko', koLocale);
@@ -51,16 +50,13 @@ const ChatRoomEl = (props: Props) => {
         <StyledInformation>
           <StyledH3>{props.data.name}</StyledH3>
           <StyledChatInfo>
-            <StyledAmount>{props.data.users.length} 명의 맴버</StyledAmount>
+            <StyledAmount>{props.data.users.length}명의 멤버</StyledAmount>
             <StyledDivider></StyledDivider>
             <StyledLatestTime>{time}</StyledLatestTime>
           </StyledChatInfo>
         </StyledInformation>
         <StyledEnterance>
-          <StyledMemberListBtn>
-            <span>참여 중인 사용자</span>
-            <StyledAngleDown></StyledAngleDown>
-          </StyledMemberListBtn>
+          <GroupChatParticipant users={props.data.users}>참여 중인 사용자</GroupChatParticipant>
           <StyledEnterButton onClick={joinHandler}>들어가기</StyledEnterButton>
         </StyledEnterance>
       </StyledInner>
@@ -128,25 +124,8 @@ const StyledLatestTime = styled.span``;
 
 const StyledEnterance = styled.div`
   display: flex;
-  gap: 0.5rem;
-`;
-
-const StyledMemberListBtn = styled.button`
-  font-size: ${theme.fonts.body1.fontSize};
-  font-weight: ${theme.fonts.body1.fontWeight};
-  line-height: ${theme.fonts.body1.lineHeight};
-
-  color: ${theme.colors.gray700};
-  display: flex;
-  gap: 0.125rem;
   align-items: center;
-  border-radius: 0.25rem;
-
-  transition: 0.5s;
-
-  &:hover {
-    background-color: ${theme.colors.blue200};
-  }
+  gap: 0.5rem;
 `;
 
 const StyledEnterButton = styled.button`
@@ -165,8 +144,4 @@ const StyledEnterButton = styled.button`
     color: ${theme.colors.blue800};
     border: 0.125rem solid ${theme.colors.blue800};
   }
-`;
-
-const StyledAngleDown = styled(FaAngleDown)`
-  color: ${theme.colors.gray600};
 `;

@@ -30,25 +30,30 @@ const GenerateModal = (props: ModalProps) => {
   // [선택가능한 유저 배열, 선택된유저 배열]
   const [searchUserData, setSearchUserData] = useState('');
   // 검색어
-
   const [chatName, setChatName] = useState<string>('');
   // 방이름
-
   const [inputStates, setInputStates] = useState<InputStates>([
     {name: 'chatName', state: 'default'},
     {name: 'pickedUser', state: 'default'},
   ]);
+  // 에러 상태
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // 로딩 중 (비동기 요청 중)
 
   const navigate = useNavigate();
   const {chatId} = useParams();
   const myInfo = useRecoilValue(userInformation);
 
   useEffect(() => {
+    setIsLoading(true);
     // 사용자 불러오기
-    getUsers().then(res => {
-      const filtered = (res as User[]).slice().filter(val => val.id !== myInfo.id);
-      setUserData([filtered, []]);
-    });
+    getUsers()
+      .then(res => {
+        const filtered = (res as User[]).slice().filter(val => val.id !== myInfo.id);
+        setUserData([filtered, []]);
+      })
+      .catch(err => console.log(err))
+      .finally(() => setIsLoading(false));
   }, [myInfo.id]);
 
   const modalCloseHandler = () => {
@@ -120,6 +125,7 @@ const GenerateModal = (props: ModalProps) => {
             <StyledLabel>{props.label1}</StyledLabel>
             <SearchBar content="사용자를 검색해보세요" height="40" onSearchName={setSearchUserData}></SearchBar>
             <UserCells
+              isLoading={isLoading}
               height="312px"
               $marginTop="8px"
               typed=""
