@@ -39,7 +39,7 @@ const UserPublicRoute = ({children}: Props): any => {
     // console.log(onlineUsers);
   }, [onlineUsers]); // 온라인 유저리스트 불러오기 테스트 코드 (삭제 예정)
 
-  if (isLoading && !authorization) return <>...is Loading</>;
+  if (isLoading && !authorization) return <></>;
   if (!isLoading && authorization) return children;
   if (!isLoading && !authorization) return <Navigate to="/signin" />;
 };
