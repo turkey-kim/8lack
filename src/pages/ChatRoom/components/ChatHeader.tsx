@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Avatars from 'components/Avatars';
 import {useUid} from 'hooks/useUid';
 import {IChatRoom} from 'types/chatroom.types';
+import {USER_DEFAULT_IMG} from 'constant/constant';
 
 interface ChatHeaderProps {
   chatRoom: IChatRoom;
@@ -14,12 +15,16 @@ const ChatHeader = ({chatRoom, children}: ChatHeaderProps) => {
   if (error) return <div>인증이 실패 했습니다</div>;
 
   const otherUsers = chatRoom?.users.filter(user => user.id !== uid);
+  const displayUsers =
+    otherUsers && otherUsers.length > 0
+      ? otherUsers
+      : [{id: 'default', username: '(알 수 없음)', picture: `${USER_DEFAULT_IMG}`}];
 
   return (
     <StyledHeader>
       <StyledInfo>
-        <Avatars users={chatRoom?.isPrivate ? otherUsers : chatRoom?.users} isPrivate={chatRoom?.isPrivate} />
-        <StyledTitle>{chatRoom?.isPrivate ? otherUsers[0]?.username : chatRoom?.name}</StyledTitle>
+        <Avatars users={chatRoom?.isPrivate ? displayUsers : chatRoom?.users} isPrivate={chatRoom?.isPrivate} />
+        <StyledTitle>{chatRoom?.isPrivate ? displayUsers[0]?.username : chatRoom?.name}</StyledTitle>
       </StyledInfo>
       {children}
     </StyledHeader>
