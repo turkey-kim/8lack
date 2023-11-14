@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import {formatMessageDate} from 'utils/formatDate';
 import {Message} from 'types/chatroom.types';
 import {useRecoilValue} from 'recoil';
 import {chatRoomUsersSelector} from 'states/atom';
+import {useSocketContext} from 'contexts/ChatSocketContext';
 
 interface MessageItemProps {
   message: Message;
@@ -11,6 +12,15 @@ interface MessageItemProps {
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({message, isCurrentUser}) => {
+  const {users, socket} = useSocketContext();
+  const connectedUserIds = users.users;
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('users', {});
+    }
+  }, [socket]);
+
   const usersMap = useRecoilValue(chatRoomUsersSelector) || {};
   const user = usersMap[message.userId];
 
@@ -21,7 +31,10 @@ const MessageItem: React.FC<MessageItemProps> = ({message, isCurrentUser}) => {
     <StyledItem $currentUser={isCurrentUser}>
       <StyledInner $currentUser={isCurrentUser}>
         <StyledRowSection>
-          <StyledAvatar src={user?.picture} alt={user?.username} />
+          <StyledAvatarWrapper>
+            <StyledAvatar src={user?.picture} alt={user?.username} />
+            <StyledStatus $online={connectedUserIds.includes(user?.id)} />
+          </StyledAvatarWrapper>
         </StyledRowSection>
         <StyledColSection>
           <StyledUserName $currentUser={isCurrentUser}>{user?.username}</StyledUserName>
@@ -67,6 +80,12 @@ const StyledBubble = styled.span<{$currentUser: boolean}>`
   font-weight: 400;
 `;
 
+const StyledAvatarWrapper = styled.span`
+  position: relative;
+  width: 34px;
+  height: 34px;
+`;
+
 const StyledAvatar = styled.img`
   width: 34px;
   height: 34px;
@@ -74,6 +93,19 @@ const StyledAvatar = styled.img`
   overflow: hidden;
   background-color: ${({theme}) => theme.colors.white};
   border: 1px solid ${({theme}) => theme.colors.gray300};
+`;
+
+const StyledStatus = styled.span<{$online?: boolean}>`
+  position: absolute;
+  width: 7.5px;
+  height: 7.5px;
+  border-radius: 50%;
+  background-color: ${({$online, theme}) => ($online ? theme.colors.success : theme.colors.gray300)};
+  margin-left: 5px;
+  bottom: 0;
+  right: 0;
+  border: 2px solid ${({theme}) => theme.colors.blue100};
+  box-sizing: content-box;
 `;
 
 const StyledDate = styled.span`
@@ -107,6 +139,7 @@ const StyledRowSection = styled.div`
   align-items: flex-start;
   justify-content: center;
   height: 100%;
+  position: relative;
 `;
 
 const StyledColSection = styled.div`

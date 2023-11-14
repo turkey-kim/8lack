@@ -17,19 +17,17 @@ const UserList: React.FC = () => {
   const usersMap = useRecoilValue(chatRoomUsersSelector) || {};
 
   return (
-    <div className="user-list">
-      <StyledList>
-        {Object.values(usersMap).map(user => (
-          <StyledUser key={user.id} $online={connectedUserIds.includes(user.id)}>
-            <StyledAvatarWrapper>
-              <StyledAvatar src={user.picture} alt={user.username} />
-              <StyledStatus $online={connectedUserIds.includes(user.id)} />
-            </StyledAvatarWrapper>
-            <StyledName>{user.username}</StyledName>
-          </StyledUser>
-        ))}
-      </StyledList>
-    </div>
+    <StyledList>
+      {Object.values(usersMap).map(user => (
+        <StyledUser key={user.id} $online={connectedUserIds.includes(user.id)}>
+          <StyledAvatarWrapper>
+            <StyledAvatar src={user.picture} alt={user.username} />
+            <StyledStatus $online={connectedUserIds.includes(user.id)} />
+          </StyledAvatarWrapper>
+          <StyledName>{user.username}</StyledName>
+        </StyledUser>
+      ))}
+    </StyledList>
   );
 };
 export default UserList;
