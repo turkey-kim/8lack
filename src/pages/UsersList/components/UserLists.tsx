@@ -48,8 +48,9 @@ const UserLists = () => {
       const newCheckedStates: CheckedStates = {};
       allUsers.forEach((user: User) => {
         const saved = localStorage.getItem(`isChecked-${user.id}`);
-        newCheckedStates[user.id] = saved === 'true';
+        newCheckedStates[user.id] = saved === 'true' || false;
       });
+
       setCheckedStates(newCheckedStates);
       setUsers(allUsers);
       setFilteredUsers(allUsers);
