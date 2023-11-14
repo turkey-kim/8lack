@@ -19,13 +19,24 @@ const Home = () => {
       {isLoggedIn ? <Navigation /> : null}
       <StyledInnerContainer>
         {isLoggedIn ? null : <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>}
-        홈페이지
+        <StyledWrapper>
+          <Section1></Section1>
+          <Section1></Section1>
+          <Section1></Section1>
+        </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
   );
 };
 
 export default Home;
+
+const Section1 = styled.div``;
+
+const StyledWrapper = styled.div`
+  width: auto;
+  height: auto;
+`;
 
 const StyledContainer = styled.div`
   display: flex;
