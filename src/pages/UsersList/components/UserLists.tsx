@@ -29,10 +29,15 @@ const UserLists = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getAuth = async () => {
-    setIsLoading(true);
-    const res = await authCheck();
-    setMyId(res.user.id);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const res = await authCheck();
+      setMyId(res.user.id);
+    } catch {
+      console.error('error 발생');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {

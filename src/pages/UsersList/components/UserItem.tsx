@@ -17,6 +17,7 @@ import {useRecoilState, useRecoilValue} from 'recoil';
 import {authCheck} from 'api/auth';
 import {myChatRoom} from 'api/myChatRoom';
 import {ChatRoom} from 'types/chatroom.types';
+import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 
 interface UserItemProps {
   user: User;
@@ -31,10 +32,18 @@ const UserItem = ({user}: UserItemProps) => {
   const [myId, setMyId] = useState<string>('');
   const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
   const getOnlineUserList = useRecoilValue(onlineUserList);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getAuth = async () => {
-    const res = await authCheck();
-    setMyId(res.user.id);
+    try {
+      setIsLoading(true);
+      const res = await authCheck();
+      setMyId(res.user.id);
+    } catch {
+      console.error('error 발생');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -83,42 +92,52 @@ const UserItem = ({user}: UserItemProps) => {
   };
 
   return (
-    <StyledUserContainer
-      key={user.id}
-      onClick={e => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <StyledUserProfile src={user.picture} />
-      <StyledUserDescription>
-        <StyledUserName>
-          {user.name}&nbsp;
-          {getOnlineUserList.some((item: string) => item === user.id) ? <StyledActiveCircle  className="active" /> : <StyledActiveCircle  className="Inactive" />}
-          <StyledStar
-            className={isChecked ? 'checked' : 'unchecked'}
-            onClick={() => {
-              setIsChecked(prev => !prev);
-              setStarBtnClicked(!starBtnClicked);
-            }}
-          />
-        </StyledUserName>
-        <StyledChatButton
+    <>
+      {isLoading ? (
+        <LoadingCircle height={'calc(100vh - 17.75rem)'} />
+      ) : (
+        <StyledUserContainer
+          key={user.id}
           onClick={e => {
-            handleCreateChat(user.id, user.name, e);
+            e.stopPropagation();
+            e.preventDefault();
           }}
         >
-          1:1 채팅하기
-        </StyledChatButton>
-      </StyledUserDescription>
-    </StyledUserContainer>
+          <StyledUserProfile src={user.picture} />
+          <StyledUserDescription>
+            <StyledUserName>
+              {user.name}&nbsp;
+              {getOnlineUserList.some((item: string) => item === user.id) ? (
+                <StyledActiveCircle className="active" />
+              ) : (
+                <StyledActiveCircle className="Inactive" />
+              )}
+              <StyledStar
+                className={isChecked ? 'checked' : 'unchecked'}
+                onClick={() => {
+                  setIsChecked(prev => !prev);
+                  setStarBtnClicked(!starBtnClicked);
+                }}
+              />
+            </StyledUserName>
+            <StyledChatButton
+              onClick={e => {
+                handleCreateChat(user.id, user.name, e);
+              }}
+            >
+              1:1 채팅하기
+            </StyledChatButton>
+          </StyledUserDescription>
+        </StyledUserContainer>
+      )}
+    </>
   );
 };
 
 export default UserItem;
 
 const StyledActiveCircle = styled(MdCircle)`
-color: ${props => props.theme.colors.gray300};
+  color: ${props => props.theme.colors.gray300};
 
   &.active {
     color: ${props => props.theme.colors.success};

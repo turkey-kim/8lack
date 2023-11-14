@@ -35,10 +35,17 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getAuth = async () => {
-    const res = await authCheck();
-    setId(res.user.id);
-    setName(res.user.name);
-    setPicture(res.user.picture);
+    try {
+      setIsLoading(true);
+      const res = await authCheck();
+      setId(res.user.id);
+      setName(res.user.name);
+      setPicture(res.user.picture);
+    } catch {
+      console.error('error 발생');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
