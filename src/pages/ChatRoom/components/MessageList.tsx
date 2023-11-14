@@ -4,12 +4,13 @@ import {useSocketContext} from 'contexts/ChatSocketContext';
 import {groupMessagesByDate} from 'utils/formatDate';
 import MessageItem from './MessageItem';
 import {Message} from 'types/chatroom.types';
+import {useUid} from 'hooks/useUid';
 
 const MessageList: React.FC = () => {
   const {socket, prevMessages, messages} = useSocketContext();
   const [allMessages, setAllMessages] = useState<Message[]>([]);
-  const uid = localStorage.getItem('8lack_uid');
   const messageRef = useRef<HTMLDivElement>(null);
+  // console.log(prevMessages);
 
   // 이전 대화 불러오기
   useEffect(() => {
@@ -32,6 +33,10 @@ const MessageList: React.FC = () => {
       list.scrollTop = list.scrollHeight;
     }
   }, [allMessages]);
+
+  const {uid, isLoading, error} = useUid();
+  if (isLoading) return null;
+  if (error) return <div>인증이 실패 했습니다</div>;
 
   const groupedMessages = groupMessagesByDate(allMessages);
 

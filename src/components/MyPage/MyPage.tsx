@@ -7,6 +7,7 @@ import {authCheck} from '../../api/auth';
 import {patchInfo, uploadImage} from '../../api/mypage';
 import {USER_DEFAULT_IMG} from 'constant/constant';
 import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
+import {useUid} from 'hooks/useUid';
 
 export interface AppModalProps {
   isOpen: boolean;
@@ -27,18 +28,21 @@ export const customStyles = {
 
 const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const [editing, setEditing] = useState<boolean>(false);
-  const [id, setId] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [picture, setPicture] = useState<string>(USER_DEFAULT_IMG);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {uid, isLoading, error} = useUid();
+  const id = uid;
 
   const getAuth = async () => {
-    const res = await authCheck();
-    setId(res.user.id);
-    setName(res.user.name);
-    setPicture(res.user.picture);
+    try {
+      const res = await authCheck();
+      setName(res.user.name);
+      setPicture(res.user.picture);
+    } catch {
+      console.error('error 발생');
+    }
   };
 
   useEffect(() => {
@@ -52,7 +56,6 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
 
   const toggleUpdating = async () => {
     try {
-      setIsLoading(true);
       const updateData = {name, picture};
       if (imagePreviewUrl) {
         updateData.picture = imagePreviewUrl;
@@ -64,8 +67,6 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
       setEditing(false);
     } catch (error) {
       console.error('업데이트 실패', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

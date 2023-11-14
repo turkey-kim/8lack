@@ -25,7 +25,7 @@ export default function Navigation() {
 
   return (
     <StyledNav>
-      <Link to="/">
+      <Link to="/home">
         <StyledLogo src={Logo} alt="Logo" />
       </Link>
       <StyledIconContainer>
