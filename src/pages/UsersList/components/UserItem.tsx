@@ -14,9 +14,10 @@ import {makeChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router';
 import {isStarBtnClicked, onlineUserList} from 'states/atom';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {authCheck} from 'api/auth';
 import {myChatRoom} from 'api/myChatRoom';
 import {ChatRoom} from 'types/chatroom.types';
+import {debounce} from 'lodash';
+import {useUid} from 'hooks/useUid';
 
 interface UserItemProps {
   user: User;
@@ -28,24 +29,16 @@ const UserItem = ({user}: UserItemProps) => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
     return saved !== null ? saved === 'true' : 'false';
   });
-  const [myId, setMyId] = useState<string>('');
+  const {uid, isLoading, error} = useUid();
+  const myId = uid;
   const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
   const getOnlineUserList = useRecoilValue(onlineUserList);
-
-  const getAuth = async () => {
-    const res = await authCheck();
-    setMyId(res.user.id);
-  };
-
-  useEffect(() => {
-    getAuth();
-  }, []);
 
   useEffect(() => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
   }, [isChecked, user.id]);
 
-  const handleCreateChat = async (userId: string, userName: string, e: React.MouseEvent) => {
+  const handleCreateChat = debounce(async (userId: string, userName: string, e: React.MouseEvent) => {
     e.preventDefault();
 
     try {
@@ -66,11 +59,11 @@ const UserItem = ({user}: UserItemProps) => {
           );
 
           if (existingChat) {
-            // console.log('기존 채팅방 사용', existingChat);
+            console.log('기존 채팅방 사용', existingChat);
             navigate(`/chat/${existingChat.id}`);
           } else {
             const res = await makeChatRoom(chatName, users, true);
-            //   console.log('새로운 채팅방 생성', res);
+            console.log('새로운 채팅방 생성', res);
             navigate(`/chat/${res.id}`);
           }
         } else {
@@ -80,45 +73,51 @@ const UserItem = ({user}: UserItemProps) => {
     } catch (err) {
       console.error('채팅방 생성 또는 조회 실패', err);
     }
-  };
+  }, 1000);
 
   return (
-    <StyledUserContainer
-      key={user.id}
-      onClick={e => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <StyledUserProfile src={user.picture} />
-      <StyledUserDescription>
-        <StyledUserName>
-          {user.name}&nbsp;
-          {getOnlineUserList.some((item: string) => item === user.id) ? <StyledActiveCircle  className="active" /> : <StyledActiveCircle  className="Inactive" />}
-          <StyledStar
-            className={isChecked ? 'checked' : 'unchecked'}
-            onClick={() => {
-              setIsChecked(prev => !prev);
-              setStarBtnClicked(!starBtnClicked);
+    <>
+      <StyledUserContainer
+        key={user.id}
+        onClick={e => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
+        <StyledUserProfile src={user.picture} />
+        <StyledUserDescription>
+          <StyledUserName>
+            {user.name}&nbsp;
+            {getOnlineUserList.some((item: string) => item === user.id) ? (
+              <StyledActiveCircle className="active" />
+            ) : (
+              <StyledActiveCircle className="Inactive" />
+            )}
+            <StyledStar
+              className={isChecked ? 'checked' : 'unchecked'}
+              onClick={() => {
+                setIsChecked(prev => !prev);
+                setStarBtnClicked(!starBtnClicked);
+              }}
+            />
+          </StyledUserName>
+          <StyledChatButton
+            onClick={e => {
+              handleCreateChat(user.id, user.name, e);
             }}
-          />
-        </StyledUserName>
-        <StyledChatButton
-          onClick={e => {
-            handleCreateChat(user.id, user.name, e);
-          }}
-        >
-          1:1 채팅하기
-        </StyledChatButton>
-      </StyledUserDescription>
-    </StyledUserContainer>
+          >
+            1:1 채팅하기
+          </StyledChatButton>
+        </StyledUserDescription>
+      </StyledUserContainer>
+    </>
   );
 };
 
 export default UserItem;
 
 const StyledActiveCircle = styled(MdCircle)`
-color: ${props => props.theme.colors.gray300};
+  color: ${props => props.theme.colors.gray300};
 
   &.active {
     color: ${props => props.theme.colors.success};
