@@ -2,15 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import Drawer from 'components/Drawer';
-import Avatars from 'components/Avatars';
+import ChatHeader from 'pages/ChatRoom/components/ChatHeader';
 import MessageList from 'pages/ChatRoom/components/MessageList';
 import SendMessage from 'pages/ChatRoom/components/SendMessage';
 import UserList from 'pages/ChatRoom/components/UserList';
-import {RxHamburgerMenu} from 'react-icons/rx';
-import {RiAddFill} from 'react-icons/ri';
 import {leaveChatRoom} from 'api/myChatRoom';
 import GenerateModal from 'components/GenerateModal/GenerateModal';
 import {useChatRoomQuery} from 'hooks/useChatRoomQuery';
+import {RxHamburgerMenu} from 'react-icons/rx';
+import {RiAddFill} from 'react-icons/ri';
 import {useRecoilState} from 'recoil';
 import {chatRoomState} from 'states/atom';
 
@@ -44,24 +44,19 @@ const Chat = ({chatId}: {chatId: string}) => {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
   return (
     <>
       <StyledContainer>
-        <StyledHeader>
-          <StyledInfo>
-            <Avatars users={chatRoom?.users} isPrivate={chatRoom?.isPrivate} />
-            <StyledTitle>{chatRoom?.name}</StyledTitle>
-          </StyledInfo>
+        <ChatHeader chatRoom={chatRoomData}>
           <StyledButton onClick={toggleDrawer}>
             <RxHamburgerMenu />
           </StyledButton>
-        </StyledHeader>
+        </ChatHeader>
         <MessageList />
         <SendMessage />
       </StyledContainer>
       <Drawer isOpen={isDrawerOpen} onClose={closeDrawer}>
-        <StyledLabel>- 대화 상대</StyledLabel>
+        {/*<StyledLabel>- 대화 상대</StyledLabel>*/}
         <StyledWrapper onClick={openModal}>
           <StyledAddButton
             onClick={e => {
@@ -102,15 +97,6 @@ const StyledContainer = styled.div`
   width: 100%;
 `;
 
-const StyledHeader = styled.div`
-  width: 100%;
-  padding: 0.75rem 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: ${({theme}) => theme.colors.white};
-`;
-
 const StyledSpace = styled.div`
   display: flex;
   flex: 1;
@@ -126,16 +112,6 @@ const StyledLeaveButton = styled.button`
   border-radius: 7px;
   width: 100%;
   cursor: pointer;
-`;
-
-const StyledInfo = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledTitle = styled.div`
-  ${({theme}) => theme.fonts.subtitle4_5};
-  margin-left: 1rem;
 `;
 
 const StyledLabel = styled.span`

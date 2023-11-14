@@ -14,6 +14,7 @@ const MessageItem: React.FC<MessageItemProps> = ({message, isCurrentUser}) => {
   const usersMap = useRecoilValue(chatRoomUsersSelector) || {};
 
   const user = usersMap[message.userId];
+  // console.log('MessageItem: ', message);
 
   if (message.userId === 'system') {
     return <StyledSystemMessage>{message.text}</StyledSystemMessage>;
