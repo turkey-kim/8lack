@@ -12,7 +12,7 @@ import NotFound from './pages/NotFound';
 import Users from './pages/UsersList';
 import SignIn from './pages/SignIn';
 import ChatRoom from 'pages/ChatRoom';
-import GroupChatList from './pages/GroupChatList/GroupChatList';
+import GroupChatList from './pages/GroupChatList';
 import Modal from 'react-modal';
 import NonUserRoute from 'routes/NonUserRoute';
 import Home from './pages/Home';

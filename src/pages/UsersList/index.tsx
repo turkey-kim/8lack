@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import UserLists from 'pages/UsersList/components/UserLists';
-import {StyledH1} from 'pages/GroupChatList/HeaderLayout/HeaderLayout';
+import {StyledH1} from 'pages/GroupChatList/HeaderLayout';
 
 const Users = () => {
   return (
