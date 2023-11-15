@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
-import chatimg from './chatimg.png';
-import frame from './Frame 3758.png';
+// import chatimg from './chatimg.png';
+// import frame from './Frame 3758.png';
 
 const IntroSection = () => {
   return (
@@ -13,21 +13,16 @@ const IntroSection = () => {
             친구들과 함께 <br />
             채팅을 시작해보세요.
           </StyledSubText>
-          <StyledIntroText>
-            가장 먼저 온 메시지순으로 확인할 수 있어, <br />
-            편리하게 사용할 수 있답니다!
-          </StyledIntroText>
+          <StyledIntroText>가장 먼저 온 메시지순으로 확인할 수 있어, 편리하게 사용할 수 있답니다!</StyledIntroText>
         </StyledWrapper>
         <StyledWrapper>
-          <StyledImg src={chatimg} />
-          <StyledImg2 src={frame} />
+          {/* <StyledImg src={chatimg} /> */}
+          {/* <StyledImg2 src={frame} /> */}
         </StyledWrapper>
       </StyledLeftSection>
 
       <StyledRightSection>
-        <StyledWrapper>
-          <StyledImg />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
         <StyledWrapper>
           <StyledText>편리한 초대 기능</StyledText>
           <StyledSubText>
@@ -35,9 +30,7 @@ const IntroSection = () => {
             <br />
             검색하고 초대해보세요.
           </StyledSubText>
-          <StyledIntroText>
-            가장 먼저 온 메시지순으로 확인할 수 있어, <br /> 편리하게 사용할 수 있답니다!
-          </StyledIntroText>
+          <StyledIntroText>가장 먼저 온 메시지순으로 확인할 수 있어, 편리하게 사용할 수 있답니다!</StyledIntroText>
         </StyledWrapper>
       </StyledRightSection>
 
@@ -49,21 +42,15 @@ const IntroSection = () => {
             <br />
             언제든지 확인하세요.
           </StyledSubText>
-          <StyledIntroText>
-            가장 먼저 온 메시지순으로 확인할 수 있어, <br /> 편리하게 사용할 수 있답니다!
-          </StyledIntroText>
+          <StyledIntroText>가장 먼저 온 메시지순으로 확인할 수 있어, 편리하게 사용할 수 있답니다!</StyledIntroText>
         </StyledWrapper>
-        <StyledWrapper>
-          <StyledImg />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
       </StyledLeftSection>
 
       {/* <>채팅 컴포넌트 추가될 곳</> */}
 
       <StyledRightSection>
-        <StyledWrapper>
-          <StyledImg />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
         <StyledWrapper>
           <StyledText>유저 목록 조회 & 즐겨찾기</StyledText>
           <StyledSubText>
@@ -89,9 +76,7 @@ const IntroSection = () => {
             사진 뿐만 아니라, 움직이는 이미지도 사용할 수 있어요!
           </StyledIntroText>
         </StyledWrapper>
-        <StyledWrapper>
-          <StyledImg />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
       </StyledLeftSection>
     </>
   );
@@ -100,15 +85,8 @@ export default IntroSection;
 
 const StyledLeftSection = styled.div`
   background-color: white;
-  height: 50rem;
-  padding: 0 0 0 10rem;
-`;
-
-const StyledRightSection = styled.div`
-  background-color: ${theme.colors.blue200};
-  height: 50rem;
-  padding: 0rem 10rem 0 0;
-  text-align: right;
+  height: auto;
+  padding: 0rem 0 10rem 10rem;
 `;
 
 const StyledWrapper = styled.div`
@@ -118,18 +96,19 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledImg = styled.img`
-  height: 25rem;
-  margin: 5rem 0 0 10rem;
-  position: relative;
-  top: 30px;
-  left: -250px;
+  height: 20rem;
+  margin: 10rem 0 0 10rem;
 `;
 
 const StyledImg2 = styled.img`
-  height: 20rem;
-  position: relative;
-  top: -120px;
-  left: -250px;
+  height: 15rem;
+`;
+
+const StyledRightSection = styled.div`
+  background-color: ${theme.colors.blue200};
+  height: auto;
+  padding: 0rem 10rem 10rem 0rem;
+  text-align: right;
 `;
 
 const StyledText = styled.h3`

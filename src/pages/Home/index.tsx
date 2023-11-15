@@ -1,10 +1,10 @@
-import React from 'react';
 import styled from 'styled-components';
 import Navigation from 'components/Navigation/Navigation';
 import {useRecoilValue} from 'recoil';
 import {loginState} from 'states/atom';
 import {useNavigate} from 'react-router';
 import {theme} from 'styles/Theme';
+import IntroSection from './components/IntroSection';
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
@@ -18,11 +18,11 @@ const Home = () => {
     <StyledContainer>
       {isLoggedIn ? <Navigation /> : null}
       <StyledInnerContainer>
-        {isLoggedIn ? null : <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>}
+        <StyledNavigationContainer>
+          {isLoggedIn ? null : <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>}
+        </StyledNavigationContainer>
         <StyledWrapper>
-          <Section1></Section1>
-          <Section1></Section1>
-          <Section1></Section1>
+          <IntroSection />
         </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
@@ -31,7 +31,14 @@ const Home = () => {
 
 export default Home;
 
-const Section1 = styled.div``;
+const StyledNavigationContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  height: 6rem;
+`;
 
 const StyledWrapper = styled.div`
   width: auto;
@@ -47,7 +54,7 @@ const StyledInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding: 4rem 2rem;
+  // padding: 4rem 2rem;
   width: 100%;
   height: 100vh;
 `;
