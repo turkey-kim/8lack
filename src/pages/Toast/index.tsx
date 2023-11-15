@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {AnimatePresence} from 'framer-motion';
 import ToastItem from 'pages/Toast/components/ToastItem';
@@ -6,37 +6,39 @@ import {useServerSocketContext} from 'contexts/ServerSocketContext';
 import {FaUserGroup} from 'react-icons/fa6';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
-import {participateChatRoom} from 'api/myChatRoom';
+import {participateChatRoom} from '../../api/myChatRoom';
 
-const Toast: React.FC = () => {
+const Toast = () => {
   const {notifyMessage, setNotifyMessage} = useServerSocketContext();
   const [visibleNotifications, setVisibleNotifications] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    notifyMessage.forEach(notify => {
-      if (!visibleNotifications[notify.responseChat.id]) {
-        setVisibleNotifications(prev => ({...prev, [notify.responseChat.id]: true}));
-        setTimeout(() => {
-          setVisibleNotifications(prev => ({...prev, [notify.responseChat.id]: false}));
-          setNotifyMessage(prev => prev.filter(msg => msg.responseChat.id !== notify.responseChat.id));
-        }, 6000);
-      }
-    });
-  }, [notifyMessage, visibleNotifications, setNotifyMessage]);
-
-  const handleClose = (id: string) => {
-    setVisibleNotifications(prev => ({...prev, [id]: false}));
-  };
-
   const navigate = useNavigate();
 
-  const joinChat = (chatId: string, type: string) => {
-    if (type === 'invite') {
-      navigate(`/chat/${chatId}`);
-    } else if (type === 'new-chat') {
-      participateChatRoom(chatId).then(() => navigate(`/chat/${chatId}`));
+  const handleClose = useCallback((id: string) => {
+    setVisibleNotifications(prev => ({...prev, [id]: false}));
+  }, []);
+
+  const joinChat = useCallback(
+    (chatId: string, type: string) => {
+      if (type === 'invite') {
+        navigate(`/chat/${chatId}`);
+      } else if (type === 'new-chat') {
+        participateChatRoom(chatId).then(() => navigate(`/chat/${chatId}`));
+      }
+    },
+    [navigate],
+  );
+
+  useEffect(() => {
+    const latestMessage = notifyMessage[notifyMessage.length - 1];
+    if (latestMessage && visibleNotifications[latestMessage.responseChat.id] === undefined) {
+      setVisibleNotifications(prev => ({...prev, [latestMessage.responseChat.id]: true}));
+
+      setTimeout(() => {
+        setVisibleNotifications(prev => ({...prev, [latestMessage.responseChat.id]: false}));
+        setNotifyMessage(prev => prev.filter(msg => msg.responseChat.id !== latestMessage.responseChat.id));
+      }, 8000);
     }
-  };
+  }, [notifyMessage, setNotifyMessage, visibleNotifications]);
 
   return ReactDOM.createPortal(
     <StyledContainer>
@@ -57,7 +59,7 @@ const Toast: React.FC = () => {
                     {notify.responseChat.users.length}
                   </StyledUserCount>
                 </StyledTitleWrapper>
-                <StyledChatMessage>{notify?.message}</StyledChatMessage>
+                <StyledChatMessage>{notify.message}</StyledChatMessage>
               </ToastItem>
             ),
         )}
