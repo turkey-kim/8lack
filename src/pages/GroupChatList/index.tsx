@@ -1,8 +1,8 @@
 import {wholeChatRoom} from 'api/wholeChatRoom';
 import {myChatRoom} from 'api/myChatRoom';
 import styled from 'styled-components';
-import HeaderLayout from './HeaderLayout/HeaderLayout';
-import GroupChatRoomsLayout from './GroupChatRoomsLayout/GroupChatRoomsLayout';
+import HeaderLayout from './HeaderLayout';
+import GroupChatRoomsLayout from './GroupChatRoomsLayout';
 import {useCallback, useEffect, useState} from 'react';
 import {IChat} from 'types/chatroom.types';
 import TabProps from './HeaderLayout/TabButton/TabProps';
@@ -30,44 +30,41 @@ const GroupChatList = () => {
   ]);
   // 탭 리스트
 
-  const SortUsers = useCallback(
-    (groupChats: IChat[]) => {
-      const selectedTab = tabs.find(tab => tab.selected === true);
-      if (!selectedTab) return groupChats;
+  const SortUsers = useCallback((groupChats: IChat[]) => {
+    const selectedTab = tabs.find(tab => tab.selected === true);
+    if (!selectedTab) return groupChats;
 
-      const {label} = selectedTab;
-      if (label === '가나다 순') {
-        groupChats.sort((prev, cur) => {
-          if (prev.name.toLowerCase() > cur.name.toLowerCase()) {
-            return 1;
-          } else {
-            return -1;
-          }
-        });
-      } else if (label === '최근 채팅 순') {
-        groupChats.sort((prev, cur) => {
-          if (prev.updatedAt > cur.updatedAt) {
-            return -1;
-          } else {
-            return 1;
-          }
-        });
-      } else if (label === '사람 많은 순') {
-        groupChats.sort((prev, cur) => {
-          if (prev.users.length > cur.users.length) {
-            return -1;
-          } else {
-            return 1;
-          }
-        });
-      } else if (label === '홀로 있는 방') {
-        let soloChat = groupChats.filter(cur => cur.users.length === 1);
-        return soloChat;
-      }
-      return groupChats;
-    },
-    [tabs],
-  );
+    const {label} = selectedTab;
+    if (label === '가나다 순') {
+      groupChats.sort((prev, cur) => {
+        if (prev.name.toLowerCase() > cur.name.toLowerCase()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    } else if (label === '최근 채팅 순') {
+      groupChats.sort((prev, cur) => {
+        if (prev.updatedAt > cur.updatedAt) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    } else if (label === '사람 많은 순') {
+      groupChats.sort((prev, cur) => {
+        if (prev.users.length > cur.users.length) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    } else if (label === '홀로 있는 방') {
+      let soloChat = groupChats.filter(cur => cur.users.length === 1);
+      return soloChat;
+    }
+    return groupChats;
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,7 +92,7 @@ const GroupChatList = () => {
       }
     };
     fetchData();
-  }, [SortUsers]);
+  }, []);
 
   const filterUsers = useCallback(() => {
     if (!searchedGroupChat) {
@@ -108,7 +105,7 @@ const GroupChatList = () => {
       const sorted = SortUsers(filtered);
       setFilteredGroupChat(sorted.slice());
     }
-  }, [SortUsers, allGroupChat, searchedGroupChat]);
+  }, [allGroupChat, searchedGroupChat]);
 
   useEffect(() => {
     filterUsers();

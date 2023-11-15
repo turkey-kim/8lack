@@ -1,10 +1,17 @@
-import React from 'react';
 import styled from 'styled-components';
 import Navigation from 'components/Navigation/Navigation';
 import {useRecoilValue} from 'recoil';
 import {loginState} from 'states/atom';
 import {useNavigate} from 'react-router';
 import {theme} from 'styles/Theme';
+import IntroSection from './components/IntroSection';
+import ChatSection from './components/ChatSection';
+import HeaderSection from './components/HeaderSection';
+import {ReactComponent as Logo} from '../../assets/images/8lack.svg';
+
+interface StyledWrapperProps {
+  isLoggedIn: boolean;
+}
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
@@ -16,16 +23,46 @@ const Home = () => {
 
   return (
     <StyledContainer>
-      {isLoggedIn ? <Navigation /> : null}
+      {isLoggedIn && <Navigation />}
       <StyledInnerContainer>
-        {isLoggedIn ? null : <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>}
-        홈페이지
+        {isLoggedIn ? (
+          <></>
+        ) : (
+          <StyledNavigationContainer>
+            <Logo />
+            <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>
+          </StyledNavigationContainer>
+        )}
+        <StyledWrapper isLoggedIn={isLoggedIn}>
+          <HeaderSection />
+          <IntroSection />
+          <ChatSection />
+        </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
   );
 };
 
 export default Home;
+
+const StyledNavigationContainer = styled.div`
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  height: 6rem;
+  background-color: rgba(255, 255, 255, 0.7);
+`;
+
+const StyledWrapper = styled.div<StyledWrapperProps>`
+  margin-top: ${props => (props.isLoggedIn ? '0' : '6rem')};
+  width: auto;
+  height: auto;
+`;
 
 const StyledContainer = styled.div`
   display: flex;
@@ -36,7 +73,6 @@ const StyledInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding: 4rem 2rem;
   width: 100%;
   height: 100vh;
 `;

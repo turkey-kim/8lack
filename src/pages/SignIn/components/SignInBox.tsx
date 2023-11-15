@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {FormEvent, useState} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../../styles/Theme';
 import {useNavigate} from 'react-router';
@@ -24,7 +24,8 @@ const SignInBox = () => {
     navigate('/signup');
   };
 
-  const signIn = async () => {
+  const signIn = async (e: FormEvent) => {
+    e.preventDefault();
     const res = await postSignIn(id, pw);
     if (res) {
       const {accessToken, refreshToken} = res;
@@ -47,12 +48,12 @@ const SignInBox = () => {
         <StyledSignInNav>로그인</StyledSignInNav>
         <StyledSignUpNav onClick={goToSignUp}>회원가입</StyledSignUpNav>
       </StyledNavBar>
-      <StyledForm>
+      <StyledForm onSubmit={signIn}>
         <StyledLabel>아이디</StyledLabel>
         <StyledInput name="id" value={id} onChange={onChange} autoComplete="off"></StyledInput>
         <StyledLabel>비밀번호</StyledLabel>
         <StyledInput name="pw" type="password" value={pw} onChange={onChange} autoComplete="off"></StyledInput>
-        <StyledSubmit onClick={signIn}>로그인</StyledSubmit>
+        <StyledSubmit type="submit">로그인</StyledSubmit>
       </StyledForm>
     </StyledContainer>
   );
@@ -99,7 +100,7 @@ const StyledSignUpNav = styled.button`
   }
 `;
 
-const StyledForm = styled.div`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

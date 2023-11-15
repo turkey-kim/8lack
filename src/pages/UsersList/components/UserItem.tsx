@@ -27,7 +27,7 @@ const UserItem = ({user}: UserItemProps) => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(() => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
-    return saved !== null ? saved === 'true' : 'false';
+    return saved !== null ? saved === 'true' : false;
   });
   const {uid, isLoading, error} = useUid();
   const myId = uid;
