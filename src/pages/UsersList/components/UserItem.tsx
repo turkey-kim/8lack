@@ -17,7 +17,7 @@ import {myChatRoom} from 'api/myChatRoom';
 import {ChatRoom} from 'types/chatroom.types';
 import {debounce} from 'lodash';
 import {useUid} from 'hooks/useUid';
-import {useChatCreation} from 'hooks/useChatRoomCreation';
+import {useChatCreation} from 'hooks/useChatRoomMutation';
 
 interface UserItemProps {
   user: User;
@@ -38,7 +38,7 @@ const UserItem = ({user}: UserItemProps) => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
   }, [isChecked, user.id]);
 
-  const createChatRoom = useChatCreation();
+  const {createChatRoom} = useChatCreation();
 
   const handleCreateChat = debounce(async (userId: string, userName: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -50,7 +50,6 @@ const UserItem = ({user}: UserItemProps) => {
         const users = [userId];
 
         const existingChatRooms: {chats: ChatRoom[]} | undefined = await myChatRoom();
-        console.log(existingChatRooms);
 
         if (existingChatRooms && Array.isArray(existingChatRooms.chats)) {
           const existingChat = existingChatRooms.chats.find(
@@ -64,7 +63,7 @@ const UserItem = ({user}: UserItemProps) => {
             console.log('기존 채팅방 사용', existingChat);
             navigate(`/chat/${existingChat.id}`);
           } else {
-            createChatRoom(chatName, users, true);
+            await createChatRoom(chatName, users, true);
           }
         } else {
           console.error('채팅방 목록이 존재하지 않습니다.');
