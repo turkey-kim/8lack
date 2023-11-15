@@ -6,24 +6,23 @@ import {useServerSocketContext} from 'contexts/ServerSocketContext';
 import {FaUserGroup} from 'react-icons/fa6';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import {participateChatRoom} from 'api/myChatRoom';
 
 const Toast: React.FC = () => {
-  const {notifyMessage} = useServerSocketContext();
+  const {notifyMessage, setNotifyMessage} = useServerSocketContext();
   const [visibleNotifications, setVisibleNotifications] = useState<Record<string, boolean>>({});
 
-  console.log(notifyMessage);
-
   useEffect(() => {
-    setVisibleNotifications(
-      notifyMessage.reduce(
-        (acc, curr) => {
-          acc[curr.responseChat.id] = true;
-          return acc;
-        },
-        {} as Record<string, boolean>,
-      ),
-    );
-  }, [notifyMessage]);
+    notifyMessage.forEach(notify => {
+      if (!visibleNotifications[notify.responseChat.id]) {
+        setVisibleNotifications(prev => ({...prev, [notify.responseChat.id]: true}));
+        setTimeout(() => {
+          setVisibleNotifications(prev => ({...prev, [notify.responseChat.id]: false}));
+          setNotifyMessage(prev => prev.filter(msg => msg.responseChat.id !== notify.responseChat.id));
+        }, 3000);
+      }
+    });
+  }, [notifyMessage, visibleNotifications, setNotifyMessage]);
 
   const handleClose = (id: string) => {
     setVisibleNotifications(prev => ({...prev, [id]: false}));
@@ -31,8 +30,12 @@ const Toast: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const joinChat = (chatId: string) => {
-    navigate(`/chat/${chatId}`);
+  const joinChat = (chatId: string, type: string) => {
+    if (type === 'invite') {
+      navigate(`/chat/${chatId}`);
+    } else if (type === 'new-chat') {
+      participateChatRoom(chatId).then(() => navigate(`/chat/${chatId}`));
+    }
   };
 
   return ReactDOM.createPortal(
@@ -43,11 +46,12 @@ const Toast: React.FC = () => {
             visibleNotifications[notify.responseChat.id] && (
               <ToastItem
                 key={notify.responseChat.id}
-                onJoin={() => joinChat(notify.responseChat.id)}
+                onJoin={() => joinChat(notify.responseChat.id, notify.type)}
                 onClose={() => handleClose(notify.responseChat.id)}
+                avatarSrc={notify.avatar}
               >
                 <StyledTitleWrapper>
-                  <StyledChatTitle>{notify.responseChat.name}</StyledChatTitle>
+                  <StyledChatTitle>{notify.title}</StyledChatTitle>
                   <StyledUserCount>
                     <FaUserGroup />
                     {notify.responseChat.users.length}

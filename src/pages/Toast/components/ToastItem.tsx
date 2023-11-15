@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {motion} from 'framer-motion';
 import symbol from 'assets/images/symbol.png';
@@ -10,9 +10,10 @@ export interface IToast {
   onJoin: () => void;
   onClose: () => void;
   children: React.ReactNode;
+  avatarSrc?: string | null;
 }
 
-const ToastItem: React.FC<IToast> = ({onJoin, onClose, children}) => {
+const ToastItem: React.FC<IToast> = ({onJoin, onClose, children, avatarSrc}) => {
   const variants = {
     initial: {
       opacity: 0.5,
@@ -40,7 +41,7 @@ const ToastItem: React.FC<IToast> = ({onJoin, onClose, children}) => {
 
   return (
     <StyledContainer initial="initial" animate="visible" exit="hidden" variants={variants} layout>
-      <StyledChatSymbol src={symbol} alt="symbol" />
+      <StyledAvatar src={avatarSrc || symbol} alt="symbol" />
       <StyledChatInfo>{children}</StyledChatInfo>
       <StyledButtonWrapper>
         <StyledCloseButton onClick={onClose} />
@@ -69,7 +70,7 @@ const StyledContainer = styled(motion.div)`
   margin-bottom: 10px;
 `;
 
-const StyledChatSymbol = styled.img`
+const StyledAvatar = styled.img`
   margin-right: 16px;
   background-color: ${({theme}) => theme.colors.white};
   border-radius: 50%;

@@ -11,6 +11,7 @@ import {useUid} from 'hooks/useUid';
 interface ServerSocketState {
   socket: Socket | null;
   notifyMessage: Iinvite[];
+  setNotifyMessage: React.Dispatch<React.SetStateAction<Iinvite[]>>;
 }
 const ServerSocketContext = createContext<ServerSocketState | null>(null);
 
@@ -93,6 +94,7 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
   const contextValue = {
     socket,
     notifyMessage,
+    setNotifyMessage,
   };
 
   return <ServerSocketContext.Provider value={contextValue}>{children}</ServerSocketContext.Provider>;
