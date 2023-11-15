@@ -19,7 +19,7 @@ const Toast: React.FC = () => {
         setTimeout(() => {
           setVisibleNotifications(prev => ({...prev, [notify.responseChat.id]: false}));
           setNotifyMessage(prev => prev.filter(msg => msg.responseChat.id !== notify.responseChat.id));
-        }, 3000);
+        }, 6000);
       }
     });
   }, [notifyMessage, visibleNotifications, setNotifyMessage]);
