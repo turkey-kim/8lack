@@ -5,22 +5,28 @@ import {useNavigate} from 'react-router';
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import {IChat} from 'types/chatroom.types';
+import {ListChildComponentProps} from 'react-window';
+
 import {format, register} from 'timeago.js'; //임포트하기 register 한국어 선택
 import koLocale from 'timeago.js/lib/lang/ko'; //한국어 선택
 register('ko', koLocale);
 
 interface Props {
   key: string;
-  data: IChat;
+  itemData: IChat;
 }
 
-const ChatRoomEl = (props: Props) => {
+const ChatRoomEl: React.ComponentType<ListChildComponentProps> = (
+  {index, style, data: filteredGroupChat},
+  props: Props,
+) => {
   const [time, setTime] = useState<string>('');
   const navigate = useNavigate();
+  const {id, name, users, isPrivate, latestMessage, updatedAt} = filteredGroupChat[index];
 
   useEffect(() => {
     const calcTime = () => {
-      let time = format(props.data.updatedAt, 'ko');
+      let time = format(updatedAt, 'ko');
       if (time === '방금') {
         setTime(time + ' 전 마지막 채팅');
       } else {
@@ -33,11 +39,11 @@ const ChatRoomEl = (props: Props) => {
     setInterval(() => {
       calcTime();
     }, 30000); // 마지막 채팅 시간(by updatedAt)은 30초 마다 갱신
-  }, [props.data.updatedAt]);
+  }, [updatedAt, index]);
 
   const joinHandler = () => {
-    const ID = props.data.id;
-    const NAME = props.data.name;
+    const ID = id;
+    const NAME = name;
     const confirm = window.confirm(`${NAME} 방에 들어가시겠어요?`);
     if (confirm) {
       participateChatRoom(ID).then(res => navigate(`/chat/${ID}`));
@@ -45,18 +51,18 @@ const ChatRoomEl = (props: Props) => {
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer style={style}>
       <StyledInner>
         <StyledInformation>
-          <StyledH3>{props.data.name}</StyledH3>
+          <StyledH3>{name}</StyledH3>
           <StyledChatInfo>
-            <StyledAmount>{props.data.users.length}명의 멤버</StyledAmount>
+            <StyledAmount>{users.length}명의 멤버</StyledAmount>
             <StyledDivider></StyledDivider>
             <StyledLatestTime>{time}</StyledLatestTime>
           </StyledChatInfo>
         </StyledInformation>
         <StyledEnterance>
-          <GroupChatParticipant users={props.data.users}>참여 중인 사용자</GroupChatParticipant>
+          <GroupChatParticipant users={users}>참여 중인 사용자</GroupChatParticipant>
           <StyledEnterButton onClick={joinHandler}>들어가기</StyledEnterButton>
         </StyledEnterance>
       </StyledInner>
