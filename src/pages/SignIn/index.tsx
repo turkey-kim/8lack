@@ -1,18 +1,23 @@
 import styled from 'styled-components';
 import SignInBox from './components/SignInBox';
 import SignUpBox from './components/SignUpBox';
-import {useEffect} from 'react';
 import {useLocation} from 'react-router';
 import background from 'assets/images/login-background.png';
 import {ReactComponent as TextLogo} from 'assets/icons/TextLogo.svg';
 import {theme} from 'styles/Theme';
+import {useNavigate} from 'react-router';
 
 const SignIn = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const {pathname} = location;
   return (
     <StyledContainer>
-      <StyledTextLogo />
+      <StyledTextLogo
+        onClick={() => {
+          navigate('/home');
+        }}
+      />
       <StyledTextSection>
         마치 팔락이듯 <br /> 날아가는 메시지
       </StyledTextSection>
@@ -58,8 +63,10 @@ const StyledSignInSection = styled.div`
 
 const StyledTextLogo = styled(TextLogo)`
   position: absolute;
-  top: 1.2rem;
+  top: 2rem;
   left: 2rem;
+  width: 100px;
+  cursor: pointer;
 `;
 
 export default SignIn;

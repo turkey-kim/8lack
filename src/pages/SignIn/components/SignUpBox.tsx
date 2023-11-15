@@ -5,7 +5,6 @@ import {useNavigate} from 'react-router';
 import {postSignUp, checkIdDuplication, postSignIn} from 'api/auth';
 import {loginState} from 'states/atom';
 import {useRecoilState} from 'recoil';
-import {makeChatRoom} from 'api/myChatRoom';
 
 interface Props {
   isError?: string;
@@ -71,7 +70,6 @@ const SignUpBox = () => {
       const {accessToken, refreshToken} = res;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      await makeChatRoom(name, ['나와의 채팅방 전용 가짜칭긔'], true); // 나와의 채팅방 생성
       setIsLogged(true);
       navigate('/');
     }
