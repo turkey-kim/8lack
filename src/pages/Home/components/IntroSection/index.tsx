@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
-import chatimg from './chatimg.png';
-import frame from './Frame 3758.png';
+// import chatimg from './chatimg.png';
+// import frame from './Frame 3758.png';
 
 const IntroSection = () => {
   return (
@@ -16,15 +16,13 @@ const IntroSection = () => {
           <StyledIntroText>가장 먼저 온 메시지순으로 확인할 수 있어, 편리하게 사용할 수 있답니다!</StyledIntroText>
         </StyledWrapper>
         <StyledWrapper>
-          <StyledImg src={chatimg} />
+          {/* <StyledImg src={chatimg} /> */}
           {/* <StyledImg2 src={frame} /> */}
         </StyledWrapper>
       </StyledLeftSection>
 
       <StyledRightSection>
-        <StyledWrapper>
-          <StyledImg src={chatimg} />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
         <StyledWrapper>
           <StyledText>편리한 초대 기능</StyledText>
           <StyledSubText>
@@ -46,17 +44,13 @@ const IntroSection = () => {
           </StyledSubText>
           <StyledIntroText>가장 먼저 온 메시지순으로 확인할 수 있어, 편리하게 사용할 수 있답니다!</StyledIntroText>
         </StyledWrapper>
-        <StyledWrapper>
-          <StyledImg src={chatimg} />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
       </StyledLeftSection>
 
       {/* <>채팅 컴포넌트 추가될 곳</> */}
 
       <StyledRightSection>
-        <StyledWrapper>
-          <StyledImg src={chatimg} />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
         <StyledWrapper>
           <StyledText>유저 목록 조회 & 즐겨찾기</StyledText>
           <StyledSubText>
@@ -82,9 +76,7 @@ const IntroSection = () => {
             사진 뿐만 아니라, 움직이는 이미지도 사용할 수 있어요!
           </StyledIntroText>
         </StyledWrapper>
-        <StyledWrapper>
-          <StyledImg src={chatimg} />
-        </StyledWrapper>
+        <StyledWrapper>{/* <StyledImg src={chatimg} /> */}</StyledWrapper>
       </StyledLeftSection>
     </>
   );

@@ -4,7 +4,7 @@ import {useRecoilValue} from 'recoil';
 import {loginState} from 'states/atom';
 import {useNavigate} from 'react-router';
 import {theme} from 'styles/Theme';
-import IntroSection from './components/IntroSection';
+import IntroSection from './components/IntroSection/IntroSection';
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
