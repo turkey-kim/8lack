@@ -1,8 +1,6 @@
 export interface Iinvite {
   responseChat: ResponseChat;
   message?: string;
-  isInvited?: boolean;
-  isVisible?: boolean;
 }
 
 export interface ResponseChat {

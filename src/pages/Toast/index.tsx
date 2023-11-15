@@ -5,28 +5,17 @@ import ToastItem from 'pages/Toast/components/ToastItem';
 import {useServerSocketContext} from 'contexts/ServerSocketContext';
 import {FaUserGroup} from 'react-icons/fa6';
 import styled from 'styled-components';
-import {participateChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router-dom';
 
 const Toast: React.FC = () => {
   const {notifyMessage} = useServerSocketContext();
   const [visibleNotifications, setVisibleNotifications] = useState<Record<string, boolean>>({});
 
-  const mockMessages = [...Array(5)].map((_, i) => ({
-    responseChat: {
-      id: `mock_id_${i}`,
-      name: `강남 맛집 공유방 ${i + 1}`,
-      users: [{id: 'user1', username: '김땡땡', picture: 'https://...'}],
-      isPrivate: false,
-      updatedAt: new Date().toISOString(),
-    },
-    message: i % 2 === 0 ? `채팅방에 초대되었습니다. ${i + 1}` : `새로운 채팅방이 생성되었습니다. ${i + 1}`,
-    isInvited: i % 2 === 0,
-  }));
+  console.log(notifyMessage);
 
   useEffect(() => {
     setVisibleNotifications(
-      mockMessages.reduce(
+      notifyMessage.reduce(
         (acc, curr) => {
           acc[curr.responseChat.id] = true;
           return acc;
@@ -34,7 +23,7 @@ const Toast: React.FC = () => {
         {} as Record<string, boolean>,
       ),
     );
-  }, []);
+  }, [notifyMessage]);
 
   const handleClose = (id: string) => {
     setVisibleNotifications(prev => ({...prev, [id]: false}));
@@ -43,21 +32,19 @@ const Toast: React.FC = () => {
   const navigate = useNavigate();
 
   const joinChat = (chatId: string) => {
-    console.log(chatId);
-    participateChatRoom(chatId).then(() => navigate(`/chat/${chatId}`));
+    navigate(`/chat/${chatId}`);
   };
 
   return ReactDOM.createPortal(
     <StyledContainer>
       <AnimatePresence>
-        {mockMessages.map(
+        {notifyMessage.map(
           notify =>
             visibleNotifications[notify.responseChat.id] && (
               <ToastItem
                 key={notify.responseChat.id}
                 onJoin={() => joinChat(notify.responseChat.id)}
                 onClose={() => handleClose(notify.responseChat.id)}
-                isInvited={notify.isInvited}
               >
                 <StyledTitleWrapper>
                   <StyledChatTitle>{notify.responseChat.name}</StyledChatTitle>

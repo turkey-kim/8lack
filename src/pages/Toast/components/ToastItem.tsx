@@ -10,10 +10,9 @@ export interface IToast {
   onJoin: () => void;
   onClose: () => void;
   children: React.ReactNode;
-  isInvited?: boolean;
 }
 
-const ToastItem: React.FC<IToast> = ({onJoin, onClose, children, isInvited}) => {
+const ToastItem: React.FC<IToast> = ({onJoin, onClose, children}) => {
   const variants = {
     initial: {
       opacity: 0.5,
@@ -40,14 +39,7 @@ const ToastItem: React.FC<IToast> = ({onJoin, onClose, children, isInvited}) => 
   };
 
   return (
-    <StyledContainer
-      $isInvited={isInvited!}
-      initial="initial"
-      animate="visible"
-      exit="hidden"
-      variants={variants}
-      layout
-    >
+    <StyledContainer initial="initial" animate="visible" exit="hidden" variants={variants} layout>
       <StyledChatSymbol src={symbol} alt="symbol" />
       <StyledChatInfo>{children}</StyledChatInfo>
       <StyledButtonWrapper>
@@ -62,13 +54,13 @@ const ToastItem: React.FC<IToast> = ({onJoin, onClose, children, isInvited}) => 
 
 export default ToastItem;
 
-const StyledContainer = styled(motion.div)<{$isInvited: boolean}>`
+const StyledContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   position: relative;
   max-width: 450px;
   width: 100%;
-  background-color: ${({theme, $isInvited}) => ($isInvited ? theme.alpha.alpha3 : theme.alpha.alpha1)};
+  background-color: ${({theme}) => theme.alpha.alpha1};
   box-shadow: 0 2px 8px ${({theme}) => theme.alpha.alpha6};
   backdrop-filter: blur(8px);
   border: 1px solid rgba(202, 202, 202, 0.1);

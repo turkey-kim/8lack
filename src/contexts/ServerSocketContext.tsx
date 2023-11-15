@@ -2,9 +2,9 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import io, {Socket} from 'socket.io-client';
 import {SERVER_URL} from 'constant/constant';
 import {authHeaders} from 'api/auth';
-import {useSetRecoilState} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {createdChatIdState} from 'states/atom';
 import {onlineUserList} from 'states/atom';
-import {useUid} from 'hooks/useUid';
 import {Iinvite} from 'types/server.types';
 
 interface ServerSocketState {
@@ -21,10 +21,9 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
   const [socket, setSocket] = useState<Socket | null>(null);
   const [notifyMessage, setNotifyMessage] = useState<Iinvite[]>([]);
   const setOnlineUsers = useSetRecoilState(onlineUserList);
-  const {uid, isLoading} = useUid();
+  const createdChatId = useRecoilValue(createdChatIdState);
 
   useEffect(() => {
-    if (isLoading) return;
     const newSocket = io(`${SERVER_URL}/server`, {
       extraHeaders: authHeaders(),
     });
@@ -47,10 +46,13 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
       setOnlineUsers(users);
     });
     newSocket.on('invite', (data: Iinvite) => {
-      console.log('invite Message', data);
-      const isInvited = data.responseChat.users.some(user => user.id === uid);
-      const message = isInvited ? `채팅방에 초대되었습니다.` : `새로운 채팅방이 생성되었습니다.`;
-      setNotifyMessage(prev => [...prev, {...data, message, isInvited}]);
+      if (!createdChatId.includes(data.responseChat.id)) {
+        const message = `채팅방에 초대되었습니다. 🎉`;
+        setNotifyMessage(prev => [...prev, {...data, message}]);
+        console.log('초대된 채팅방', data);
+      } else {
+        console.log('현재 유저가 생성한 채팅방', data);
+      }
     });
 
     setSocket(newSocket);
@@ -60,7 +62,7 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
         newSocket.disconnect();
       }
     };
-  }, [isLoading, uid]);
+  }, [createdChatId]);
 
   const contextValue = {
     socket,
