@@ -7,6 +7,7 @@ import {ServerSocketProvider} from 'contexts/ServerSocketContext';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import UserPublicRoute from 'routes/UserPublicRoute';
+import Notification from './pages/Toast';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function App() {
         <ReactQueryDevtools initialIsOpen={true} />
         <ServerSocketProvider>
           <StyledContainer>
+            <Notification />
             <Navigation />
             <SideBar />
             <Outlet />
