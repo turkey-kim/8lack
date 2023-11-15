@@ -30,44 +30,41 @@ const GroupChatList = () => {
   ]);
   // 탭 리스트
 
-  const SortUsers = useCallback(
-    (groupChats: IChat[]) => {
-      const selectedTab = tabs.find(tab => tab.selected === true);
-      if (!selectedTab) return groupChats;
+  const filterUsersByTab = useCallback((groupChats: IChat[]) => {
+    const selectedTab = tabs.find(tab => tab.selected === true);
+    if (!selectedTab) return groupChats;
 
-      const {label} = selectedTab;
-      if (label === '가나다 순') {
-        groupChats.sort((prev, cur) => {
-          if (prev.name.toLowerCase() > cur.name.toLowerCase()) {
-            return 1;
-          } else {
-            return -1;
-          }
-        });
-      } else if (label === '최근 채팅 순') {
-        groupChats.sort((prev, cur) => {
-          if (prev.updatedAt > cur.updatedAt) {
-            return -1;
-          } else {
-            return 1;
-          }
-        });
-      } else if (label === '사람 많은 순') {
-        groupChats.sort((prev, cur) => {
-          if (prev.users.length > cur.users.length) {
-            return -1;
-          } else {
-            return 1;
-          }
-        });
-      } else if (label === '홀로 있는 방') {
-        let soloChat = groupChats.filter(cur => cur.users.length === 1);
-        return soloChat;
-      }
-      return groupChats;
-    },
-    [tabs],
-  );
+    const {label} = selectedTab;
+    if (label === '가나다 순') {
+      groupChats.sort((prev, cur) => {
+        if (prev.name.toLowerCase() > cur.name.toLowerCase()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    } else if (label === '최근 채팅 순') {
+      groupChats.sort((prev, cur) => {
+        if (prev.updatedAt > cur.updatedAt) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    } else if (label === '사람 많은 순') {
+      groupChats.sort((prev, cur) => {
+        if (prev.users.length > cur.users.length) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    } else if (label === '홀로 있는 방') {
+      let soloChat = groupChats.filter(cur => cur.users.length === 1);
+      return soloChat;
+    }
+    return groupChats;
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,8 +83,8 @@ const GroupChatList = () => {
           }
           return true;
         });
-        const sorted = SortUsers(myChatExcepted);
-        setAllGroupChat(sorted);
+        const sorted = filterUsersByTab(myChatExcepted);
+        setAllGroupChat(sorted); // 결과적으로 최초 1회 전체 배열을 불러오는 useEffect
       } catch (error) {
         console.error(error);
       } finally {
@@ -95,24 +92,30 @@ const GroupChatList = () => {
       }
     };
     fetchData();
-  }, [SortUsers]);
+  }, [filterUsersByTab]); //filterUsersByTab는 useCallback으로 감싸져 재렌더 되진 않음.
 
-  const filterUsers = useCallback(() => {
+  const filterUsersBySearch = useCallback(() => {
     if (!searchedGroupChat) {
-      const sorted = SortUsers(allGroupChat);
+      // 검색어가 없으면 전체 배열 보여주기
+      const sorted = filterUsersByTab(allGroupChat);
       setFilteredGroupChat(sorted.slice());
     } else {
+      // 검색어가 있으면 검색어로 필터링해서 보여주기
       const filtered = allGroupChat.filter(groupchat =>
         groupchat.name.toLowerCase().includes(searchedGroupChat.toLowerCase()),
       );
-      const sorted = SortUsers(filtered);
+      const sorted = filterUsersByTab(filtered);
       setFilteredGroupChat(sorted.slice());
     }
-  }, [SortUsers, allGroupChat, searchedGroupChat]);
+  }, [allGroupChat, searchedGroupChat]);
 
   useEffect(() => {
-    filterUsers();
-  }, [allGroupChat, searchedGroupChat, tabs, filterUsers]);
+    filterUsersBySearch();
+    // 1. 전체 데이터가 바뀌거나,
+    // 2. 검색어가 바뀌거나
+    // 3. 탭이 바뀌거나
+    // 할 때 재렌더.
+  }, [allGroupChat, searchedGroupChat, tabs, filterUsersBySearch]);
 
   return (
     <StyledGroupLists>
