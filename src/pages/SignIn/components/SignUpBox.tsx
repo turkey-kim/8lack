@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, FormEvent} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../../styles/Theme';
 import {useNavigate} from 'react-router';
@@ -64,22 +64,14 @@ const SignUpBox = () => {
     });
   };
 
-  const signInAndFirstSet = async () => {
-    const res = await postSignIn(id, pw);
-    if (res) {
-      const {accessToken, refreshToken} = res;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      setIsLogged(true);
-      navigate('/');
-    }
-  };
-
-  const signUp = async () => {
+  const signUp = async (e: FormEvent) => {
+    e.preventDefault();
     if (pw && pw === pw2 && validId === 'true') {
       // 성공했을 경우
-      await postSignUp(id, pw, name);
-      signInAndFirstSet();
+      const res = await postSignUp(id, pw, name);
+      if (res) {
+        navigate('/signin');
+      }
     } else if (validId !== 'true') {
       alert('아이디 중복체크를 확인해주세요');
     } else {
@@ -87,7 +79,8 @@ const SignUpBox = () => {
     }
   };
 
-  const StyledidChecker = async () => {
+  const StyledidChecker = async (e: FormEvent) => {
+    e.preventDefault();
     const result = await checkIdDuplication(id);
     if (!result) {
       setValidId('false');
@@ -109,7 +102,7 @@ const SignUpBox = () => {
         <StyledSignInNav onClick={goToSignIn}>로그인</StyledSignInNav>
         <StyledSignUpNav>회원가입</StyledSignUpNav>
       </StyledNavField>
-      <StyledForm>
+      <StyledForm onSubmit={signUp}>
         <StyledLabel>아이디</StyledLabel>
         <StyledIdField>
           <StyledInput
@@ -120,7 +113,9 @@ const SignUpBox = () => {
             autoComplete="off"
             isValidId={validId}
           ></StyledInput>
-          <StyledIdChecker onClick={StyledidChecker}>중복확인</StyledIdChecker>
+          <StyledIdChecker type="button" onClick={StyledidChecker}>
+            중복확인
+          </StyledIdChecker>
           <StyledIdAlarm isValidId={validId}>{validIdMsg}</StyledIdAlarm>
         </StyledIdField>
         <StyledLabel>이름</StyledLabel>
@@ -152,7 +147,7 @@ const SignUpBox = () => {
           isError={pwErrorMessage}
         ></StyledPwInput>
         <StyledPwAlarm>{pwErrorMessage}</StyledPwAlarm>
-        <StyledSubmit onClick={signUp}>회원가입</StyledSubmit>
+        <StyledSubmit type="submit">회원가입</StyledSubmit>
       </StyledForm>
     </StyledContainer>
   );
@@ -203,7 +198,7 @@ const StyledSignUpNav = styled.button`
   font-weight: 800;
 `;
 
-const StyledForm = styled.div`
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -246,7 +241,7 @@ const StyledPwInput = styled.input<Props>`
   width: 100%;
   height: 3rem;
   padding: 1rem;
-  border: 1px solid ${props => (props.isError ? theme.colors.error : theme.colors.gray500)};
+  border: 1px solid ${({isError}) => (isError ? theme.colors.error : theme.colors.gray500)};
   border-radius: 4px;
   outline: none;
 `;
