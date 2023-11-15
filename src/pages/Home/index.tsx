@@ -6,6 +6,12 @@ import {useNavigate} from 'react-router';
 import {theme} from 'styles/Theme';
 import IntroSection from './components/IntroSection';
 import ChatSection from './components/ChatSection';
+import HeaderSection from './components/HeaderSection';
+import {ReactComponent as Logo} from '../../assets/images/8lack.svg';
+
+interface StyledWrapperProps {
+  isLoggedIn: boolean;
+}
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
@@ -17,12 +23,18 @@ const Home = () => {
 
   return (
     <StyledContainer>
-      {isLoggedIn ? <Navigation /> : null}
+      {isLoggedIn && <Navigation />}
       <StyledInnerContainer>
-        <StyledNavigationContainer>
-          {isLoggedIn ? null : <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>}
-        </StyledNavigationContainer>
-        <StyledWrapper>
+        {isLoggedIn ? (
+          <></>
+        ) : (
+          <StyledNavigationContainer>
+            <Logo />
+            <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>
+          </StyledNavigationContainer>
+        )}
+        <StyledWrapper isLoggedIn={isLoggedIn}>
+          <HeaderSection />
           <IntroSection />
         </StyledWrapper>
       </StyledInnerContainer>
@@ -33,15 +45,20 @@ const Home = () => {
 export default Home;
 
 const StyledNavigationContainer = styled.div`
+  position: fixed;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
   width: 100%;
   height: 6rem;
+  background-color: rgba(255, 255, 255, 0.7);
 `;
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<StyledWrapperProps>`
+  margin-top: ${props => (props.isLoggedIn ? '0' : '6rem')};
   width: auto;
   height: auto;
 `;
@@ -55,7 +72,6 @@ const StyledInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  // padding: 4rem 2rem;
   width: 100%;
   height: 100vh;
 `;

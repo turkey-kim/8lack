@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import Logo from '../../assets/icons/Logo.png';
 import MyPage from '../MyPage/MyPage';
 import {useState, useEffect} from 'react';
 import {loginState} from 'states/atom';
@@ -9,6 +8,7 @@ import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
 import {theme} from '../../styles/Theme';
 import {useLocation} from 'react-router-dom';
 import {authCheck} from 'api/auth';
+import {ReactComponent as Logo} from '../../assets/images/8lack_logo.svg';
 
 export default function Navigation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +36,7 @@ export default function Navigation() {
   return (
     <StyledNav>
       <Link to="/home">
-        <StyledLogo src={Logo} alt="Logo" />
+        <Logo />
       </Link>
       <StyledIconContainer>
         <Link to="/">
