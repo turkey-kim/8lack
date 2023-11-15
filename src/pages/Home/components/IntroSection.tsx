@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import chatimg from './chatimg.png';
+import frame from './Frame 3758.png';
 
 const IntroSection = () => {
   return (
@@ -16,6 +17,7 @@ const IntroSection = () => {
         </StyledWrapper>
         <StyledWrapper>
           <StyledImg src={chatimg} />
+          {/* <StyledImg2 src={frame} /> */}
         </StyledWrapper>
       </StyledLeftSection>
 
@@ -98,11 +100,16 @@ const StyledLeftSection = styled.div`
 const StyledWrapper = styled.div`
   display: inline-block;
   vertical-align: top;
+  width: 50%;
 `;
 
 const StyledImg = styled.img`
   height: 20rem;
   margin: 10rem 0 0 10rem;
+`;
+
+const StyledImg2 = styled.img`
+  height: 15rem;
 `;
 
 const StyledRightSection = styled.div`
