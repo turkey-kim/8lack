@@ -39,7 +39,6 @@ const StyledInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding: 4rem 2rem;
   width: 100%;
   height: 100vh;
   font-size: 10rem;

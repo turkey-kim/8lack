@@ -29,6 +29,12 @@ export const dataTop: any = [
     time: '1시간 전 마지막 채팅',
     people: ['오니체', '나공자', '김테스'],
   },
+  {
+    title: '입시 미술 준비반',
+    member: '30명의 멤버',
+    time: '12분 전 마지막 채팅',
+    people: ['황미술', '류석고', '유채색'],
+  },
 ];
 
 export const dataBottom: any = [
@@ -61,5 +67,11 @@ export const dataBottom: any = [
     member: '39명의 멤버',
     time: '6시간 전 마지막 채팅',
     people: ['미통령', '김땡떙', '김터키'],
+  },
+  {
+    title: '언어교환방',
+    member: '15명의 멤버',
+    time: '1시간 전 마지막 채팅',
+    people: ['김영어', '최일어', '이중어'],
   },
 ];
