@@ -5,6 +5,7 @@ import {useRecoilValue} from 'recoil';
 import {loginState} from 'states/atom';
 import {useNavigate} from 'react-router';
 import {theme} from 'styles/Theme';
+import ChatSection from './components/ChatSection';
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
@@ -19,7 +20,9 @@ const Home = () => {
       {isLoggedIn ? <Navigation /> : null}
       <StyledInnerContainer>
         {isLoggedIn ? null : <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>}
-        홈페이지
+        <StyledWrapper>
+          <ChatSection />
+        </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
   );
@@ -39,6 +42,12 @@ const StyledInnerContainer = styled.div`
   padding: 4rem 2rem;
   width: 100%;
   height: 100vh;
+  font-size: 10rem;
+`;
+
+const StyledWrapper = styled.div`
+  width: auto;
+  height: auto;
 `;
 
 const StyledSignInBtn = styled.button`
