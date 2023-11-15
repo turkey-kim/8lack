@@ -56,7 +56,6 @@ const Chat = ({chatId}: {chatId: string}) => {
         <SendMessage />
       </StyledContainer>
       <Drawer isOpen={isDrawerOpen} onClose={closeDrawer}>
-        {/*<StyledLabel>- 대화 상대</StyledLabel>*/}
         <StyledWrapper onClick={openModal}>
           <StyledAddButton
             onClick={e => {

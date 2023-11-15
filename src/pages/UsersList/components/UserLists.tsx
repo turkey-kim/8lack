@@ -5,9 +5,10 @@ import {getUsers} from 'api/users';
 import UserItem from './UserItem';
 import {isStarBtnClicked} from 'states/atom';
 import {useRecoilValue} from 'recoil';
-import {authCheck} from 'api/auth';
 import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
 import {StyledInputContainer, StyledSearchIcon} from 'pages/GroupChatList/HeaderLayout/SearchBar';
+import NoSearchResult from './../../../components/NoSearchResult/index';
+import {useUid} from 'hooks/useUid';
 
 export interface User {
   id: string;
@@ -25,30 +26,22 @@ const UserLists = () => {
   const [searchUser, setSearchUser] = useState('');
   const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
   const starBtnClicked = useRecoilValue(isStarBtnClicked);
-  const [myId, setMyId] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const getAuth = async () => {
-    setIsLoading(true);
-    const res = await authCheck();
-    setMyId(res.user.id);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getAuth();
-  }, []);
+  const {uid, isLoading, error} = useUid();
+  const myId = uid;
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     getUsers().then(allUsers => {
       const newCheckedStates: CheckedStates = {};
       allUsers.forEach((user: User) => {
         const saved = localStorage.getItem(`isChecked-${user.id}`);
-        newCheckedStates[user.id] = saved === 'true';
+        newCheckedStates[user.id] = saved === 'true' || false;
       });
+
       setCheckedStates(newCheckedStates);
       setUsers(allUsers);
       setFilteredUsers(allUsers);
+      setIsLoaded(true);
     });
   }, [starBtnClicked]);
 
@@ -75,50 +68,52 @@ const UserLists = () => {
     }
   };
 
+  if (isLoading) return <LoadingCircle height={'calc(100vh - 17.75rem)'} />;
+
   return (
     <>
-      {isLoading ? (
-        <LoadingCircle height={'calc(100vh - 17.75rem)'} />
-      ) : (
-        <StyledForm
-          onSubmit={e => {
+      <StyledForm
+        onSubmit={e => {
+          e.preventDefault();
+          handleSearch();
+        }}
+        onKeyPress={e => {
+          if (e.key === 'Enter') {
             e.preventDefault();
-            handleSearch();
-          }}
-          onKeyPress={e => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-            }
-          }}
-        >
-          <StyledInputContainer>
-            <StyledSearchIcon />
-            <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
-          </StyledInputContainer>
-          <StyledLine />
-          <StyledSubTitle>즐겨찾기</StyledSubTitle>
-          {filteredUsers.length > 0 ? (
-            filteredUsers
-              .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
-              .filter(user => user.name.toLowerCase())
-              .filter(user => checkedStates[user.id])
-              .filter(user => user.id !== myId)
-              .map(user => <UserItem key={user.id} user={user} />)
-          ) : (
-            <br />
-          )}
-          <StyledLine />
-          <StyledSubTitle>유저목록</StyledSubTitle>
-          {filteredUsers.length > 0
-            ? filteredUsers
-                .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
-                .filter(user => user.name.toLowerCase())
-                .filter(user => !checkedStates[user.id])
-                .filter(user => user.id !== myId)
-                .map(user => <UserItem key={user.id} user={user} />)
-            : '검색된 유저가 없습니다.'}
-        </StyledForm>
-      )}
+          }
+        }}
+      >
+        <StyledInputContainer>
+          <StyledSearchIcon />
+          <StyledSearchBar placeholder="사용자를 검색해보세요." onChange={e => setSearchUser(e.target.value)} />
+        </StyledInputContainer>
+        <StyledLine />
+        <StyledSubTitle>즐겨찾기</StyledSubTitle>
+        {filteredUsers.length > 0 ? (
+          filteredUsers
+            .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
+            .filter(user => user.name.toLowerCase())
+            .filter(user => checkedStates[user.id])
+            .filter(user => user.id !== myId)
+            .map(user => <UserItem key={user.id} user={user} />)
+        ) : (
+          <br />
+        )}
+        <StyledLine />
+        <StyledSubTitle>유저목록</StyledSubTitle>
+        {filteredUsers.length > 0 ? (
+          filteredUsers
+            .sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'))
+            .filter(user => user.name.toLowerCase())
+            .filter(user => !checkedStates[user.id])
+            .filter(user => user.id !== myId)
+            .map(user => <UserItem key={user.id} user={user} />)
+        ) : isLoaded ? (
+          <NoSearchResult text="검색하신 사용자는 존재하지 않습니다." />
+        ) : (
+          <LoadingCircle height={'calc(100vh - 17.75rem)'} />
+        )}
+      </StyledForm>
     </>
   );
 };

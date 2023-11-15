@@ -77,7 +77,6 @@ export const getChatRoom = async (chatId: string) => {
     const response = await axios.get(`${SERVER_URL}/chat/only?chatId=${chatId}`, {
       headers: authHeaders(),
     });
-    console.log(response.data.chat);
     return response.data.chat;
   } catch (error) {
     console.error('Error joining chat room:', error);

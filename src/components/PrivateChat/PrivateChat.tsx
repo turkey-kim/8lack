@@ -1,10 +1,10 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {format, register} from 'timeago.js';
 import koLocale from 'timeago.js/lib/lang/ko';
 import {Props, IChat} from 'types/chatroom.types';
-import {useNavigate, useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
 import {authCheck} from 'api/auth';
 import {USER_DEFAULT_IMG} from 'constant/constant';
@@ -13,58 +13,63 @@ register('ko', koLocale);
 
 export default function PrivateChat(props: Props) {
   const [myId, setMyId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const {id, users} = props.data;
-  const navigate = useNavigate();
   const params = useParams();
   const {
-    updateQuery: {isLoading, data: realTimeData},
+    updateQuery: {data: realTimeData},
   } = useRealTimeUpdate();
 
   const selectedChatRoom = realTimeData?.chats.find((chat: IChat) => chat.id === id);
 
   const getAuth = async () => {
-    const res = await authCheck();
-    setMyId(res.user.id);
+    try {
+      const res = await authCheck();
+      setMyId(res.user.id);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     getAuth();
   }, []);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <></>;
 
   return (
     <StyledTopContainer>
-      <StyledContainer onClick={() => navigate(`/chat/${id}`)} className={params.chatId === id ? 'selected_chat' : ''}>
-        <StyledSubContainer>
-          {users.map(user =>
-            user.id !== myId ? (
-              <StyledImg src={user.picture} alt="사용자 프로필 이미지" />
-            ) : (
-              users.length === 1 && <StyledImg src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
-            ),
-          )}
-          <StyledTextContainer>
+      <Link to={`/chat/${id}`}>
+        <StyledContainer className={params.chatId === id ? 'selected_chat' : ''}>
+          <StyledSubContainer>
             {users.map(user =>
               user.id !== myId ? (
-                <StyledTitle>{user.username}</StyledTitle>
+                <StyledImg key={user.id} src={user.picture} alt="사용자 프로필 이미지" />
               ) : (
-                users.length === 1 && <StyledTitle>(알 수 없음)</StyledTitle>
+                users.length === 1 && <StyledImg key={user.id} src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
               ),
             )}
-            <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
-          </StyledTextContainer>
-        </StyledSubContainer>
-        <StyledDiv>
-          <StyledDate>{format(selectedChatRoom?.updatedAt, 'ko')}</StyledDate>
-          {/* {selectedChatRoom?.latestMessage === null ? '' : <StyledLatestMessage />} */}
-        </StyledDiv>
-      </StyledContainer>
+            <StyledTextContainer>
+              {users.map(user =>
+                user.id !== myId ? (
+                  <StyledTitle key={user.id}>{user.username}</StyledTitle>
+                ) : (
+                  users.length === 1 && <StyledTitle key={user.id}>(알 수 없음)</StyledTitle>
+                ),
+              )}
+              <StyledText>{selectedChatRoom?.latestMessage?.text}</StyledText>
+            </StyledTextContainer>
+          </StyledSubContainer>
+          <StyledDiv>
+            <StyledDate>{format(selectedChatRoom?.updatedAt, 'ko')}</StyledDate>
+          </StyledDiv>
+        </StyledContainer>
+      </Link>
     </StyledTopContainer>
   );
 }
 
-export const StyledTopContainer = styled.li`
+export const StyledTopContainer = styled.div`
   .selected_chat {
     background-color: ${theme.colors.blue100};
   }
