@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState, useMemo} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import io, {Socket} from 'socket.io-client';
 import {leaveUser, Message, NewUser, PrevMessage, UserID} from 'types/chatroom.types';
 import {authHeaders} from 'api/auth';
@@ -93,7 +93,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
 
     return () => {
       if (newSocket.connected) {
-        newSocket.close();
+        newSocket.disconnect();
         setMessages([]);
         setPrevMessages({messages: []});
         setUsers({users: []});
