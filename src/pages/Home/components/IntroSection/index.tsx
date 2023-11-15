@@ -23,7 +23,7 @@ export default IntroSection;
 
 export const StyledLeftSection = styled.div`
   background-color: white;
-  height: 45rem;
+  height: 42rem;
   padding: 0rem 0 0 15rem;
   text-align: left;
   overflow: hidden;
@@ -34,7 +34,7 @@ export const StyledRightSection = styled.div`
   background-color: ${theme.colors.blue100};
   padding: 0rem 15rem 0 0rem;
   text-align: right;
-  height: 45rem;
+  height: 40rem;
   overflow: hidden;
   width: 100vw;
 `;

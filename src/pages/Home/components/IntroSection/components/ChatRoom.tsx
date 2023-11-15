@@ -30,10 +30,15 @@ const StyledImg = styled.img`
   position: relative;
   top: 4rem;
   right: 8rem;
+  transition: transform 0.3s ease-in-out;
 
   @media (max-width: 800px) {
     height: 20rem;
     right: 4rem;
+  }
+
+  &:hover {
+    transform: scale(1.1);
   }
 `;
 
@@ -42,10 +47,15 @@ const StyledImg2 = styled.img`
   position: relative;
   top: -8rem;
   right: 15rem;
+  transition: transform 0.3s ease-in-out;
 
   @media (max-width: 800px) {
     height: 16rem;
     right: 9rem;
+  }
+
+  &:hover {
+    transform: scale(1.1);
   }
 `;
 

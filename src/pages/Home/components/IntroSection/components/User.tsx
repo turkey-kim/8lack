@@ -5,6 +5,20 @@ import background from 'assets/images/main_background.png';
 import user1 from 'assets/images/main_user1.png';
 import user2 from 'assets/images/main_user2.png';
 import user3 from 'assets/images/main_user3.png';
+import {Player} from '@lottiefiles/react-lottie-player';
+
+const UserLottie = () => {
+  return (
+    <StyledPlayer>
+      <Player
+        autoplay
+        loop
+        style={{width: '40%', height: '100%'}}
+        src="https://lottie.host/71993139-f0a8-440f-80d4-6fae6d198c69/kkqnGwASyk.json"
+      />
+    </StyledPlayer>
+  );
+};
 
 const User = () => {
   return (
@@ -12,6 +26,7 @@ const User = () => {
       <StyledWrapper>
         <StyledImg2 src={user3} /> <StyledImg src={user1} />
         <StyledImg3 src={user2} />
+        <UserLottie />
       </StyledWrapper>
       <StyledWrapper>
         <StyledText>유저 목록 조회 & 즐겨찾기</StyledText>
@@ -29,11 +44,16 @@ const User = () => {
   );
 };
 
+const StyledPlayer = styled.div`
+  position: relative;
+  right: -40rem;
+  top: -5rem;
+`;
+
 export const StyledRightSection = styled.div`
   background-color: ${theme.colors.blue100};
   background-image: url(${background});
   padding: 0rem 15rem 0 10rem;
-
   text-align: right;
   height: 45rem;
   overflow: hidden;
@@ -46,7 +66,12 @@ const StyledImg = styled.img`
   height: 25rem;
   position: relative;
   top: 14rem;
-  right: -9rem;
+  right: -10rem;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const StyledImg2 = styled.img`
@@ -54,6 +79,11 @@ const StyledImg2 = styled.img`
   position: relative;
   top: -2rem;
   right: -11rem;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const StyledImg3 = styled.img`
@@ -62,6 +92,11 @@ const StyledImg3 = styled.img`
   top: 14rem;
   right: 20rem;
   border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export default User;
