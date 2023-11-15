@@ -31,7 +31,7 @@ const Chat = ({chatId}: {chatId: string}) => {
   const handleLeaveChat = async () => {
     const res = await leaveChatRoom(chatId);
     if (res) {
-      navigate(-1);
+      navigate(`/`);
     }
   };
   const toggleDrawer = () => {
