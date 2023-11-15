@@ -1,6 +1,9 @@
 export interface Iinvite {
   responseChat: ResponseChat;
-  message?: string;
+  message: string;
+  title: string;
+  avatar: string | null;
+  type: string;
 }
 
 export interface ResponseChat {

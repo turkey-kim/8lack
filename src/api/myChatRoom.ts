@@ -18,7 +18,6 @@ export const makeChatRoom = async (name: string, users: string[], isPrivate?: bo
       {name: name, users: users, isPrivate: isPrivate},
       {headers: authHeaders()},
     );
-    console.log(response, '성공?');
     return response.data;
   } catch (err) {
     alert('⚠️그룹 채팅방 생성 도중 예기치 못한 에러가 발생하였습니다.');

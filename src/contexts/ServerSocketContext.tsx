@@ -6,6 +6,7 @@ import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {createdChatIdState} from 'states/atom';
 import {onlineUserList} from 'states/atom';
 import {Iinvite} from 'types/server.types';
+import {useUid} from 'hooks/useUid';
 
 interface ServerSocketState {
   socket: Socket | null;
@@ -21,14 +22,18 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
   const [socket, setSocket] = useState<Socket | null>(null);
   const [notifyMessage, setNotifyMessage] = useState<Iinvite[]>([]);
   const setOnlineUsers = useSetRecoilState(onlineUserList);
-  const createdChatId = useRecoilValue(createdChatIdState);
+  const createdChatIds = useRecoilValue(createdChatIdState);
+  const {uid, isLoading} = useUid();
 
   useEffect(() => {
+    if (isLoading) return;
     const newSocket = io(`${SERVER_URL}/server`, {
       extraHeaders: authHeaders(),
     });
     newSocket.off('connect');
     newSocket.off('disconnect');
+    newSocket.off('users-server-to-client');
+    newSocket.off('new-chat');
     newSocket.off('invite');
     setNotifyMessage([]);
 
@@ -41,17 +46,33 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
     newSocket.on('disconnect', reason => {
       console.log('Server Socket disconnect:', reason);
     });
-    newSocket.off('users-server-to-client');
     newSocket.on('users-server-to-client', ({users}) => {
       setOnlineUsers(users);
     });
     newSocket.on('invite', (data: Iinvite) => {
-      if (!createdChatId.includes(data.responseChat.id)) {
-        const message = `채팅방에 초대되었습니다. 🎉`;
-        setNotifyMessage(prev => [...prev, {...data, message}]);
-        console.log('초대된 채팅방', data);
+      if (!createdChatIds.includes(data.responseChat.id)) {
+        let message = `채팅방에 초대되었습니다. 🎉`;
+        let title = `${data.responseChat.name}`;
+        let avatar: string | null = null;
+        if (data.responseChat.isPrivate) {
+          const otherUser = data.responseChat.users.find(user => user.id !== uid);
+          if (otherUser) {
+            message = `${otherUser.username}님이 대화를 요청했습니다.`;
+            title = `${otherUser.username}`;
+            avatar = `${otherUser.picture}`;
+          }
+        }
+        setNotifyMessage(prev => [...prev, {...data, message, title, avatar, type: 'invite'}]);
       } else {
         console.log('현재 유저가 생성한 채팅방', data);
+      }
+    });
+    newSocket.on('new-chat', (data: Iinvite) => {
+      if (!data.responseChat.users.some(user => user.id === uid)) {
+        const message = `새로운 채팅방이 생성되었습니다.🤩`;
+        const title = `${data.responseChat.name}`;
+        const avatar = null;
+        setNotifyMessage(prev => [...prev, {...data, message, title, avatar, type: 'new-chat'}]);
       }
     });
 
@@ -62,7 +83,12 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
         newSocket.disconnect();
       }
     };
-  }, [createdChatId]);
+  }, [createdChatIds, isLoading, uid]);
+
+  useEffect(() => {
+    if (createdChatIds.length > 0) {
+    }
+  }, [createdChatIds]);
 
   const contextValue = {
     socket,
