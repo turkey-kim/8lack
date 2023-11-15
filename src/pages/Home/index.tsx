@@ -5,6 +5,7 @@ import {loginState} from 'states/atom';
 import {useNavigate} from 'react-router';
 import {theme} from 'styles/Theme';
 import IntroSection from './components/IntroSection';
+import ChatSection from './components/ChatSection';
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
@@ -23,6 +24,7 @@ const Home = () => {
         </StyledNavigationContainer>
         <StyledWrapper>
           <IntroSection />
+          <ChatSection />
         </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
