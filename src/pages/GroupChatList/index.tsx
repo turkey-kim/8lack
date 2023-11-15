@@ -1,8 +1,8 @@
 import {wholeChatRoom} from 'api/wholeChatRoom';
 import {myChatRoom} from 'api/myChatRoom';
 import styled from 'styled-components';
-import HeaderLayout from './HeaderLayout/HeaderLayout';
-import GroupChatRoomsLayout from './GroupChatRoomsLayout/GroupChatRoomsLayout';
+import HeaderLayout from './HeaderLayout';
+import GroupChatRoomsLayout from './GroupChatRoomsLayout';
 import {useCallback, useEffect, useState} from 'react';
 import {IChat} from 'types/chatroom.types';
 import TabProps from './HeaderLayout/TabButton/TabProps';
