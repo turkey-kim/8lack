@@ -26,7 +26,7 @@ const StyledContainer = styled.div`
 const StyledTitle = styled.div`
   padding: 4rem 0rem;
   color: ${theme.colors.white};
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: ${theme.fonts.subtitle1.fontWeight};
   text-align: center;
 `;

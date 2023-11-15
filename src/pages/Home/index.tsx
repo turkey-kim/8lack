@@ -24,7 +24,6 @@ const Home = () => {
         </StyledNavigationContainer>
         <StyledWrapper>
           <IntroSection />
-          <ChatSection />
         </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
