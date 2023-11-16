@@ -12,7 +12,7 @@ const Card = ({title, member, time, people}: CardProps) => {
       <StyledLabel>참여하고 있는 사람</StyledLabel>
       <StyledPoepleContainer>
         {people?.map((item, index) => (
-          <StyledPeopleLabel key={index}>{item}</StyledPeopleLabel>
+          <StyledPeopleLabel key={title + member + time + String(index)}>{item}</StyledPeopleLabel>
         ))}
       </StyledPoepleContainer>
     </StyledContainer>

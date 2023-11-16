@@ -9,12 +9,24 @@ const SlidingList = ({data, direction}: SlidiingListProps) => {
       <StyledListContainer>
         <StyledOriginalWrapper direction={direction}>
           {data.map((item: any) => (
-            <Card key={item.title} title={item.title} member={item.member} time={item.time} people={item.people} />
+            <Card
+              key={item.title + item.time}
+              title={item.title}
+              member={item.member}
+              time={item.time}
+              people={item.people}
+            />
           ))}
         </StyledOriginalWrapper>
         <StyledCloneWrapper direction={direction}>
           {data.map((item: any) => (
-            <Card key={item.title} title={item.title} member={item.member} time={item.time} people={item.people} />
+            <Card
+              key={item.title + item.title}
+              title={item.title}
+              member={item.member}
+              time={item.time}
+              people={item.people}
+            />
           ))}
         </StyledCloneWrapper>
       </StyledListContainer>
