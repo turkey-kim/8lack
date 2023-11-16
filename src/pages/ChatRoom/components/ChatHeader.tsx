@@ -35,6 +35,7 @@ export default ChatHeader;
 
 const StyledHeader = styled.div`
   width: 100%;
+  height: 9vh;
   padding: 0.75rem 1.1rem;
   display: flex;
   align-items: center;

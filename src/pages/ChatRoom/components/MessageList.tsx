@@ -60,7 +60,10 @@ const StyledDateHeader = styled.div`
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 10px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: -0.05px;
+  color: ${({theme}) => theme.colors.gray700};
 `;
 
 const StyledList = styled.div`

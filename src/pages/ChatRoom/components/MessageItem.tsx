@@ -26,7 +26,11 @@ const MessageItem: React.FC<MessageItemProps> = ({message, isCurrentUser}) => {
   const user = usersMap[message.userId];
 
   if (message.userId === 'system') {
-    return <StyledSystemMessage>{message.text}</StyledSystemMessage>;
+    return (
+      <StyledSystemMessage>
+        <span>{message.text}</span>
+      </StyledSystemMessage>
+    );
   }
 
   const variants = {
@@ -77,7 +81,15 @@ export default MessageItem;
 const StyledSystemMessage = styled.div`
   text-align: center;
   color: ${({theme}) => theme.colors.gray700};
-  padding: 10px;
+  padding: 3rem 0 1.1rem;
+
+  & > span {
+    border-radius: 20px;
+    background-color: ${({theme}) => theme.alpha.alpha3};
+    padding: 0.3rem 1.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
 `;
 
 const StyledItem = styled(motion.div)<{$currentUser: boolean}>`
@@ -98,7 +110,7 @@ const StyledBubble = styled.span<{$currentUser: boolean}>`
   overflow-wrap: break-word;
   word-break: break-all;
   font-size: 0.97rem;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 const StyledAvatarWrapper = styled.span`

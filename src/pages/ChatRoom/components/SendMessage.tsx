@@ -51,14 +51,15 @@ const StyledWrapper = styled.div`
   position: relative;
 `;
 const StyledInput = styled.input`
-  padding: 1rem 3.5rem 1em 1rem;
+  padding: 1.1rem 3.5rem 1.1em 1.1rem;
   border: none;
   outline: none;
   border-radius: 7px;
   width: 100%;
   background-color: ${({theme}) => theme.colors.gray200};
   color: rgb(38, 38, 38);
-  font-size: 0.9rem;
+  font-size: 0.96rem;
+  font-weight: 500;
 `;
 const StyledButton = styled.button`
   display: flex;

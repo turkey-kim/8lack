@@ -43,15 +43,21 @@ const StyledList = styled.ul`
 const StyledUser = styled.li<UserStateProps>`
   display: flex;
   align-items: center;
-  margin-bottom: 0.65rem;
   gap: 0.65rem;
   position: relative;
+  user-select: none;
+  padding: 0.6rem;
+
+  &:hover {
+    background-color: ${({theme}) => theme.colors.blue100};
+    border-radius: 12px;
+  }
 `;
 
 const StyledAvatarWrapper = styled.span`
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
 `;
 
 const StyledAvatar = styled.img`
@@ -75,5 +81,6 @@ const StyledStatus = styled.span<UserStateProps>`
 `;
 
 const StyledName = styled.span`
-  ${({theme}) => theme.fonts.body2};
+  font-size: 0.96rem;
+  font-weight: 500;
 `;

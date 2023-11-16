@@ -40,9 +40,20 @@ export interface UserID {
   users: string[];
 }
 
+// export interface NewUser {
+//   users: string[]; // 참여자들 id
+//   joiners: string[]; // 새로운 참여자 id
+// }
+
+interface JoinerInfo {
+  exp: number;
+  iat: number;
+  id: string;
+}
+
 export interface NewUser {
-  users: string[]; // 참여자들 id
-  joiners: string[]; // 새로운 참여자 id
+  users: string[]; // 모든 참여자들의 id
+  joiners: JoinerInfo[]; // 새로운 참여자 정보
 }
 
 export interface leaveUser {
