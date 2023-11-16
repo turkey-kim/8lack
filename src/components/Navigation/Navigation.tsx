@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import MyPage from '../MyPage/MyPage';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {loginState} from 'states/atom';
 import {useRecoilState} from 'recoil';
 import {PiChatCircleText, PiUsers, PiSignOutFill} from 'react-icons/pi';
 import {theme} from '../../styles/Theme';
 import {useLocation} from 'react-router-dom';
-import {authCheck} from 'api/auth';
 import {ReactComponent as Logo} from '../../assets/images/8lack_logo.svg';
+import {useUid} from 'hooks/useUid';
 
 export default function Navigation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [myPicture, setMyPicture] = useState<string>('');
+  const {uPicture} = useUid();
 
   const location = useLocation();
   const pathName = location.pathname;
@@ -23,15 +23,6 @@ export default function Navigation() {
     localStorage.removeItem('refreshToken');
     setIsLoggedIn(false);
   };
-
-  const getAuth = async () => {
-    const res = await authCheck();
-    setMyPicture(res.user.picture);
-  };
-
-  useEffect(() => {
-    getAuth();
-  }, []);
 
   return (
     <StyledNav>
@@ -58,7 +49,7 @@ export default function Navigation() {
             setIsModalOpen(true);
           }}
         >
-          <StyledUserImg src={myPicture} alt="사용자 프로필 사진" />
+          <StyledUserImg src={uPicture} alt="사용자 프로필 사진" />
           <StyledCategoryText>내정보</StyledCategoryText>
         </StyledCategoryContainer>
         <MyPage isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
@@ -79,11 +70,6 @@ const StyledNav = styled.nav`
   width: 6rem;
   height: 100vh;
   padding: 1.5rem 0.5rem;
-`;
-
-const StyledLogo = styled.img`
-  width: 3.5rem;
-  height: 3.5rem;
 `;
 
 const StyledIconContainer = styled.div`

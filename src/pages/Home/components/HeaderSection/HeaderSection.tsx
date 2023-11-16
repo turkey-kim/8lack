@@ -1,18 +1,18 @@
-import background from '../../../assets/images/home-header.png';
-import bloat from '../../../assets/images/Burst-Bloat.png';
+import background from '../../../../assets/images/home-header.png';
+import bloat from '../../../../assets/images/Burst-Bloat.png';
 import styled, {keyframes} from 'styled-components';
-import {theme} from '../../../styles/Theme';
-import {ReactComponent as MainLogo} from '../../../assets/images/home-main8.svg';
+import {theme} from '../../../../styles/Theme';
+import {ReactComponent as MainLogo} from '../../../../assets/images/home-main8.svg';
 
 export default function HeaderSection() {
   return (
     <StyledContainer>
       <StyledMainBackground>
-        <StyledMainText>
-          마치
+        <StyledMainTextContainer>
+          <StyledMainText>마치</StyledMainText>
           <StyledLogoText>팔락</StyledLogoText>
-          이듯
-        </StyledMainText>
+          <StyledMainText>이듯</StyledMainText>
+        </StyledMainTextContainer>
         <StyledMainLogoContainer>
           <StyledShakingMainLogo />
         </StyledMainLogoContainer>
@@ -21,10 +21,12 @@ export default function HeaderSection() {
         <StyledBloatImg2 src={bloat} />
       </StyledMainBackground>
       <StyledTextContainer>
-        <StyledText1>
+        <StyledTextInnerContainer>
           <StyledLogoText2>8lack</StyledLogoText2>
-          에서 다양한 사람들과 다양한 주제로 이야기를 나눠볼 수 있어요! <br />
-        </StyledText1>
+          <StyledText1>
+            에서 다양한 사람들과 다양한 주제로 이야기를 나눠볼 수 있어요! <br />
+          </StyledText1>
+        </StyledTextInnerContainer>
         <StyledText2>새로운 경험을 통해 일상의 재미를 더해보세요!</StyledText2>
       </StyledTextContainer>
     </StyledContainer>
@@ -46,6 +48,10 @@ const StyledMainBackground = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
+`;
+
+const StyledMainTextContainer = styled.div`
+  display: flex;
 `;
 
 const StyledMainText = styled.h1`
@@ -144,6 +150,10 @@ const StyledTextContainer = styled.div`
   gap: 1rem;
 `;
 
+const StyledTextInnerContainer = styled.div`
+  display: flex;
+`;
+
 const StyledText1 = styled.h2`
   color: ${theme.colors.white};
   font-size: 2rem;
@@ -154,6 +164,7 @@ const StyledText1 = styled.h2`
 const StyledLogoText2 = styled.h2`
   font-family: 'CWDangamAsac-Bold';
   font-size: 1.95rem;
+  color: ${theme.colors.white};
 `;
 
 const StyledText2 = styled.h2`
