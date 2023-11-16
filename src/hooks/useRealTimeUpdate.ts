@@ -4,7 +4,7 @@ import {useQuery} from '@tanstack/react-query';
 export default function useRealTimeUpdate() {
   const updateQuery = useQuery({
     queryKey: ['message'],
-    queryFn: () => myChatRoom(),
+    queryFn: myChatRoom,
     refetchInterval: 1000,
     refetchIntervalInBackground: true,
   });
