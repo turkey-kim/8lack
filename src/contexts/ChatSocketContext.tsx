@@ -33,21 +33,17 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     const newSocket = io(url, {
       extraHeaders: authHeaders(),
     });
-    newSocket.off('connect');
-    newSocket.off('disconnect');
     newSocket.off('message-to-client');
     newSocket.off('messages-to-client');
     newSocket.off('users-to-client');
     newSocket.off('join');
     newSocket.off('leave');
 
-    // 새로운 소켓 연결 시 이전 메시지 초기화
     setMessages([]);
     setPrevMessages({messages: []});
     setUsers({users: []});
 
     newSocket.on('connect', () => {
-      console.log('Socket connected:', newSocket.id);
       setAttempt(0);
     });
     newSocket.on('connect_error', error => {
@@ -65,7 +61,6 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     });
     // 이전 메시지 수신
     newSocket.on('messages-to-client', (data: PrevMessage) => {
-      console.log('Messages to client:', data);
       setPrevMessages(data);
     });
     // join 이벤트 데이터 처리
@@ -110,6 +105,14 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     return () => {
       if (newSocket.connected) {
         newSocket.disconnect();
+        newSocket.off('connect');
+        newSocket.off('disconnect');
+        newSocket.off('message-to-client');
+        newSocket.off('messages-to-client');
+        newSocket.off('users-to-client');
+        newSocket.off('join');
+        newSocket.off('leave');
+
         setMessages([]);
         setPrevMessages({messages: []});
         setUsers({users: []});

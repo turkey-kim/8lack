@@ -10,7 +10,6 @@ const SendMessage: React.FC = () => {
   const handleSendMessage = (messageText: string) => {
     if (socket && messageText.trim()) {
       socket.emit('message-to-server', messageText);
-      console.log('Sent message:', messageText);
       setMessage('');
     }
   };

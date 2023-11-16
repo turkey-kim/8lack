@@ -4,7 +4,7 @@ import Navigation from './components/Navigation/Navigation';
 import SideBar from './components/SideBar/SideBar';
 import {ServerSocketProvider} from 'contexts/ServerSocketContext';
 import UserPublicRoute from 'routes/UserPublicRoute';
-import Notification from './pages/Toast';
+import Toast from 'components/Toast/Toast';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <>
         <ServerSocketProvider>
           <StyledContainer>
-            <Notification />
+            <Toast />
             <Navigation />
             <SideBar />
             <Outlet />

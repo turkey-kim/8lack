@@ -29,7 +29,6 @@ const SignInBox = () => {
     const res = await postSignIn(id, pw);
     if (res) {
       const {accessToken, refreshToken} = res;
-      localStorage.setItem('8lack_uid', id);
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       setIsLogged(true);
