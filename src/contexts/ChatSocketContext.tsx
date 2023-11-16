@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import io, {Socket} from 'socket.io-client';
+import {v4 as uuidv4} from 'uuid';
 import {leaveUser, Message, NewUser, PrevMessage, UserID} from 'types/chatroom.types';
 import {authHeaders} from 'api/auth';
 
@@ -32,21 +33,17 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     const newSocket = io(url, {
       extraHeaders: authHeaders(),
     });
-    newSocket.off('connect');
-    newSocket.off('disconnect');
     newSocket.off('message-to-client');
     newSocket.off('messages-to-client');
     newSocket.off('users-to-client');
     newSocket.off('join');
     newSocket.off('leave');
 
-    // 새로운 소켓 연결 시 이전 메시지 초기화
     setMessages([]);
     setPrevMessages({messages: []});
     setUsers({users: []});
 
     newSocket.on('connect', () => {
-      console.log('Socket connected:', newSocket.id);
       setAttempt(0);
     });
     newSocket.on('connect_error', error => {
@@ -64,24 +61,33 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     });
     // 이전 메시지 수신
     newSocket.on('messages-to-client', (data: PrevMessage) => {
-      console.log('Messages to client:', data);
       setPrevMessages(data);
     });
     // join 이벤트 데이터 처리
     newSocket.on('join', (data: NewUser) => {
-      const joinMessage = data.joiners.map(joiner => ({
-        id: `join-${joiner}`,
-        text: `${joiner}님이 입장했습니다.`,
-        userId: 'system',
-        createdAt: new Date(),
-      }));
+      const joinMessage =
+        Array.isArray(data.joiners) && data.joiners.length > 0
+          ? typeof data.joiners[0] === 'string'
+            ? data.joiners.map(joiner => ({
+                id: `join-${joiner}-${uuidv4()}`,
+                text: `${joiner}님이 입장했습니다.`,
+                userId: 'system',
+                createdAt: new Date(),
+              }))
+            : data.joiners.map(joiner => ({
+                id: `join-${joiner.id}-${uuidv4()}`,
+                text: `${joiner.id}님이 입장했습니다.`,
+                userId: 'system',
+                createdAt: new Date(),
+              }))
+          : [];
       setMessages(prevMessages => [...prevMessages, ...joinMessage]);
       setEventTriggered(true);
     });
     // leave 이벤트 데이터 처리
     newSocket.on('leave', (data: leaveUser) => {
       const leaveMessage = {
-        id: `leave-${data.leaver}`,
+        id: `leave-${data.leaver}-${uuidv4()}`,
         text: `${data.leaver}님이 나가셨습니다.`,
         userId: 'system',
         createdAt: new Date(),
@@ -99,6 +105,14 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     return () => {
       if (newSocket.connected) {
         newSocket.disconnect();
+        newSocket.off('connect');
+        newSocket.off('disconnect');
+        newSocket.off('message-to-client');
+        newSocket.off('messages-to-client');
+        newSocket.off('users-to-client');
+        newSocket.off('join');
+        newSocket.off('leave');
+
         setMessages([]);
         setPrevMessages({messages: []});
         setUsers({users: []});

@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {AnimatePresence} from 'framer-motion';
-import ToastItem from 'pages/Toast/components/ToastItem';
+import ToastItem from 'components/Toast/ToastItem';
 import {useServerSocketContext} from 'contexts/ServerSocketContext';
 import {FaUserGroup} from 'react-icons/fa6';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
-import {participateChatRoom} from '../../api/myChatRoom';
+import {participateChatRoom} from 'api/myChatRoom';
 
 const Toast = () => {
   const {notifyMessage, setNotifyMessage} = useServerSocketContext();
@@ -36,9 +36,9 @@ const Toast = () => {
       setTimeout(() => {
         setVisibleNotifications(prev => ({...prev, [latestMessage.responseChat.id]: false}));
         setNotifyMessage(prev => prev.filter(msg => msg.responseChat.id !== latestMessage.responseChat.id));
-      }, 8000);
+      }, 7000);
     }
-  }, [notifyMessage, setNotifyMessage, visibleNotifications]);
+  }, [notifyMessage, visibleNotifications]);
 
   return ReactDOM.createPortal(
     <StyledContainer>

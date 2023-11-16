@@ -116,32 +116,35 @@ const StyledLeaveButton = styled.button`
   border-radius: 7px;
   width: 100%;
   cursor: pointer;
-`;
-
-const StyledLabel = styled.span`
-  font-size: 0.87rem;
-  font-weight: 500;
-  padding: 0.7rem 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 `;
 
 const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 0.65rem;
   gap: 0.65rem;
   color: ${({theme}) => theme.colors.blueBg1};
   cursor: pointer;
+  padding: 0.6rem;
+
+  &:hover {
+    background-color: ${({theme}) => theme.colors.blue100};
+    border-radius: 12px;
+  }
 `;
 
 const StyledAddButton = styled.button`
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   border: 1px solid ${({theme}) => theme.colors.gray300};
   color: ${({theme}) => theme.colors.blueBg1};
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
 
   & > svg {
     width: 1rem;
@@ -150,9 +153,23 @@ const StyledAddButton = styled.button`
 `;
 
 const StyledName = styled.span`
-  ${({theme}) => theme.fonts.body2};
+  font-size: 0.96rem;
+  font-weight: 500;
 `;
 
 const StyledButton = styled.button`
   display: flex;
+  height: 100%;
+  align-items: center;
+
+  & > svg {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 1;
+  }
+
+  &:hover {
+    background-color: ${({theme}) => theme.colors.blue100};
+    border-radius: 12px;
+  }
 `;

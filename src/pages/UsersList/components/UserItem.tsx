@@ -60,7 +60,6 @@ const UserItem = ({user}: UserItemProps) => {
           );
 
           if (existingChat) {
-            console.log('기존 채팅방 사용', existingChat);
             navigate(`/chat/${existingChat.id}`);
           } else {
             await createChatRoom(chatName, users, true);

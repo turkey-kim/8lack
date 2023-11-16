@@ -17,7 +17,6 @@ import Modal from 'react-modal';
 import NonUserRoute from 'routes/NonUserRoute';
 import Home from './pages/Home';
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 
 Modal.setAppElement('#root');
 const router = createBrowserRouter([
@@ -59,7 +58,6 @@ const queryClient = new QueryClient();
 
 root.render(
   <QueryClientProvider client={queryClient}>
-    <ReactQueryDevtools initialIsOpen={true} />
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <RecoilRoot>
@@ -69,7 +67,4 @@ root.render(
   </QueryClientProvider>,
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

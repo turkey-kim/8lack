@@ -12,7 +12,6 @@ const TabEl = (props: Props) => {
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     const tar = e.target as HTMLButtonElement;
     const targetLabel = tar.textContent;
-    console.log(targetLabel);
 
     let copied = props.tabs.slice();
     copied.forEach(el => {

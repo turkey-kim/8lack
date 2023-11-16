@@ -22,7 +22,6 @@ const SearchBar = (props: SearchBarProps) => {
     }
     if (props.onSearchGroupChat) {
       props.onSearchGroupChat(tar.value);
-      console.log('Searched GroupChat');
     }
   };
 

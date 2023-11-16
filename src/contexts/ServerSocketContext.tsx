@@ -38,9 +38,6 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
     newSocket.off('invite');
     setNotifyMessage([]);
 
-    newSocket.on('connect', () => {
-      console.log('Server Socket connected:', newSocket.id);
-    });
     newSocket.on('connect_error', error => {
       console.error('Server Socket connect_error:', error.message);
     });
@@ -82,6 +79,12 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
     return () => {
       if (newSocket.connected) {
         newSocket.disconnect();
+        newSocket.off('connect');
+        newSocket.off('disconnect');
+        newSocket.off('users-server-to-client');
+        newSocket.off('new-chat');
+        newSocket.off('invite');
+        setNotifyMessage([]);
       }
     };
   }, [createdChatIds, isLoading, uid]);
@@ -102,6 +105,7 @@ export const ServerSocketProvider: React.FC<ServerSocketProviderProps> = ({child
 
 export const useServerSocketContext = () => {
   const context = useContext(ServerSocketContext);
+
   if (!context) {
     throw new Error('useServerSocketContext must be used within a ServerSocketProvider');
   }
