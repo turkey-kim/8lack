@@ -5,13 +5,8 @@ import {loginState} from 'states/atom';
 import {useNavigate} from 'react-router';
 import {theme} from 'styles/Theme';
 import IntroSection from './components/IntroSection';
-import ChatSection from './components/ChatSection';
-import HeaderSection from './components/HeaderSection';
+import HeaderSection from './components/HeaderSection/HeaderSection';
 import {ReactComponent as Logo} from '../../assets/images/8lack.svg';
-
-interface StyledWrapperProps {
-  isLoggedIn: boolean;
-}
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
@@ -33,7 +28,7 @@ const Home = () => {
             <StyledSignInBtn onClick={goToSignin}>로그인</StyledSignInBtn>
           </StyledNavigationContainer>
         )}
-        <StyledWrapper isLoggedIn={isLoggedIn}>
+        <StyledWrapper className={isLoggedIn ? 'login' : 'logout'}>
           <HeaderSection />
           <IntroSection />
         </StyledWrapper>
@@ -57,10 +52,17 @@ const StyledNavigationContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.7);
 `;
 
-const StyledWrapper = styled.div<StyledWrapperProps>`
-  margin-top: ${props => (props.isLoggedIn ? '0' : '6rem')};
+const StyledWrapper = styled.div`
   width: auto;
   height: auto;
+
+  &.login {
+    margin-top: 0;
+  }
+
+  &.logout {
+    margin-top: 6rem;
+  }
 `;
 
 const StyledContainer = styled.div`
@@ -77,7 +79,7 @@ const StyledInnerContainer = styled.div`
 `;
 
 const StyledSignInBtn = styled.button`
-  position: absolute;
+  position: fixed;
   top: 1.5rem;
   right: 2rem;
   padding: 1rem 2rem;
