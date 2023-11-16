@@ -18,8 +18,8 @@ export function Footer(): JSX.Element {
   const teamMates: teamMatesProps[] = [
     {
       name: '김민서',
-      eMail: 'imkinggosu@gmail.com',
-      blog: '',
+      eMail: '',
+      blog: 'https://kmmk808.tistory.com/',
       gitRepo: 'https://github.com/minseokiim',
       etc: {
         etcName: '',
