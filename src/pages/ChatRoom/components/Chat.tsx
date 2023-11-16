@@ -40,9 +40,6 @@ const Chat = ({chatId}: {chatId: string}) => {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
-    if (!isDrawerOpen) {
-      refetch();
-    }
   };
 
   const closeDrawer = () => {
