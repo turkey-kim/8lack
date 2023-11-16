@@ -1,5 +1,14 @@
 import styled from 'styled-components';
-import {StyledRightSection, StyledWrapper, StyledText, StyledSubText, StyledIntroText} from '..';
+import {theme} from 'styles/Theme';
+import {
+  StyledTextWrapper,
+  StyledInner,
+  StyledLeftSection,
+  StyledWrapper,
+  StyledText,
+  StyledSubText,
+  StyledIntroText,
+} from '..';
 import chat2 from 'assets/images/main_chatroom2.png';
 import chat3 from 'assets/images/main_chatback.png';
 import {Player} from '@lottiefiles/react-lottie-player';
@@ -19,40 +28,46 @@ const InviteLottie = () => {
 
 const Invite = () => {
   return (
-    <StyledRightSection>
-      <StyledWrapper>
-        <StyledImg src={chat2} />
-        <StyledImg2 src={chat3} />
-        <InviteLottie />
-      </StyledWrapper>
-      <StyledWrapper>
-        <StyledText>편리한 초대 기능</StyledText>
-        <StyledSubText>
-          대화하고 싶은 친구를
-          <br />
-          검색하고 초대해보세요.
-        </StyledSubText>
-        <StyledIntroText>
-          가장 먼저 온 메시지순으로 확인할 수 있어, <br /> 편리하게 사용할 수 있답니다!
-        </StyledIntroText>
-      </StyledWrapper>
-    </StyledRightSection>
+    <StyledLeftSection>
+      <StyledInner>
+        <StyledWrapper>
+          <StyledImg src={chat2} />
+          <StyledImg2 src={chat3} />
+          <InviteLottie />
+        </StyledWrapper>
+        <StyledTextWrapper>
+          <StyledText>편리한 초대 기능</StyledText>
+          <StyledSubText>
+            대화하고 싶은 친구를
+            <br />
+            검색하고 초대해보세요.
+          </StyledSubText>
+          <StyledIntroText>
+            가장 먼저 온 메시지순으로 확인할 수 있어, <br /> 편리하게 사용할 수 있답니다!
+          </StyledIntroText>
+        </StyledTextWrapper>
+      </StyledInner>
+    </StyledLeftSection>
   );
 };
 
 const StyledPlayer = styled.div`
-  position: relative;
-  right: -30rem;
-  top: -15rem;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 18rem;
+  margin: auto;
+  z-index: 1;
+  transform: scale(0.8);
 `;
 
 const StyledImg = styled.img`
   height: 25rem;
-  position: relative;
+  position: absolute;
   top: 4rem;
-  right: 6rem;
-  margin-left: 20rem;
+  left: 5rem;
   transition: transform 0.3s ease-in-out;
+  z-index: 1;
 
   @media (max-width: 800px) {
     height: 20rem;
@@ -66,15 +81,13 @@ const StyledImg = styled.img`
 `;
 
 const StyledImg2 = styled.img`
-  position: relative;
+  position: absolute;
   height: 10rem;
-  right: -30rem;
-  bottom: -8rem;
+  left: 5rem;
+  bottom: 8rem;
   transition: transform 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  transform: scale(1.4);
+  opacity: 0.2;
 `;
 
 export default Invite;

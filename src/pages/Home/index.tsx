@@ -7,6 +7,7 @@ import {theme} from 'styles/Theme';
 import IntroSection from './components/IntroSection';
 import HeaderSection from './components/HeaderSection/HeaderSection';
 import {ReactComponent as Logo} from '../../assets/images/8lack.svg';
+import {Footer} from 'components/Footer/Footer';
 
 const Home = () => {
   const isLoggedIn = useRecoilValue(loginState);
@@ -31,6 +32,7 @@ const Home = () => {
         <StyledWrapper className={isLoggedIn ? 'login' : 'logout'}>
           <HeaderSection />
           <IntroSection />
+          <Footer />
         </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
@@ -49,7 +51,7 @@ const StyledNavigationContainer = styled.div`
   padding: 2rem;
   width: 100%;
   height: 6rem;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.8);
 `;
 
 const StyledWrapper = styled.div`
@@ -76,6 +78,7 @@ const StyledInnerContainer = styled.div`
   overflow-y: auto;
   width: 100%;
   height: 100vh;
+  overflow-x: hidden;
 `;
 
 const StyledSignInBtn = styled.button`

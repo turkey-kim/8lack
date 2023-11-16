@@ -16,6 +16,12 @@ const ChatSection = () => {
 
 export default ChatSection;
 
+const StyledDiv = styled.div`
+  position: relative;
+  width: 900px;
+  min-width: 900px;
+`;
+
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
