@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {theme} from 'styles/Theme';
 import {
   StyledTextWrapper,
-  StyledLeftSection,
+  StyledRightSection,
   StyledInner,
   StyledWrapper,
   StyledText,
@@ -30,7 +30,7 @@ const UserLottie = () => {
 
 const User = () => {
   return (
-    <StyledLeftSection>
+    <StyledRightSection>
       <StyledInner>
         <StyledWrapper>
           <StyledImg2 src={user3} />
@@ -51,7 +51,7 @@ const User = () => {
           </StyledIntroText>
         </StyledTextWrapper>
       </StyledInner>
-    </StyledLeftSection>
+    </StyledRightSection>
   );
 };
 

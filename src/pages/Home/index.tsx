@@ -8,6 +8,7 @@ import IntroSection from './components/IntroSection';
 import ChatSection from './components/ChatSection';
 import HeaderSection from './components/HeaderSection';
 import {ReactComponent as Logo} from '../../assets/images/8lack.svg';
+import {Footer} from 'components/Footer/Footer';
 
 interface StyledWrapperProps {
   isLoggedIn: boolean;
@@ -36,6 +37,7 @@ const Home = () => {
         <StyledWrapper isLoggedIn={isLoggedIn}>
           <HeaderSection />
           <IntroSection />
+          <Footer />
         </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
