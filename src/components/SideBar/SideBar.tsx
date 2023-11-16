@@ -73,20 +73,22 @@ const StyledContainer = styled.div`
   flex-direction: column;
   border-left: 1px solid ${theme.colors.gray400};
   border-right: 1px solid ${theme.colors.gray400};
+  background-color: 1px solid ${theme.colors.gray100};
 `;
 
 const StyledText = styled.h2`
-  margin: 2rem 1.5rem;
+  margin: 3rem 1.5rem 2.5rem;
   font-size: ${theme.fonts.subtitle4.fontSize};
 `;
 
 const StyledCategoryContainer = styled.div`
-  margin: 3.5rem 1.5rem 1rem 1.5rem;
-  gap: 1.5rem;
+  padding: 1rem 1.5rem 0 1.5rem;
   display: flex;
+  gap: 1.5rem;
 
   .selected_category {
     color: ${theme.colors.blue700};
+    border-bottom: 4px solid ${theme.colors.blue700};
   }
 `;
 
@@ -94,10 +96,15 @@ const StyledPrivateButton = styled.button`
   font-size: ${theme.fonts.subtitle5.fontSize};
   font-weight: ${theme.fonts.subtitle5.fontWeight};
   color: ${theme.colors.blue500};
+
+  padding-bottom: 8px;
+  border-bottom: 4px solid ${theme.colors.white};
 `;
 
 const StyledGroupButton = styled(StyledPrivateButton)`
   color: ${theme.colors.blue500};
+  padding-bottom: 8px;
+  border-bottom: 4px solid ${theme.colors.white};
 `;
 
 const StyledLine = styled.div`

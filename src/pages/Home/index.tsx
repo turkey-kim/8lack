@@ -54,7 +54,7 @@ const StyledNavigationContainer = styled.div`
   padding: 2rem;
   width: 100%;
   height: 6rem;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.8);
 `;
 
 const StyledWrapper = styled.div<StyledWrapperProps>`

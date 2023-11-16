@@ -36,7 +36,9 @@ export default function Navigation() {
   return (
     <StyledNav>
       <Link to="/home">
-        <Logo />
+        <StyledLogo>
+          <Logo />
+        </StyledLogo>
       </Link>
       <StyledIconContainer>
         <Link to="/">
@@ -81,9 +83,11 @@ const StyledNav = styled.nav`
   padding: 1.5rem 0.5rem;
 `;
 
-const StyledLogo = styled.img`
-  width: 3.5rem;
-  height: 3.5rem;
+const StyledLogo = styled(Logo)`
+  transition: 0.3s;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const StyledIconContainer = styled.div`
