@@ -13,13 +13,16 @@ import {RxHamburgerMenu} from 'react-icons/rx';
 import {RiAddFill} from 'react-icons/ri';
 import {useRecoilState} from 'recoil';
 import {chatRoomState} from 'states/atom';
+import {useChatRoomRefetch} from 'hooks/useChatRoomRefetch';
 
 // TODO: 불필요한 리렌더 줄이기
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {data: chatRoomData, isLoading, isError} = useChatRoomQuery(chatId);
+  const {data: chatRoomData, refetch} = useChatRoomQuery(chatId);
   const [chatRoom, setChatRoom] = useRecoilState(chatRoomState);
+
+  useChatRoomRefetch(refetch, isDrawerOpen);
 
   useEffect(() => {
     if (chatRoomData) {
@@ -34,9 +37,11 @@ const Chat = ({chatId}: {chatId: string}) => {
       navigate(`/`);
     }
   };
+
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+
   const closeDrawer = () => {
     setIsDrawerOpen(false);
   };
