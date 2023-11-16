@@ -11,8 +11,8 @@ const Card = ({title, member, time, people}: CardProps) => {
       <StyledSectorLine />
       <StyledLabel>참여하고 있는 사람</StyledLabel>
       <StyledPoepleContainer>
-        {people?.map(item => (
-          <StyledPeopleLabel>{item}</StyledPeopleLabel>
+        {people?.map((item, index) => (
+          <StyledPeopleLabel key={index}>{item}</StyledPeopleLabel>
         ))}
       </StyledPoepleContainer>
     </StyledContainer>
