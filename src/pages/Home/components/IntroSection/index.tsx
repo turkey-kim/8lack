@@ -21,28 +21,34 @@ const IntroSection = () => {
 };
 export default IntroSection;
 
-export const StyledLeftSection = styled.div`
-  background-color: white;
-  height: 42rem;
-  padding: 0rem 0 0 15rem;
-  text-align: left;
-  overflow: hidden;
-  width: 100vw;
+export const StyledInner = styled.div`
+  position: relative;
+  width: 1200px;
+  min-width: 900px;
+  display: flex;
+  justify-content: space-between;
 `;
 
-export const StyledRightSection = styled.div`
-  background-color: ${theme.colors.blue100};
-  padding: 0rem 15rem 0 0rem;
-  text-align: right;
+export const StyledLeftSection = styled.div`
+  background-color: ${theme.colors.white};
+  text-align: left;
   height: 40rem;
   overflow: hidden;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
 `;
 
 export const StyledWrapper = styled.div`
   display: inline-block;
   vertical-align: top;
-  width: 50%;
+`;
+
+export const StyledTextWrapper = styled.div`
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 140px;
 `;
 
 export const StyledText = styled.h3`

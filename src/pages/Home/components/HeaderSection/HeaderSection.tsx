@@ -1,4 +1,5 @@
 import background from '../../../../assets/images/home-header.png';
+import backObj from '../../../../assets/images/backObj.png';
 import bloat from '../../../../assets/images/Burst-Bloat.png';
 import styled, {keyframes} from 'styled-components';
 import {theme} from '../../../../styles/Theme';
@@ -8,6 +9,8 @@ export default function HeaderSection() {
   return (
     <StyledContainer>
       <StyledMainBackground>
+        <StyledBackObj1 src={backObj} />
+        <StyledBackObj2 src={backObj} />
         <StyledMainTextContainer>
           <StyledMainText>마치</StyledMainText>
           <StyledLogoText>팔락</StyledLogoText>
@@ -36,6 +39,56 @@ export default function HeaderSection() {
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+`;
+
+const backAnimation1 = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 0.07;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(300px);
+  }
+`;
+
+const backAnimation2 = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(300px);
+  }
+  70% {
+    opacity: 0.07;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+`;
+
+const StyledBackObj1 = styled.img`
+  width: 70rem;
+  position: absolute;
+  left: -35rem;
+  bottom: 2rem;
+  opacity: 0.07;
+  animation: ${backAnimation1} 15s ease-in-out infinite;
+`;
+
+const StyledBackObj2 = styled.img`
+  width: 70rem;
+  position: absolute;
+  right: -35rem;
+  bottom: 2rem;
+  opacity: 0;
+  animation: ${backAnimation2} 10s ease-in-out infinite;
+  animation-delay: 15s;
 `;
 
 const StyledMainBackground = styled.div`
@@ -48,6 +101,7 @@ const StyledMainBackground = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
+  overflow: hidden;
 `;
 
 const StyledMainTextContainer = styled.div`
@@ -58,6 +112,7 @@ const StyledMainText = styled.h1`
   color: ${theme.colors.white};
   font-size: 4rem;
   display: flex;
+  align-items: center;
 `;
 
 const mainLogoColorChange = keyframes`
@@ -75,7 +130,7 @@ const mainLogoColorChange = keyframes`
   }
 `;
 
-const shakeAnimation = keyframes`
+const Animation = keyframes`
   0% {
     transform: rotate(5deg);
   }
@@ -98,7 +153,7 @@ const StyledMainLogoContainer = styled.div`
 `;
 
 const StyledShakingMainLogo = styled(MainLogo)`
-  animation: ${shakeAnimation} 8s infinite;
+  animation: ${Animation} 8s infinite;
 `;
 
 const StyledLogoText = styled(StyledMainText)`
@@ -106,7 +161,7 @@ const StyledLogoText = styled(StyledMainText)`
   margin-left: 1.5rem;
 `;
 
-const rotateBloadImg = keyframes`
+const rotateBloadImg1 = keyframes`
   0% {
     transform: rotate(0deg);
     opacity: 1;
@@ -124,12 +179,30 @@ const rotateBloadImg = keyframes`
   }
 `;
 
+const rotateBloadImg2 = keyframes`
+  0% {
+    transform: rotate(0deg);
+    opacity: 0;
+    filter: brightness(100%);
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+    filter: brightness(50%);
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0;
+    filter: brightness(0%);
+  }
+`;
+
 const StyledBloatImg1 = styled.img`
-  width: 15rem;
+  width: 18rem;
   position: absolute;
   left: 5rem;
   bottom: 2rem;
-  animation: ${rotateBloadImg} 10s linear infinite;
+  animation: ${rotateBloadImg1} 12s ease-in-out infinite;
 `;
 
 const StyledBloatImg2 = styled.img`
@@ -137,7 +210,8 @@ const StyledBloatImg2 = styled.img`
   position: absolute;
   top: 2rem;
   right: 5rem;
-  animation: ${rotateBloadImg} 10s linear infinite;
+  animation: ${rotateBloadImg2} 8s ease-in-out infinite;
+  animation-delay: 3s;
 `;
 
 const StyledTextContainer = styled.div`
