@@ -7,8 +7,8 @@ import {loginState} from 'states/atom';
 import {useRecoilState} from 'recoil';
 
 interface Props {
-  isError?: string;
-  isValidId?: string;
+  $isError?: string;
+  $isValidId?: string;
 }
 
 interface Inputs {
@@ -30,7 +30,6 @@ const SignUpBox = () => {
   let {name, id, pw, pw2} = inputs;
   const [validId, setValidId] = useState('default');
   const [validIdMsg, setValidIdMsg] = useState('사용 가능한 아이디 입니다');
-  const [isLogged, setIsLogged] = useRecoilState(loginState);
 
   useEffect(() => {
     checkPassword();
@@ -38,9 +37,9 @@ const SignUpBox = () => {
 
   useEffect(() => {
     if (validId !== 'default') {
-      setValidId('default'); // default값일 때는 굳이 작동시키지 않음
+      setValidId('default');
     }
-  }, [id]); // 입력한 아이디 변동될 경우 유효성 체크 전 상태로 복귀
+  }, [id]);
 
   const goToSignIn = () => {
     navigate('/signin');
@@ -111,12 +110,12 @@ const SignUpBox = () => {
             value={id}
             onChange={onChange}
             autoComplete="off"
-            isValidId={validId}
+            $isValidId={validId}
           ></StyledInput>
           <StyledIdChecker type="button" onClick={StyledidChecker}>
             중복확인
           </StyledIdChecker>
-          <StyledIdAlarm isValidId={validId}>{validIdMsg}</StyledIdAlarm>
+          <StyledIdAlarm $isValidId={validId}>{validIdMsg}</StyledIdAlarm>
         </StyledIdField>
         <StyledLabel>이름</StyledLabel>
         <StyledInput
@@ -134,7 +133,7 @@ const SignUpBox = () => {
           type="password"
           onChange={onChange}
           autoComplete="off"
-          isError={pwErrorMessage}
+          $isError={pwErrorMessage}
         ></StyledPwInput>
         <StyledLabel>비밀번호 확인</StyledLabel>
         <StyledPwInput
@@ -144,7 +143,7 @@ const SignUpBox = () => {
           type="password"
           onChange={onChange}
           autoComplete="off"
-          isError={pwErrorMessage}
+          $isError={pwErrorMessage}
         ></StyledPwInput>
         <StyledPwAlarm>{pwErrorMessage}</StyledPwAlarm>
         <StyledSubmit type="submit">회원가입</StyledSubmit>
@@ -228,9 +227,9 @@ const StyledInput = styled.input<Props>`
   padding: 1rem;
   border: 1px solid
     ${props =>
-      props.isValidId === 'false'
+      props.$isValidId === 'false'
         ? theme.colors.error
-        : props.isValidId === 'true'
+        : props.$isValidId === 'true'
         ? theme.colors.success
         : theme.colors.gray500};
   border-radius: 4px;
@@ -241,7 +240,7 @@ const StyledPwInput = styled.input<Props>`
   width: 100%;
   height: 3rem;
   padding: 1rem;
-  border: 1px solid ${({isError}) => (isError ? theme.colors.error : theme.colors.gray500)};
+  border: 1px solid ${({$isError}) => ($isError ? theme.colors.error : theme.colors.gray500)};
   border-radius: 4px;
   outline: none;
 `;
@@ -290,10 +289,10 @@ const StyledIdChecker = styled.button`
 `;
 
 const StyledIdAlarm = styled.span<Props>`
-  display: ${props => (props.isValidId !== 'default' ? 'flex' : 'none')};
+  display: ${props => (props.$isValidId !== 'default' ? 'flex' : 'none')};
   align-self: flex-start;
-  padding: ${props => (props.isValidId !== 'default' ? '0.5rem 0rem' : '0px')};
-  color: ${props => (props.isValidId === 'false' ? theme.colors.error : theme.colors.success)};
+  padding: ${props => (props.$isValidId !== 'default' ? '0.5rem 0rem' : '0px')};
+  color: ${props => (props.$isValidId === 'false' ? theme.colors.error : theme.colors.success)};
 `;
 
 export default SignUpBox;
