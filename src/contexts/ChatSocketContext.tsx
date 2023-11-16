@@ -8,6 +8,8 @@ interface SocketState {
   messages: Message[];
   prevMessages: PrevMessage;
   users: UserID;
+  eventTriggered: boolean;
+  setEventTriggered: React.Dispatch<boolean>;
 }
 const ChatSocketContext = createContext<SocketState | null>(null);
 
@@ -23,6 +25,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
   const [prevMessages, setPrevMessages] = useState<PrevMessage>({messages: []});
   const [users, setUsers] = useState<UserID>({users: []});
   const [attempt, setAttempt] = useState(0);
+  const [eventTriggered, setEventTriggered] = useState(false);
 
   useEffect(() => {
     if (attempt > 1) return;
@@ -73,6 +76,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
         createdAt: new Date(),
       }));
       setMessages(prevMessages => [...prevMessages, ...joinMessage]);
+      setEventTriggered(true);
     });
     // leave 이벤트 데이터 처리
     newSocket.on('leave', (data: leaveUser) => {
@@ -83,6 +87,7 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
         createdAt: new Date(),
       };
       setMessages(prevMessages => [...prevMessages, leaveMessage]);
+      setEventTriggered(true);
     });
     // 접속 상태 유저 목록
     newSocket.on('users-to-client', (data: UserID) => {
@@ -106,6 +111,8 @@ export const ChatSocketProvider: React.FC<SocketProviderProps> = ({id, url, chil
     messages,
     prevMessages,
     users,
+    eventTriggered,
+    setEventTriggered,
   };
 
   return <ChatSocketContext.Provider value={contextValue}>{children}</ChatSocketContext.Provider>;
