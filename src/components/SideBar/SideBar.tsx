@@ -3,25 +3,23 @@ import styled from 'styled-components';
 import PrivateChats from '../PrivateChat/PrivateChats';
 import {theme} from '../../styles/Theme';
 import GroupChat from 'components/GroupChat/GroupChats';
-import {authCheck} from '../../api/auth';
 import LoadingCircle from 'components/LoadingCircle/LoadingCircle';
+import {useUid} from 'hooks/useUid';
 
 export default function SideBar() {
   const [categoryButton, setCategoryButton] = useState<boolean>(true);
-  const [name, setName] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {uName} = useUid();
 
   const handleTabClick = async () => {
-    setIsLoading(true);
     try {
-      const res = await authCheck();
-      setName(res.user.name);
+      setIsLoading(true);
     } catch (error) {
       alert('⚠️사용자의 이름을 불러오지 못하였습니다.');
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1000);
+      }, 500);
     }
   };
 
@@ -31,7 +29,7 @@ export default function SideBar() {
 
   return (
     <StyledContainer>
-      <StyledText>안녕하세요. {name}님👋</StyledText>
+      <StyledText>안녕하세요. {uName}님👋</StyledText>
       <StyledCategoryContainer>
         <StyledPrivateButton
           className={categoryButton ? 'selected_category' : ''}

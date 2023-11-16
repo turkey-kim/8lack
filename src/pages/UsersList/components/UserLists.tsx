@@ -26,7 +26,7 @@ const UserLists = () => {
   const [searchUser, setSearchUser] = useState('');
   const [checkedStates, setCheckedStates] = useState<CheckedStates>({});
   const starBtnClicked = useRecoilValue(isStarBtnClicked);
-  const {uid, isLoading, error} = useUid();
+  const {uid, isLoading} = useUid();
   const myId = uid;
   const [isLoaded, setIsLoaded] = useState(false);
 

@@ -28,11 +28,11 @@ export const customStyles = {
 
 const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const [editing, setEditing] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
-  const [picture, setPicture] = useState<string>(USER_DEFAULT_IMG);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
-  const {uid, isLoading, error} = useUid();
+  const {uid, isLoading} = useUid();
+  const [name, setName] = useState<string>('');
+  const [picture, setPicture] = useState<string>(USER_DEFAULT_IMG);
   const id = uid;
 
   const getAuth = async () => {

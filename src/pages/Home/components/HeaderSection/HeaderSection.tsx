@@ -1,21 +1,18 @@
-import background from '../../../assets/images/home-header.png';
-import backObj from '../../../assets/images/backObj.png';
-import bloat from '../../../assets/images/Burst-Bloat.png';
+import background from '../../../../assets/images/home-header.png';
+import bloat from '../../../../assets/images/Burst-Bloat.png';
 import styled, {keyframes} from 'styled-components';
-import {theme} from '../../../styles/Theme';
-import {ReactComponent as MainLogo} from '../../../assets/images/home-main8.svg';
+import {theme} from '../../../../styles/Theme';
+import {ReactComponent as MainLogo} from '../../../../assets/images/home-main8.svg';
 
 export default function HeaderSection() {
   return (
     <StyledContainer>
       <StyledMainBackground>
-        <StyledBackObj1 src={backObj} />
-        <StyledBackObj2 src={backObj} />
-        <StyledMainText>
-          마치
+        <StyledMainTextContainer>
+          <StyledMainText>마치</StyledMainText>
           <StyledLogoText>팔락</StyledLogoText>
-          이듯
-        </StyledMainText>
+          <StyledMainText>이듯</StyledMainText>
+        </StyledMainTextContainer>
         <StyledMainLogoContainer>
           <StyledShakingMainLogo />
         </StyledMainLogoContainer>
@@ -24,10 +21,12 @@ export default function HeaderSection() {
         <StyledBloatImg2 src={bloat} />
       </StyledMainBackground>
       <StyledTextContainer>
-        <StyledText1>
+        <StyledTextInnerContainer>
           <StyledLogoText2>8lack</StyledLogoText2>
-          에서 다양한 사람들과 다양한 주제로 이야기를 나눠볼 수 있어요! <br />
-        </StyledText1>
+          <StyledText1>
+            에서 다양한 사람들과 다양한 주제로 이야기를 나눠볼 수 있어요! <br />
+          </StyledText1>
+        </StyledTextInnerContainer>
         <StyledText2>새로운 경험을 통해 일상의 재미를 더해보세요!</StyledText2>
       </StyledTextContainer>
     </StyledContainer>
@@ -37,56 +36,6 @@ export default function HeaderSection() {
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-`;
-
-const backAnimation1 = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  70% {
-    opacity: 0.07;
-    transform: translateY(100px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(300px);
-  }
-`;
-
-const backAnimation2 = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(300px);
-  }
-  70% {
-    opacity: 0.07;
-    transform: translateY(100px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-`;
-
-const StyledBackObj1 = styled.img`
-  width: 70rem;
-  position: absolute;
-  left: -15rem;
-  bottom: 2rem;
-  opacity: 0.07;
-  animation: ${backAnimation1} 15s ease-in-out infinite;
-`;
-
-const StyledBackObj2 = styled.img`
-  width: 70rem;
-  position: absolute;
-  right: -15rem;
-  bottom: 2rem;
-  opacity: 0;
-  animation: ${backAnimation2} 10s ease-in-out infinite;
-  animation-delay: 15s;
 `;
 
 const StyledMainBackground = styled.div`
@@ -99,14 +48,16 @@ const StyledMainBackground = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
-  overflow: hidden;
+`;
+
+const StyledMainTextContainer = styled.div`
+  display: flex;
 `;
 
 const StyledMainText = styled.h1`
   color: ${theme.colors.white};
   font-size: 4rem;
   display: flex;
-  align-items: center;
 `;
 
 const mainLogoColorChange = keyframes`
@@ -124,7 +75,7 @@ const mainLogoColorChange = keyframes`
   }
 `;
 
-const Animation = keyframes`
+const shakeAnimation = keyframes`
   0% {
     transform: rotate(5deg);
   }
@@ -147,16 +98,15 @@ const StyledMainLogoContainer = styled.div`
 `;
 
 const StyledShakingMainLogo = styled(MainLogo)`
-  animation: ${Animation} 8s infinite;
+  animation: ${shakeAnimation} 8s infinite;
 `;
 
 const StyledLogoText = styled(StyledMainText)`
   font-family: 'CWDangamAsac-Bold';
-  font-size: 80px;
   margin-left: 1.5rem;
 `;
 
-const rotateBloadImg1 = keyframes`
+const rotateBloadImg = keyframes`
   0% {
     transform: rotate(0deg);
     opacity: 1;
@@ -174,30 +124,12 @@ const rotateBloadImg1 = keyframes`
   }
 `;
 
-const rotateBloadImg2 = keyframes`
-  0% {
-    transform: rotate(0deg);
-    opacity: 0;
-    filter: brightness(100%);
-  }
-  50% {
-    transform: rotate(180deg);
-    opacity: 1;
-    filter: brightness(50%);
-  }
-  100% {
-    transform: rotate(360deg);
-    opacity: 0;
-    filter: brightness(0%);
-  }
-`;
-
 const StyledBloatImg1 = styled.img`
-  width: 18rem;
+  width: 15rem;
   position: absolute;
   left: 5rem;
   bottom: 2rem;
-  animation: ${rotateBloadImg1} 12s ease-in-out infinite;
+  animation: ${rotateBloadImg} 10s linear infinite;
 `;
 
 const StyledBloatImg2 = styled.img`
@@ -205,8 +137,7 @@ const StyledBloatImg2 = styled.img`
   position: absolute;
   top: 2rem;
   right: 5rem;
-  animation: ${rotateBloadImg2} 8s ease-in-out infinite;
-  animation-delay: 3s;
+  animation: ${rotateBloadImg} 10s linear infinite;
 `;
 
 const StyledTextContainer = styled.div`
@@ -219,6 +150,10 @@ const StyledTextContainer = styled.div`
   gap: 1rem;
 `;
 
+const StyledTextInnerContainer = styled.div`
+  display: flex;
+`;
+
 const StyledText1 = styled.h2`
   color: ${theme.colors.white};
   font-size: 2rem;
@@ -229,6 +164,7 @@ const StyledText1 = styled.h2`
 const StyledLogoText2 = styled.h2`
   font-family: 'CWDangamAsac-Bold';
   font-size: 1.95rem;
+  color: ${theme.colors.white};
 `;
 
 const StyledText2 = styled.h2`

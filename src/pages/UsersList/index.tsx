@@ -38,8 +38,6 @@ export const StyledMainTitle = styled.div`
 export const StyledSearchBar = styled.input`
   margin: 1rem 0 1.5rem 0;
   width: 90%;
-  // padding: 0.5rem;
-  // font-size: 1rem;
   height: 3rem;
   padding-left: 2.25rem;
   border-radius: 0.25rem;
