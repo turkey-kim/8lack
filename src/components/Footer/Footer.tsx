@@ -18,8 +18,8 @@ export function Footer(): JSX.Element {
   const teamMates: teamMatesProps[] = [
     {
       name: '김민서',
-      eMail: 'imkinggosu@gmail.com',
-      blog: '',
+      eMail: '',
+      blog: 'https://kmmk808.tistory.com/',
       gitRepo: 'https://github.com/minseokiim',
       etc: {
         etcName: '',
@@ -72,7 +72,7 @@ export function Footer(): JSX.Element {
   const [goTo, setGoTo] = useState<string>('');
 
   const onClickGitHub = (): void => {
-    setGoTo('https://github.com/YongYong21/Toy1_team2');
+    setGoTo('https://github.com/turkey-kim/8lack');
   };
 
   const onClickSchoolLogo = (): void => {
@@ -90,7 +90,7 @@ export function Footer(): JSX.Element {
               <SchoolLogo onClick={onClickSchoolLogo} />
             </Logos>
             <span>A Total Solution for Managing Company.</span>
-            <span>@ {`${new Date().getFullYear()}`} DaeBakJingJo. All Right Reserved</span>
+            <span>@ {`${new Date().getFullYear()}`} 팔자좋조. All Right Reserved</span>
           </CompanyContent>
         </CompanyInfo>
         <ContributorsInfo>

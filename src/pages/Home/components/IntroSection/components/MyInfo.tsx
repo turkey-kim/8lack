@@ -1,13 +1,5 @@
 import styled from 'styled-components';
-import {
-  StyledTextWrapper,
-  StyledInner,
-  StyledWrapper,
-  StyledText,
-  StyledSubText,
-  StyledIntroText,
-  StyledLeftSection,
-} from '..';
+import {StyledTextWrapper, StyledInner, StyledText, StyledSubText, StyledIntroText, StyledLeftSection} from '..';
 import background from 'assets/images/main_userbackground.png';
 
 const MyInfo = () => {
