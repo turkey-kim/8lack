@@ -36,7 +36,6 @@ const Home = () => {
         <StyledWrapper isLoggedIn={isLoggedIn}>
           <HeaderSection />
           <IntroSection />
-          <ChatSection />
         </StyledWrapper>
       </StyledInnerContainer>
     </StyledContainer>
