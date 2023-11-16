@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {theme} from 'styles/Theme';
 import {
   StyledTextWrapper,
   StyledLeftSection,
@@ -9,7 +8,6 @@ import {
   StyledSubText,
   StyledIntroText,
 } from '..';
-import background from 'assets/images/main_background.png';
 import user1 from 'assets/images/main_user1.png';
 import user2 from 'assets/images/main_user2.png';
 import user3 from 'assets/images/main_user3.png';

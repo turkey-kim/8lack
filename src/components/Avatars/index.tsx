@@ -9,7 +9,9 @@ const Avatars: React.FC<IAvatars> = ({users, isPrivate}) => {
   } else {
     return (
       <AvatarsContainer>
-        {users?.slice(0, 4).map((user, index) => <Avatar key={user.id} src={user.picture} alt={user.username} />)}
+        {users?.slice(0, 4).map((user, index) => (
+          <Avatar key={user.id} src={user.picture} alt={user.username} />
+        ))}
       </AvatarsContainer>
     );
   }
