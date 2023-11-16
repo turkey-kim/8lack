@@ -13,15 +13,16 @@ import {RxHamburgerMenu} from 'react-icons/rx';
 import {RiAddFill} from 'react-icons/ri';
 import {useRecoilState} from 'recoil';
 import {chatRoomState} from 'states/atom';
-import {useSocketContext} from 'contexts/ChatSocketContext';
+import {useChatRoomRefetch} from 'hooks/useChatRoomRefetch';
 
 // TODO: 불필요한 리렌더 줄이기
 const Chat = ({chatId}: {chatId: string}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const {data: chatRoomData, isLoading, isError, refetch} = useChatRoomQuery(chatId);
+  const {data: chatRoomData, refetch} = useChatRoomQuery(chatId);
   const [chatRoom, setChatRoom] = useRecoilState(chatRoomState);
-  const {eventTriggered, setEventTriggered} = useSocketContext();
+
+  useChatRoomRefetch(refetch, isDrawerOpen);
 
   useEffect(() => {
     if (chatRoomData) {
@@ -36,12 +37,6 @@ const Chat = ({chatId}: {chatId: string}) => {
       navigate(`/`);
     }
   };
-  useEffect(() => {
-    if (isDrawerOpen && eventTriggered) {
-      refetch();
-      setEventTriggered(false); // 이벤트 처리 후 상태 초기화
-    }
-  }, [isDrawerOpen, eventTriggered, refetch, setEventTriggered]);
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
