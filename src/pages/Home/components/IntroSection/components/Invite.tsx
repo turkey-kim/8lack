@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {theme} from 'styles/Theme';
 import {StyledRightSection, StyledWrapper, StyledText, StyledSubText, StyledIntroText} from '..';
 import chat2 from 'assets/images/main_chatroom2.png';
 import chat3 from 'assets/images/main_chatback.png';

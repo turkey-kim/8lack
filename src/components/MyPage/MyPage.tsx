@@ -32,7 +32,7 @@ const MyPage = ({isOpen, onRequestClose}: AppModalProps) => {
   const [picture, setPicture] = useState<string>(USER_DEFAULT_IMG);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
-  const {uid, isLoading, error} = useUid();
+  const {uid, isLoading} = useUid();
   const id = uid;
 
   const getAuth = async () => {

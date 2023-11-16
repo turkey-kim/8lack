@@ -29,7 +29,7 @@ const UserItem = ({user}: UserItemProps) => {
     const saved = localStorage.getItem(`isChecked-${user.id}`);
     return saved !== null ? saved === 'true' : false;
   });
-  const {uid, isLoading, error} = useUid();
+  const {uid} = useUid();
   const myId = uid;
   const [starBtnClicked, setStarBtnClicked] = useRecoilState(isStarBtnClicked);
   const getOnlineUserList = useRecoilValue(onlineUserList);
