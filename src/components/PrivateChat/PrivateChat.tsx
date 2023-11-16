@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {theme} from '../../styles/Theme';
 import {format, register} from 'timeago.js';
@@ -6,15 +6,15 @@ import koLocale from 'timeago.js/lib/lang/ko';
 import {Props, IChat} from 'types/chatroom.types';
 import {Link, useParams} from 'react-router-dom';
 import useRealTimeUpdate from 'hooks/useRealTimeUpdate';
-import {authCheck} from 'api/auth';
 import {USER_DEFAULT_IMG} from 'constant/constant';
+import {useUid} from 'hooks/useUid';
 
 register('ko', koLocale);
 
 export default function PrivateChat(props: Props) {
-  const [myId, setMyId] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const {id, users} = props.data;
+  const {uid} = useUid();
   const params = useParams();
   const {
     updateQuery: {data: realTimeData},
@@ -22,17 +22,16 @@ export default function PrivateChat(props: Props) {
 
   const selectedChatRoom = realTimeData?.chats.find((chat: IChat) => chat.id === id);
 
-  const getAuth = async () => {
+  const loadChatList = async () => {
     try {
-      const res = await authCheck();
-      setMyId(res.user.id);
+      setIsLoading(true);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getAuth();
+    loadChatList();
   }, []);
 
   if (isLoading) return <></>;
@@ -43,7 +42,7 @@ export default function PrivateChat(props: Props) {
         <StyledContainer className={params.chatId === id ? 'selected_chat' : ''}>
           <StyledSubContainer>
             {users.map(user =>
-              user.id !== myId ? (
+              user.id !== uid ? (
                 <StyledImg key={user.id} src={user.picture} alt="사용자 프로필 이미지" />
               ) : (
                 users.length === 1 && <StyledImg key={user.id} src={USER_DEFAULT_IMG} alt="알 수 없는 사용자" />
@@ -51,7 +50,7 @@ export default function PrivateChat(props: Props) {
             )}
             <StyledTextContainer>
               {users.map(user =>
-                user.id !== myId ? (
+                user.id !== uid ? (
                   <StyledTitle key={user.id}>{user.username}</StyledTitle>
                 ) : (
                   users.length === 1 && <StyledTitle key={user.id}>(알 수 없음)</StyledTitle>
