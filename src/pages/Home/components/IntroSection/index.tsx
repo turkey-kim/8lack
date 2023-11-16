@@ -39,16 +39,6 @@ export const StyledLeftSection = styled.div`
   justify-content: center;
 `;
 
-export const StyledRightSection = styled.div`
-  background-color: ${theme.colors.blue100};
-  text-align: right;
-  height: 40rem;
-  overflow: hidden;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-`;
-
 export const StyledWrapper = styled.div`
   display: inline-block;
   vertical-align: top;

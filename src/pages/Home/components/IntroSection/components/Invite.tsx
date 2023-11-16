@@ -3,7 +3,7 @@ import {theme} from 'styles/Theme';
 import {
   StyledTextWrapper,
   StyledInner,
-  StyledRightSection,
+  StyledLeftSection,
   StyledWrapper,
   StyledText,
   StyledSubText,
@@ -28,7 +28,7 @@ const InviteLottie = () => {
 
 const Invite = () => {
   return (
-    <StyledRightSection>
+    <StyledLeftSection>
       <StyledInner>
         <StyledWrapper>
           <StyledImg src={chat2} />
@@ -47,7 +47,7 @@ const Invite = () => {
           </StyledIntroText>
         </StyledTextWrapper>
       </StyledInner>
-    </StyledRightSection>
+    </StyledLeftSection>
   );
 };
 
