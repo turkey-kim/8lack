@@ -24,7 +24,8 @@ const User = () => {
   return (
     <StyledRightSection>
       <StyledWrapper>
-        <StyledImg2 src={user3} /> <StyledImg src={user1} />
+        <StyledImg2 src={user3} />
+        <StyledImg src={user1} />
         <StyledImg3 src={user2} />
         <UserLottie />
       </StyledWrapper>
