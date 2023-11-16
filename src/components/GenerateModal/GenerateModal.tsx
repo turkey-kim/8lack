@@ -7,11 +7,11 @@ import UserCells from './UserCells';
 import {User} from 'types/chatroom.types';
 import {useEffect, useState} from 'react';
 import {getUsers} from 'api/users';
-import {makeChatRoom} from 'api/myChatRoom';
 import {useRecoilValue} from 'recoil';
 import {userInformation} from 'states/atom';
-import {useNavigate, useParams} from 'react-router';
+import {useParams} from 'react-router';
 import {inviteChatRoom} from 'api/myChatRoom';
+import {useChatCreation} from 'hooks/useChatRoomMutation';
 
 interface ModalProps {
   onToggleModal: React.Dispatch<boolean>;
@@ -40,9 +40,9 @@ const GenerateModal = (props: ModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // 로딩 중 (비동기 요청 중)
 
-  const navigate = useNavigate();
   const {chatId} = useParams();
   const myInfo = useRecoilValue(userInformation);
+  const {createChatRoom} = useChatCreation();
 
   useEffect(() => {
     setIsLoading(true);
@@ -60,7 +60,7 @@ const GenerateModal = (props: ModalProps) => {
     props.onToggleModal(false);
   };
 
-  const actionHandler = () => {
+  const actionHandler = async () => {
     if (props.headline === '그룹 채팅방 만들기') {
       if (chatName.trim().length === 0) {
         // 채팅방 이름 0자 예외 조건 처리
@@ -80,15 +80,15 @@ const GenerateModal = (props: ModalProps) => {
         return;
       }
 
-      const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
-      makeChatRoom(chatName, users, false).then(res => {
-        let chatId = res.id;
+      try {
+        const users = userData[1].slice().map(val => val.id); // 아이디만 있는 배열로 바꾸기
+        await createChatRoom(chatName, users, false);
         alert(`${chatName} 방이 생성되었습니다.`);
-        navigate(`/chat/${chatId}`);
-      });
-      // 생성
 
-      modalCloseHandler(); // 모달 닫기
+        modalCloseHandler();
+      } catch (error) {
+        console.error('채팅방 생성 중 오류가 발생했습니다', error);
+      }
     }
 
     if (props.headline === '그룹 채팅방에 초대하기') {

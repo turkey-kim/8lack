@@ -51,3 +51,8 @@ export const chatRoomUsersSelector = selector<Record<string, IUserInfo> | null>(
     return null;
   },
 });
+
+export const createdChatIdState = atom<string[]>({
+  key: 'createdChatIdState',
+  default: [],
+});

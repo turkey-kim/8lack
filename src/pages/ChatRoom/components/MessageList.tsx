@@ -10,7 +10,6 @@ const MessageList: React.FC = () => {
   const {socket, prevMessages, messages} = useSocketContext();
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const messageRef = useRef<HTMLDivElement>(null);
-  // console.log(prevMessages);
 
   // 이전 대화 불러오기
   useEffect(() => {

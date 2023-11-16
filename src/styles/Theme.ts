@@ -99,4 +99,12 @@ export const theme = {
       shadow: '0px 12px 40px rgba(0, 0, 0, 0.12)',
     },
   },
+  alpha: {
+    alpha1: 'rgba(255, 255, 255, 0.5)',
+    alpha2: 'rgba(224, 224, 224, 0.5)',
+    alpha3: 'rgba(223, 230, 246, 0.5)',
+    alpha4: 'rgba(0, 0, 0, 0.01)',
+    alpha5: 'rgba(0, 0, 0, 0.05)',
+    alpha6: 'rgba(0, 0, 0, 0.1)',
+  },
 };

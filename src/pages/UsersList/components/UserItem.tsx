@@ -10,7 +10,6 @@ import {
 import {FaStar} from 'react-icons/fa';
 import {MdCircle} from 'react-icons/md';
 import styled from 'styled-components';
-import {makeChatRoom} from 'api/myChatRoom';
 import {useNavigate} from 'react-router';
 import {isStarBtnClicked, onlineUserList} from 'states/atom';
 import {useRecoilState, useRecoilValue} from 'recoil';
@@ -18,6 +17,7 @@ import {myChatRoom} from 'api/myChatRoom';
 import {ChatRoom} from 'types/chatroom.types';
 import {debounce} from 'lodash';
 import {useUid} from 'hooks/useUid';
+import {useChatCreation} from 'hooks/useChatRoomMutation';
 
 interface UserItemProps {
   user: User;
@@ -38,6 +38,8 @@ const UserItem = ({user}: UserItemProps) => {
     localStorage.setItem(`isChecked-${user.id}`, isChecked.toString());
   }, [isChecked, user.id]);
 
+  const {createChatRoom} = useChatCreation();
+
   const handleCreateChat = debounce(async (userId: string, userName: string, e: React.MouseEvent) => {
     e.preventDefault();
 
@@ -48,7 +50,6 @@ const UserItem = ({user}: UserItemProps) => {
         const users = [userId];
 
         const existingChatRooms: {chats: ChatRoom[]} | undefined = await myChatRoom();
-        console.log(existingChatRooms);
 
         if (existingChatRooms && Array.isArray(existingChatRooms.chats)) {
           const existingChat = existingChatRooms.chats.find(
@@ -62,9 +63,7 @@ const UserItem = ({user}: UserItemProps) => {
             console.log('기존 채팅방 사용', existingChat);
             navigate(`/chat/${existingChat.id}`);
           } else {
-            const res = await makeChatRoom(chatName, users, true);
-            console.log('새로운 채팅방 생성', res);
-            navigate(`/chat/${res.id}`);
+            await createChatRoom(chatName, users, true);
           }
         } else {
           console.error('채팅방 목록이 존재하지 않습니다.');

@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
+import {motion} from 'framer-motion';
 import {formatMessageDate} from 'utils/formatDate';
 import {Message} from 'types/chatroom.types';
 import {useRecoilValue} from 'recoil';
@@ -27,8 +28,28 @@ const MessageItem: React.FC<MessageItemProps> = ({message, isCurrentUser}) => {
   if (message.userId === 'system') {
     return <StyledSystemMessage>{message.text}</StyledSystemMessage>;
   }
+
+  const variants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      transition: {
+        duration: 0.2,
+        ease: 'easeOut',
+      },
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.2,
+        ease: 'easeOut',
+      },
+    },
+  };
+
   return (
-    <StyledItem $currentUser={isCurrentUser}>
+    <StyledItem $currentUser={isCurrentUser} initial="hidden" animate="visible" variants={variants}>
       <StyledInner $currentUser={isCurrentUser}>
         <StyledRowSection>
           <StyledAvatarWrapper>
@@ -59,7 +80,7 @@ const StyledSystemMessage = styled.div`
   padding: 10px;
 `;
 
-const StyledItem = styled.div<{$currentUser: boolean}>`
+const StyledItem = styled(motion.div)<{$currentUser: boolean}>`
   display: flex;
   padding: 7px 0px;
   width: 100%;
