@@ -37,6 +37,7 @@ export const StyledLeftSection = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 `;
 
 export const StyledWrapper = styled.div`

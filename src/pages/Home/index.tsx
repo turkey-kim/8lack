@@ -78,6 +78,7 @@ const StyledInnerContainer = styled.div`
   overflow-y: auto;
   width: 100%;
   height: 100vh;
+  overflow-x: hidden;
 `;
 
 const StyledSignInBtn = styled.button`
