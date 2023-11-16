@@ -19,6 +19,8 @@ export const useUid = () => {
   }, [data]);
 
   const uid = data?.user?.id || null;
+  const uPicture = data?.user?.picture || null;
+  const uName = data?.user?.name || null;
 
-  return {uid, isLoading, error};
+  return {uid, uPicture, uName, isLoading, error};
 };
