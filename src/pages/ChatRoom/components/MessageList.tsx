@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import styled from 'styled-components';
 import {useSocketContext} from 'contexts/ChatSocketContext';
 import {groupMessagesByDate} from 'utils/formatDate';
@@ -10,6 +10,8 @@ const MessageList: React.FC = () => {
   const {socket, prevMessages, messages} = useSocketContext();
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const messageRef = useRef<HTMLDivElement>(null);
+
+  const groupedMessages = useMemo(() => groupMessagesByDate(allMessages), [allMessages]);
 
   // 이전 대화 불러오기
   useEffect(() => {
@@ -36,8 +38,6 @@ const MessageList: React.FC = () => {
   const {uid, isLoading, error} = useUid();
   if (isLoading) return null;
   if (error) return <div>인증이 실패 했습니다</div>;
-
-  const groupedMessages = groupMessagesByDate(allMessages);
 
   return (
     <StyledList ref={messageRef}>
@@ -67,23 +67,9 @@ const StyledDateHeader = styled.div`
 `;
 
 const StyledList = styled.div`
-  padding: 0px 1rem 0.5rem;
+  padding: 0px 1.5rem 0.5rem;
   scroll-behavior: smooth;
   flex-grow: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
-`;
-
-const StyledButton = styled.button`
-  background-color: ${({theme}) => theme.colors.blue700};
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  margin: 10px 0;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({theme}) => theme.colors.blue700};
-  }
 `;
