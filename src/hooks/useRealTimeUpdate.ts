@@ -5,7 +5,7 @@ export default function useRealTimeUpdate() {
   const updateQuery = useQuery({
     queryKey: ['message'],
     queryFn: () => myChatRoom(),
-    refetchInterval: 100000,
+    refetchInterval: 1000,
     refetchIntervalInBackground: true,
   });
 
