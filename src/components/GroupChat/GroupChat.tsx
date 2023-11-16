@@ -22,12 +22,10 @@ export default function GroupChat(props: Props) {
   const navigate = useNavigate();
   const params = useParams();
   const {
-    updateQuery: {isLoading, data: realTimeData},
+    updateQuery: {data: realTimeData},
   } = useRealTimeUpdate();
 
   const selectedChatRoom = realTimeData?.chats.find((chat: IChat) => chat.id === id);
-
-  if (isLoading) return <p>Loading...</p>;
 
   return (
     <StyledTopContainer>
